@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Những hiểu nhầm phổ biến Sales cần tránh | Module 10</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-10-page { max-width:1120px; }
+.myth-map { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:30px; }
+.myth-card { position:relative; overflow:hidden; min-height:180px; border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:22px; border-top:4px solid var(--primary); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.myth-card:nth-child(2) { border-top-color:var(--accent); }
+.myth-card:nth-child(3) { border-top-color:var(--success); }
+.myth-card:nth-child(4) { border-top-color:var(--secondary); }
+.myth-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.myth-card span { display:inline-flex; margin-bottom:12px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.myth-card h3 { margin-bottom:10px; color:var(--text); font-size:16px; font-weight:900; line-height:1.35; }
+.myth-card p { color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.myth-workbench { display:grid; grid-template-columns:minmax(240px,.34fr) minmax(0,1fr); gap:18px; align-items:start; }
+.myth-tabs { position:sticky; top:76px; display:grid; gap:10px; margin:0; max-height:calc(100vh - 96px); overflow:auto; padding:2px 4px 6px 2px; scrollbar-width:thin; }
+.myth-tab { position:relative; min-height:86px; border:2px solid transparent; border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); color:var(--text); cursor:pointer; font:inherit; padding:14px 16px; text-align:left; transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease; }
+.myth-tab::before { position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,var(--primary),var(--secondary)); content:""; transform:scaleY(0); transform-origin:bottom; transition:transform .22s ease; }
+.myth-tab:hover,.myth-tab:focus-visible { border-color:rgba(0,120,212,.24); box-shadow:var(--shadow-md); outline:none; transform:translateX(4px); }
+.myth-tab.active { border-color:var(--primary); background:linear-gradient(135deg,#fff,#f3fbff); box-shadow:var(--shadow-md),var(--shadow-glow); }
+.myth-tab:hover::before,.myth-tab.active::before { transform:scaleY(1); }
+.myth-tab span,.myth-tab strong,.myth-tab small { position:relative; z-index:1; display:block; }
+.myth-tab span { width:max-content; margin-bottom:8px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.myth-tab.active span,.myth-tab:hover span { background:var(--primary); color:white; }
+.myth-tab strong { margin-bottom:5px; color:var(--text); font-size:14px; font-weight:900; line-height:1.35; }
+.myth-tab small { color:var(--text-light); font-size:12.5px; line-height:1.45; }
+.myth-panels { min-width:0; }
+.myth-panel { display:none; overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.myth-panel.active { display:block; animation:panelIn .3s ease both; }
+.myth-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:26px 28px 20px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.myth-num { display:grid; width:50px; height:50px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.myth-head h3 { margin-bottom:6px; color:var(--text); font-size:22px; font-weight:900; line-height:1.3; }
+.myth-head p { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.myth-body { padding:26px 28px 28px; }
+.myth-detail-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; margin-bottom:18px; }
+.detail-card { border-radius:var(--radius-sm); background:var(--gray-1); padding:18px; }
+.detail-card h4 { margin-bottom:10px; color:var(--text); font-size:13px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.detail-card p,.detail-card li { color:var(--text-light); font-size:14px; line-height:1.6; }
+.detail-card ul { display:grid; gap:7px; padding-left:18px; }
+.say-this { border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:18px 20px; }
+.say-this span { display:block; margin-bottom:8px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.say-this blockquote { color:var(--text); font-size:15px; font-style:italic; font-weight:650; line-height:1.7; margin:0; }
+.risk-grid,.guardrail-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.risk-card,.guardrail-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.risk-card:nth-child(2),.guardrail-card:nth-child(2) { border-top-color:var(--accent); }
+.risk-card:nth-child(3),.guardrail-card:nth-child(3) { border-top-color:var(--success); }
+.risk-card h3,.guardrail-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.risk-card ul,.guardrail-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+.correction-table table { min-width:0; table-layout:fixed; }
+.correction-table th,.correction-table td { overflow-wrap:anywhere; }
+.correction-table th:nth-child(1),.correction-table td:nth-child(1) { width:28%; }
+.correction-table th:nth-child(2),.correction-table td:nth-child(2) { width:34%; }
+.correction-table th:nth-child(3),.correction-table td:nth-child(3) { width:38%; }
+@keyframes panelIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1000px) {
+  .myth-map { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .risk-grid,.guardrail-grid { grid-template-columns:1fr; }
+  .myth-workbench { grid-template-columns:1fr; }
+  .myth-tabs { position:static; grid-template-columns:repeat(2,minmax(0,1fr)); max-height:none; overflow:visible; padding:0; }
+  .myth-tab:hover,.myth-tab:focus-visible { transform:translateY(-3px); }
+}
+@media(max-width:640px) {
+  .myth-map,.myth-tabs,.myth-detail-grid { grid-template-columns:1fr; }
+  .myth-card,.myth-tab { min-height:auto; }
+  .myth-head { grid-template-columns:1fr; }
+  .myth-body { padding:22px 18px; }
+  .correction-table table,.correction-table thead,.correction-table tbody,.correction-table tr,.correction-table th,.correction-table td { display:block; width:100%; }
+  .correction-table thead { display:none; }
+  .correction-table tr { margin-bottom:12px; border:1px solid var(--gray-3); border-radius:var(--radius-sm); overflow:hidden; }
+  .correction-table td { display:grid; grid-template-columns:112px 1fr; gap:12px; border-bottom:1px solid var(--gray-2); padding:12px 14px; }
+  .correction-table td:last-child { border-bottom:0; }
+  .correction-table td::before { color:var(--text); font-size:12px; font-weight:900; }
+  .correction-table td:nth-child(1)::before { content:"Hiểu nhầm"; }
+  .correction-table td:nth-child(2)::before { content:"Rủi ro"; }
+  .correction-table td:nth-child(3)::before { content:"Cách nói"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 10 · Hiểu nhầm phổ biến</span>
+  </div>
+  <div class="nav-right">
+    <a href="section9.html" class="nav-btn">← Module 09</a>
+    <a href="section11.html" class="nav-btn primary-btn">Module 11 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 10 / 11</div>
+    <h1>⚠️ Những hiểu nhầm phổ biến Sales cần tránh</h1>
+    <p class="subtitle">Một module ngắn giúp Sales nói đúng về Cloud: không hứa quá mức, không đơn giản hóa sai bản chất, và biết chuyển các nhận định dễ gây hiểu nhầm thành thông điệp tư vấn an toàn hơn.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">⏱️ ~12 phút đọc</div>
+      <div class="meta-chip">🧭 4 hiểu nhầm chính</div>
+      <div class="meta-chip">💬 Cách nói đúng</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-10-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Cloud có nhiều lợi ích thật, nhưng Sales cần tránh biến lợi ích thành lời hứa tuyệt đối. Khi khách hàng nghe các câu như “Cloud luôn rẻ hơn”, “lên Cloud là tự an toàn” hoặc “migrate xong là xong”, kỳ vọng sẽ bị lệch và cơ hội tư vấn dễ gặp rủi ro. Cách tốt hơn là nói có điều kiện, gắn với thiết kế, vận hành, governance và nhu cầu thực tế của khách hàng.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 4 hiểu nhầm cần nhận diện nhanh</div>
+    <p class="block-subtitle">Dùng phần này như bản đồ cảnh báo trước khi Sales bước vào buổi tư vấn Cloud.</p>
+    <div class="myth-map">
+      <article class="myth-card"><span>10.1</span><h3>“Cloud luôn rẻ hơn on-premises”</h3><p>Cloud giúp chi phí linh hoạt hơn, nhưng không tự động rẻ nếu thiết kế và vận hành sai.</p></article>
+      <article class="myth-card"><span>10.2</span><h3>“Đưa lên Cloud là tự động an toàn”</h3><p>Provider bảo vệ nền tảng, còn cấu hình, truy cập, dữ liệu và vận hành vẫn cần quản trị.</p></article>
+      <article class="myth-card"><span>10.3</span><h3>“Cloud chỉ là máy chủ ảo”</h3><p>VM chỉ là một phần; Cloud còn có database, storage, security, analytics, automation và nhiều dịch vụ nền tảng.</p></article>
+      <article class="myth-card"><span>10.4</span><h3>“Migrate lên Cloud là xong”</h3><p>Sau migration vẫn cần tối ưu chi phí, bảo mật, backup, monitoring và cải tiến kiến trúc.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Luyện cách phản hồi từng hiểu nhầm</div>
+    <p class="block-subtitle">Chọn từng hiểu nhầm để xem vì sao câu nói đó rủi ro, nên hỏi gì thêm và nên chuyển thành thông điệp nào khi gặp khách hàng.</p>
+
+    <div class="myth-workbench">
+      <div class="myth-tabs" role="tablist" aria-label="Chọn hiểu nhầm phổ biến về Cloud">
+        <button class="myth-tab active" type="button" data-myth-target="cost" aria-selected="true"><span>10.1</span><strong>Cloud luôn rẻ hơn</strong><small>Rủi ro khi hứa tiết kiệm chi phí tuyệt đối.</small></button>
+        <button class="myth-tab" type="button" data-myth-target="security" aria-selected="false"><span>10.2</span><strong>Lên Cloud là an toàn</strong><small>Cần làm rõ shared responsibility và cấu hình.</small></button>
+        <button class="myth-tab" type="button" data-myth-target="vm" aria-selected="false"><span>10.3</span><strong>Cloud chỉ là VM</strong><small>Làm nghèo giá trị của Cloud nếu chỉ nói server.</small></button>
+        <button class="myth-tab" type="button" data-myth-target="migration" aria-selected="false"><span>10.4</span><strong>Migrate là xong</strong><small>Cloud cần vận hành và tối ưu liên tục.</small></button>
+      </div>
+
+      <div class="myth-panels">
+        <article class="myth-panel active" data-myth-panel="cost">
+          <div class="myth-head"><div class="myth-num">10.1</div><div><h3>“Cloud luôn rẻ hơn on-premises”</h3><p>Đây là hiểu nhầm dễ tạo kỳ vọng sai nhất trong giai đoạn đầu cơ hội.</p></div></div>
+          <div class="myth-body">
+            <div class="myth-detail-grid">
+              <div class="detail-card"><h4>Vì sao không chính xác</h4><p>Cloud có thể rẻ hơn trong nhiều trường hợp, nhưng cũng có thể đắt hơn nếu cấu hình dư thừa, không tắt tài nguyên không dùng, không right-size hoặc thiếu quản trị chi phí.</p></div>
+              <div class="detail-card"><h4>Nên hỏi thêm</h4><ul><li>Workload chạy 24/7 hay theo giờ?</li><li>Có cần dự toán chi phí tháng không?</li><li>Ai theo dõi usage, tag, budget và cảnh báo?</li></ul></div>
+            </div>
+            <div class="say-this"><span>Cách nói đúng</span><blockquote>Cloud giúp chi phí linh hoạt và minh bạch hơn. Để tối ưu chi phí, cần thiết kế kiến trúc, governance và cost management ngay từ đầu.</blockquote></div>
+          </div>
+        </article>
+
+        <article class="myth-panel" data-myth-panel="security">
+          <div class="myth-head"><div class="myth-num">10.2</div><div><h3>“Đưa lên Cloud là tự động an toàn”</h3><p>Cloud có nhiều công cụ bảo mật, nhưng công cụ mạnh không thay thế cho cấu hình và quy trình đúng.</p></div></div>
+          <div class="myth-body">
+            <div class="myth-detail-grid">
+              <div class="detail-card"><h4>Vì sao không chính xác</h4><p>Provider bảo vệ nền tảng Cloud, nhưng khách hàng vẫn cần quản lý tài khoản, phân quyền, network, mã hóa, logging, backup và quy trình vận hành.</p></div>
+              <div class="detail-card"><h4>Nên hỏi thêm</h4><ul><li>Dữ liệu nào nhạy cảm và ai được truy cập?</li><li>Có yêu cầu MFA, mã hóa, audit log không?</li><li>Ai chịu trách nhiệm backup và incident response?</li></ul></div>
+            </div>
+            <div class="say-this"><span>Cách nói đúng</span><blockquote>Cloud cung cấp nhiều công cụ bảo mật mạnh, nhưng mức độ an toàn phụ thuộc vào thiết kế IAM, network, encryption, logging, backup và quy trình vận hành.</blockquote></div>
+          </div>
+        </article>
+
+        <article class="myth-panel" data-myth-panel="vm">
+          <div class="myth-head"><div class="myth-num">10.3</div><div><h3>“Cloud chỉ là máy chủ ảo”</h3><p>Nếu chỉ nói VM, Sales dễ làm khách hàng nghĩ Cloud chỉ là một cách thuê server khác.</p></div></div>
+          <div class="myth-body">
+            <div class="myth-detail-grid">
+              <div class="detail-card"><h4>Vì sao không chính xác</h4><p>VM chỉ là một phần nhỏ của Cloud. Giá trị lớn hơn nằm ở các năng lực nền tảng, dịch vụ quản trị sẵn, tự động hóa và khả năng mở rộng nhanh.</p></div>
+              <div class="detail-card"><h4>Nên hỏi thêm</h4><ul><li>Khách hàng cần tự quản lý đến đâu?</li><li>Có muốn giảm vận hành database, backup, monitoring không?</li><li>Có nhu cầu Data, AI, DevOps hoặc automation không?</li></ul></div>
+            </div>
+            <div class="say-this"><span>Cách nói đúng</span><blockquote>Cloud bao gồm hạ tầng, nền tảng ứng dụng, database, storage, security, monitoring, AI, analytics, IoT và automation.</blockquote></div>
+          </div>
+        </article>
+
+        <article class="myth-panel" data-myth-panel="migration">
+          <div class="myth-head"><div class="myth-num">10.4</div><div><h3>“Migrate lên Cloud là xong”</h3><p>Migration chỉ là điểm bắt đầu; giá trị Cloud đến từ vận hành và cải tiến sau đó.</p></div></div>
+          <div class="myth-body">
+            <div class="myth-detail-grid">
+              <div class="detail-card"><h4>Vì sao không chính xác</h4><p>Sau khi migrate, khách hàng vẫn cần tối ưu chi phí, bảo mật, backup, monitoring, phân quyền, quy trình vận hành và cải tiến kiến trúc theo thực tế sử dụng.</p></div>
+              <div class="detail-card"><h4>Nên hỏi thêm</h4><ul><li>Sau go-live ai vận hành hằng ngày?</li><li>Có KPI về uptime, backup, RTO/RPO không?</li><li>Có kế hoạch tối ưu sau 30/60/90 ngày không?</li></ul></div>
+            </div>
+            <div class="say-this"><span>Cách nói đúng</span><blockquote>Cloud là một hành trình vận hành và tối ưu liên tục, không chỉ là một dự án di chuyển hạ tầng.</blockquote></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal correction-table">
+    <div class="block-title">📋 Bảng chuyển câu nói rủi ro thành câu nói tư vấn</div>
+    <p class="block-subtitle">Khi khách hàng hoặc Sales nội bộ dùng câu nói quá tuyệt đối, hãy chuyển về cách diễn đạt có điều kiện và có bước tiếp theo rõ ràng.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Câu dễ gây hiểu nhầm</th><th>Rủi ro nếu nói như vậy</th><th>Cách nói nên dùng</th></tr></thead>
+        <tbody>
+          <tr><td>Cloud luôn rẻ hơn.</td><td>Khách hàng kỳ vọng giảm chi phí ngay, nhưng chi phí có thể tăng nếu sizing, vận hành và governance chưa tốt.</td><td>Cloud giúp chi phí linh hoạt hơn; cần đánh giá workload và thiết lập cost management để tối ưu.</td></tr>
+          <tr><td>Lên Cloud là an toàn.</td><td>Khách hàng bỏ qua trách nhiệm cấu hình bảo mật, phân quyền, logging, backup và vận hành.</td><td>Cloud có công cụ bảo mật mạnh; mức an toàn phụ thuộc vào thiết kế và quy trình vận hành.</td></tr>
+          <tr><td>Cloud là máy chủ ảo.</td><td>Khách hàng chỉ so sánh giá VM và bỏ lỡ giá trị về database, security, automation, data và managed services.</td><td>VM là một phần; Cloud còn là hệ sinh thái dịch vụ giúp triển khai và vận hành linh hoạt hơn.</td></tr>
+          <tr><td>Migrate xong là xong.</td><td>Dự án thiếu kế hoạch vận hành sau go-live, dẫn đến chi phí, rủi ro và hiệu năng không được kiểm soát.</td><td>Migration là bước đầu; sau đó cần tối ưu chi phí, bảo mật, backup, monitoring và kiến trúc.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🛡️ Guardrail cho Sales trước khi cam kết</div>
+    <p class="block-subtitle">Ba nhóm kiểm tra nhanh này giúp Sales tránh hứa quá mức và biết khi nào cần kéo Presales vào.</p>
+    <div class="guardrail-grid">
+      <article class="guardrail-card">
+        <h3>Hỏi điều kiện</h3>
+        <ul>
+          <li>Workload chạy như thế nào: 24/7, theo mùa vụ hay theo chiến dịch?</li>
+          <li>Có ràng buộc dữ liệu, bảo mật, compliance hoặc vị trí lưu trữ không?</li>
+          <li>Khách hàng muốn tự vận hành hay cần managed service?</li>
+        </ul>
+      </article>
+      <article class="guardrail-card">
+        <h3>Tránh câu tuyệt đối</h3>
+        <ul>
+          <li>Không nói “luôn rẻ hơn”, “tự động an toàn”, “không cần vận hành”.</li>
+          <li>Không chốt giá trị khi chưa hiểu hiện trạng và mục tiêu kinh doanh.</li>
+          <li>Không biến Cloud thành danh sách service rời rạc.</li>
+        </ul>
+      </article>
+      <article class="guardrail-card">
+        <h3>Kéo Presales đúng lúc</h3>
+        <ul>
+          <li>Khi cần sizing, kiến trúc, network, bảo mật hoặc migration plan.</li>
+          <li>Khi khách hàng hỏi về RTO/RPO, compliance, HA, DR hoặc dữ liệu nhạy cảm.</li>
+          <li>Khi cần dự toán chi phí và phương án tối ưu dài hạn.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">❓ Câu hỏi discovery để sửa hiểu nhầm</div>
+    <p class="block-subtitle">Dùng các câu hỏi này để chuyển cuộc trao đổi từ nhận định chung sang nhu cầu thật.</p>
+    <div class="risk-grid">
+      <article class="risk-card">
+        <h3>Chi phí</h3>
+        <ul>
+          <li>Hiện tại chi phí hạ tầng được nhìn theo CAPEX, OPEX hay cả hai?</li>
+          <li>Workload nào có tải tăng giảm mạnh theo thời điểm?</li>
+          <li>Khách hàng có cần budget alert, báo cáo usage hoặc phân bổ chi phí theo phòng ban không?</li>
+        </ul>
+      </article>
+      <article class="risk-card">
+        <h3>Bảo mật & vận hành</h3>
+        <ul>
+          <li>Ai quản lý tài khoản, phân quyền, key, log và backup?</li>
+          <li>Có tiêu chuẩn tuân thủ hoặc yêu cầu audit nào cần đáp ứng không?</li>
+          <li>Khi có sự cố, đội nào chịu trách nhiệm phản hồi?</li>
+        </ul>
+      </article>
+      <article class="risk-card">
+        <h3>Sau migration</h3>
+        <ul>
+          <li>Sau go-live, khách hàng muốn đo thành công bằng tiêu chí nào?</li>
+          <li>Có kế hoạch tối ưu chi phí, hiệu năng và bảo mật định kỳ không?</li>
+          <li>Ứng dụng nào nên lift-and-shift, ứng dụng nào nên hiện đại hóa?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 10 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ cách nói</div>
+      <p class="dark-card-text">Sales không cần làm Cloud nghe hoàn hảo hơn thực tế. Điều quan trọng là nói đúng điều kiện: Cloud có thể linh hoạt hơn, nhanh hơn, mở rộng tốt hơn và hỗ trợ nhiều năng lực hiện đại hơn, nhưng giá trị đó phụ thuộc vào thiết kế, vận hành, bảo mật, governance và tối ưu liên tục. Nói đúng giúp khách hàng tin hơn và giúp cơ hội đi vào discovery chất lượng hơn.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section9.html" class="bnav-btn">← Module 09: Trình bày 15 phút</a>
+    <span class="bnav-center">Module 10 / 11</span>
+    <a href="section11.html" class="bnav-btn next">Module 11: One-page summary →</a>
+  </nav>
+
+</main>
+
+<script>
+const mythTabs = [...document.querySelectorAll("[data-myth-target]")];
+const mythPanels = [...document.querySelectorAll("[data-myth-panel]")];
+
+function activateMyth(key) {
+  mythPanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.mythPanel === key);
+  });
+  mythTabs.forEach((tab) => {
+    const isActive = tab.dataset.mythTarget === key;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+  });
+}
+
+mythTabs.forEach((tab) => {
+  tab.addEventListener("click", () => activateMyth(tab.dataset.mythTarget));
+});
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

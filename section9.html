@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cấu trúc trình bày 15 phút cho Sales | Module 09</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-9-page { max-width:1120px; }
+.pitch-flow { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:10px; margin-bottom:30px; }
+.pitch-step { position:relative; border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); border-top:4px solid var(--primary); padding:18px 14px; transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.pitch-step:nth-child(2) { border-top-color:var(--accent); }
+.pitch-step:nth-child(3) { border-top-color:var(--success); }
+.pitch-step:nth-child(4) { border-top-color:var(--secondary); }
+.pitch-step:nth-child(5) { border-top-color:#8764b8; }
+.pitch-step:nth-child(6) { border-top-color:#d83b01; }
+.pitch-step:nth-child(7) { border-top-color:#107c10; }
+.pitch-step:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.pitch-step span { display:grid; width:30px; height:30px; place-items:center; margin-bottom:12px; border-radius:8px; background:var(--gray-2); color:var(--primary-dark); font-size:12px; font-weight:900; }
+.pitch-step h3 { margin-bottom:8px; color:var(--text); font-size:14px; font-weight:900; line-height:1.35; }
+.pitch-step p { color:var(--text-light); font-size:13px; line-height:1.5; }
+.pitch-table table { min-width:0; table-layout:fixed; }
+.pitch-table th,.pitch-table td { overflow-wrap:anywhere; }
+.pitch-table th:nth-child(2),.pitch-table td:nth-child(2) { width:95px; text-align:center; }
+.talk-workbench { display:grid; grid-template-columns:minmax(240px,.32fr) minmax(0,1fr); gap:18px; align-items:start; }
+.slide-choice-list { position:sticky; top:76px; display:grid; gap:10px; margin:0; max-height:calc(100vh - 96px); overflow:auto; padding:2px 4px 6px 2px; scrollbar-width:thin; }
+.slide-choice { position:relative; overflow:hidden; min-height:76px; border:2px solid transparent; border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); color:var(--text); cursor:pointer; font:inherit; padding:14px 16px; text-align:left; transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease; }
+.slide-choice::before { position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,var(--primary),var(--secondary)); content:""; transform:scaleY(0); transform-origin:bottom; transition:transform .22s ease; }
+.slide-choice:hover,.slide-choice:focus-visible { border-color:rgba(0,120,212,.24); box-shadow:var(--shadow-md); outline:none; transform:translateX(4px); }
+.slide-choice.active { border-color:var(--primary); background:linear-gradient(135deg,#fff,#f3fbff); box-shadow:var(--shadow-md),var(--shadow-glow); }
+.slide-choice:hover::before,.slide-choice.active::before { transform:scaleY(1); }
+.slide-choice span,.slide-choice strong,.slide-choice small { position:relative; z-index:1; display:block; }
+.slide-choice span { width:max-content; margin-bottom:8px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.slide-choice.active span,.slide-choice:hover span { background:var(--primary); color:white; }
+.slide-choice strong { margin-bottom:5px; color:var(--text); font-size:14px; font-weight:900; line-height:1.3; }
+.slide-choice small { color:var(--text-light); font-size:12.5px; line-height:1.45; }
+.slide-panels { min-width:0; }
+.slide-panel { display:none; overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.slide-panel.active { display:block; animation:panelIn .3s ease both; }
+.slide-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:26px 28px 20px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.slide-num { display:grid; width:46px; height:46px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.slide-head h3 { margin-bottom:6px; color:var(--text); font-size:21px; font-weight:900; }
+.slide-head p { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.slide-body { padding:26px 28px 28px; }
+.talk-track { border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:18px 20px; }
+.talk-track span { display:block; margin-bottom:8px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.talk-track blockquote { color:var(--text); font-size:15px; font-style:italic; font-weight:650; line-height:1.7; margin:0; }
+.slide-detail-grid { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:16px; margin-bottom:18px; }
+.slide-card { border-radius:var(--radius-sm); background:var(--gray-1); padding:18px; }
+.slide-card h4 { margin-bottom:10px; color:var(--text); font-size:13px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.slide-card p,.slide-card li { color:var(--text-light); font-size:14px; line-height:1.6; }
+.slide-card ul { display:grid; gap:7px; padding-left:18px; }
+.discovery-grid,.mistake-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.discovery-card,.mistake-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.discovery-card:nth-child(2),.mistake-card:nth-child(2) { border-top-color:var(--accent); }
+.discovery-card:nth-child(3),.mistake-card:nth-child(3) { border-top-color:var(--success); }
+.discovery-card h3,.mistake-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.discovery-card ul,.mistake-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+@keyframes panelIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1100px) {
+  .pitch-flow { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .pitch-step:last-child { grid-column:1 / -1; }
+}
+@media(max-width:900px) {
+  .slide-detail-grid,.discovery-grid,.mistake-grid { grid-template-columns:1fr; }
+  .talk-workbench { grid-template-columns:1fr; }
+  .slide-choice-list { position:static; grid-template-columns:repeat(2,minmax(0,1fr)); max-height:none; overflow:visible; padding:0; }
+  .slide-choice:hover,.slide-choice:focus-visible { transform:translateY(-3px); }
+}
+@media(max-width:640px) {
+  .pitch-flow { grid-template-columns:1fr; }
+  .pitch-step:last-child { grid-column:auto; }
+  .slide-choice-list { grid-template-columns:1fr; }
+  .slide-choice { min-height:auto; }
+  .slide-head { grid-template-columns:1fr; }
+  .slide-body { padding:22px 18px; }
+  .pitch-table table,.pitch-table thead,.pitch-table tbody,.pitch-table tr,.pitch-table th,.pitch-table td { display:block; width:100%; }
+  .pitch-table thead { display:none; }
+  .pitch-table tr { margin-bottom:12px; border:1px solid var(--gray-3); border-radius:var(--radius-sm); overflow:hidden; }
+  .pitch-table td { display:grid; grid-template-columns:108px 1fr; gap:12px; border-bottom:1px solid var(--gray-2); padding:12px 14px; text-align:left !important; }
+  .pitch-table td:last-child { border-bottom:0; }
+  .pitch-table td::before { color:var(--text); font-size:12px; font-weight:900; }
+  .pitch-table td:nth-child(1)::before { content:"Slide"; }
+  .pitch-table td:nth-child(2)::before { content:"Thời lượng"; }
+  .pitch-table td:nth-child(3)::before { content:"Mục tiêu"; }
+  .pitch-table td:nth-child(4)::before { content:"Thông điệp"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 09 · Trình bày 15 phút cho Sales</span>
+  </div>
+  <div class="nav-right">
+    <a href="section8.html" class="nav-btn">← Module 08</a>
+    <a href="section10.html" class="nav-btn primary-btn">Module 10 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 09 / 11</div>
+    <h1>⏱️ Cấu trúc trình bày 15 phút cho Sales</h1>
+    <p class="subtitle">Một khung pitch Cloud ngắn gọn giúp Sales mở đầu cuộc gặp khách hàng: nói đúng trọng tâm, tránh sa vào kỹ thuật, và kết thúc bằng discovery có định hướng.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">⏱️ 15 phút trình bày</div>
+      <div class="meta-chip">🧭 7 slide gợi ý</div>
+      <div class="meta-chip">💬 Talk track mẫu</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-9-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Sales không cần trình bày Cloud như một buổi đào tạo kỹ thuật dài. Một bài trình bày tốt cần kể được câu chuyện: khách hàng đang vận hành CNTT theo cách truyền thống, Cloud giúp họ dùng hạ tầng và nền tảng CNTT linh hoạt hơn, triển khai nhanh hơn, mở rộng dễ hơn, và mở ra bước discovery sâu hơn.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 Luồng 7 slide trong 15 phút</div>
+    <p class="block-subtitle">Đây là nhịp trình bày gợi ý để Sales giữ cuộc nói chuyện gọn, dễ hiểu và có điểm chốt rõ ràng.</p>
+    <div class="pitch-flow">
+      <article class="pitch-step"><span>01</span><h3>Cloud là gì?</h3><p>Mở khái niệm bằng ngôn ngữ kinh doanh.</p></article>
+      <article class="pitch-step"><span>02</span><h3>On-premises → Cloud</h3><p>Nối Cloud với cách vận hành quen thuộc.</p></article>
+      <article class="pitch-step"><span>03</span><h3>IaaS, PaaS, SaaS</h3><p>Giải thích mức độ khách hàng tự quản lý.</p></article>
+      <article class="pitch-step"><span>04</span><h3>Nhóm dịch vụ</h3><p>Gom service thành các lớp dễ nhớ.</p></article>
+      <article class="pitch-step"><span>05</span><h3>Vì sao chuyển?</h3><p>Chuyển sang động lực kinh doanh.</p></article>
+      <article class="pitch-step"><span>06</span><h3>Mapping nhanh</h3><p>Nối server, storage, database với Cloud.</p></article>
+      <article class="pitch-step"><span>07</span><h3>Discovery</h3><p>Kết thúc bằng câu hỏi mở cơ hội.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal pitch-table">
+    <div class="block-title">📋 Kịch bản tổng quan 15 phút</div>
+    <p class="block-subtitle">Dùng bảng này như agenda nhanh trước khi bước vào phần trình bày chi tiết.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Slide</th><th>Thời lượng</th><th>Mục tiêu</th><th>Thông điệp chính</th></tr></thead>
+        <tbody>
+          <tr><td>1. Cloud Computing là gì?</td><td>2 phút</td><td>Mở khái niệm</td><td>Cloud là cách tiêu thụ năng lực CNTT dưới dạng dịch vụ.</td></tr>
+          <tr><td>2. Từ On-premises sang Cloud</td><td>2 phút</td><td>Tạo liên hệ quen thuộc</td><td>Thay vì tự mua và vận hành tất cả, khách hàng thuê năng lực theo nhu cầu.</td></tr>
+          <tr><td>3. Ba mô hình dịch vụ</td><td>2 phút</td><td>Giải thích IaaS/PaaS/SaaS</td><td>Mức độ khách hàng tự quản lý sẽ khác nhau theo từng mô hình.</td></tr>
+          <tr><td>4. Cloud service chạy như thế nào?</td><td>2 phút</td><td>Gom dịch vụ thành nhóm</td><td>Compute, Storage, Network, Database, Security, Backup, Data...</td></tr>
+          <tr><td>5. Vì sao khách hàng chuyển lên Cloud?</td><td>3 phút</td><td>Chuyển sang góc nhìn kinh doanh</td><td>Nhanh hơn, linh hoạt hơn, giảm đầu tư ban đầu, hỗ trợ DR và đổi mới nhanh.</td></tr>
+          <tr><td>6. Mapping dịch vụ Cloud</td><td>2 phút</td><td>Nối với hạ tầng hiện tại</td><td>Server, storage, database, network đều có nhóm dịch vụ Cloud tương ứng.</td></tr>
+          <tr><td>7. Sales discovery</td><td>2 phút</td><td>Chốt bằng câu hỏi</td><td>Mở ra bước khảo sát nhu cầu thật thay vì chốt giải pháp quá sớm.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Talk track theo từng slide</div>
+    <p class="block-subtitle">Cột trái dùng để chọn slide, cột phải diễn giải mục tiêu, ý cần nhấn mạnh và câu nói gợi ý. Sales có thể dùng nguyên văn hoặc điều chỉnh theo ngành của khách hàng.</p>
+
+    <div class="talk-workbench">
+      <div class="slide-choice-list" role="tablist" aria-label="Chọn slide trong kịch bản trình bày">
+        <button class="slide-choice active" type="button" data-slide-target="s1" aria-selected="true"><span>Slide 01</span><strong>Cloud Computing là gì?</strong><small>Mở khái niệm bằng ngôn ngữ kinh doanh.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s2" aria-selected="false"><span>Slide 02</span><strong>Từ On-premises sang Cloud</strong><small>Nối Cloud với cách vận hành quen thuộc.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s3" aria-selected="false"><span>Slide 03</span><strong>IaaS, PaaS, SaaS</strong><small>Giải thích mức độ tự quản lý.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s4" aria-selected="false"><span>Slide 04</span><strong>Các nhóm dịch vụ Cloud</strong><small>Gom service thành các lớp dễ nhớ.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s5" aria-selected="false"><span>Slide 05</span><strong>Vì sao chuyển lên Cloud?</strong><small>Chuyển từ kỹ thuật sang kinh doanh.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s6" aria-selected="false"><span>Slide 06</span><strong>Mapping dịch vụ Cloud</strong><small>Nối nhu cầu hiện tại với nhóm dịch vụ.</small></button>
+        <button class="slide-choice" type="button" data-slide-target="s7" aria-selected="false"><span>Slide 07</span><strong>Sales discovery</strong><small>Kết thúc bằng câu hỏi mở cơ hội.</small></button>
+      </div>
+
+      <div class="slide-panels">
+      <article class="slide-panel active" data-slide-panel="s1">
+        <div class="slide-head"><div class="slide-num">01</div><div><h3>Cloud Computing là gì?</h3><p>Mở đầu bằng định nghĩa đơn giản, không dùng quá nhiều thuật ngữ.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Giúp khách hàng hiểu Cloud là cách dùng năng lực CNTT dưới dạng dịch vụ, không chỉ là “đưa server lên Internet”.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>Dùng theo nhu cầu.</li><li>Mở rộng linh hoạt.</li><li>Thanh toán theo mức sử dụng.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Cloud có thể hiểu đơn giản là cách doanh nghiệp sử dụng tài nguyên CNTT như server, storage, database, network, security dưới dạng dịch vụ. Khách hàng không nhất thiết phải đầu tư toàn bộ hạ tầng ban đầu, mà có thể dùng theo nhu cầu và mở rộng khi cần.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s2">
+        <div class="slide-head"><div class="slide-num">02</div><div><h3>Từ On-premises sang Cloud</h3><p>Nối Cloud với bối cảnh khách hàng đã quen: server, storage, firewall, license, data center.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Cho khách hàng thấy Cloud là một cách tiêu thụ hạ tầng khác, không phải phủ nhận toàn bộ hệ thống hiện tại.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>On-premises: mua trước, triển khai lâu, tự vận hành nhiều.</li><li>Cloud: thuê dịch vụ, triển khai nhanh, mở rộng linh hoạt.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Trước đây, nếu cần hệ thống mới, khách hàng thường phải mua server, storage, firewall, license, chuẩn bị data center và đội vận hành. Với Cloud, nhiều năng lực đó có thể được cấp phát nhanh hơn dưới dạng dịch vụ.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s3">
+        <div class="slide-head"><div class="slide-num">03</div><div><h3>IaaS, PaaS, SaaS</h3><p>Giải thích theo mức độ tự quản lý, không biến thành bài kỹ thuật dài.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Giúp khách hàng phân biệt khi nào cần thuê hạ tầng, thuê nền tảng, hoặc dùng phần mềm hoàn chỉnh.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>IaaS: kiểm soát nhiều hơn.</li><li>PaaS: giảm vận hành nền tảng.</li><li>SaaS: dùng phần mềm hoàn chỉnh.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Nếu khách hàng cần kiểm soát nhiều, họ thường bắt đầu với IaaS. Nếu muốn giảm vận hành nền tảng, có thể cân nhắc PaaS. Nếu cần dùng phần mềm hoàn chỉnh, đó là SaaS. Điểm khác nhau là khách hàng muốn tự quản lý đến đâu.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s4">
+        <div class="slide-head"><div class="slide-num">04</div><div><h3>Các nhóm dịch vụ Cloud</h3><p>Biến danh sách tên service thành các lớp nhu cầu dễ hiểu.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Giúp Sales không bị lạc trong catalog dịch vụ, mà biết gom dịch vụ theo nhu cầu của khách hàng.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>Compute chạy ứng dụng.</li><li>Storage lưu dữ liệu.</li><li>Database quản lý dữ liệu.</li><li>Network kết nối.</li><li>Security bảo vệ.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Khi nhìn Cloud, đừng nhìn như danh sách tên dịch vụ rời rạc. Hãy gom theo nhu cầu: nơi chạy ứng dụng là Compute, nơi lưu dữ liệu là Storage, nơi quản lý database là Database, kết nối là Network, bảo vệ là Security.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s5">
+        <div class="slide-head"><div class="slide-num">05</div><div><h3>Vì sao khách hàng chuyển lên Cloud?</h3><p>Đây là slide quan trọng nhất để chuyển từ kỹ thuật sang kinh doanh.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Gắn Cloud với lý do thật: tốc độ, chi phí linh hoạt, mở rộng, DR, công nghệ mới và chuyển đổi số.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>Không phải vì Cloud là xu hướng.</li><li>Phải có pain point hoặc mục tiêu kinh doanh cụ thể.</li><li>Lợi ích cần đo được bằng kết quả.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Khách hàng thường không chuyển lên Cloud chỉ vì Cloud là công nghệ mới. Họ chuyển vì cần triển khai nhanh hơn, tránh đầu tư lớn ban đầu, mở rộng linh hoạt, tăng khả năng dự phòng, hoặc muốn dùng nhanh các năng lực mới như Data, AI, DevOps.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s6">
+        <div class="slide-head"><div class="slide-num">06</div><div><h3>Mapping dịch vụ Cloud</h3><p>Nối ngôn ngữ on-premises với nhóm dịch vụ Cloud tương ứng.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Giúp Sales nhận diện nhu cầu ban đầu để kéo Presales vào đúng hướng, chưa cần chốt service quá sớm.</p></div>
+            <div class="slide-card"><h4>Ví dụ nhanh</h4><ul><li>Server → VM/Compute.</li><li>Storage → block/file/object storage.</li><li>Database → managed database.</li><li>Firewall/VPN → network/security service.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Nếu khách hàng nói họ có server, storage, database, firewall, backup, đó đều là điểm bắt đầu tốt để mapping sang Cloud. Sales chưa cần chốt dịch vụ ngay, nhưng cần nhận diện đúng nhóm nhu cầu để kéo Presales vào đúng hướng.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="slide-panel" data-slide-panel="s7">
+        <div class="slide-head"><div class="slide-num">07</div><div><h3>Sales discovery</h3><p>Kết thúc bằng câu hỏi mở ra bước tiếp theo.</p></div></div>
+        <div class="slide-body">
+          <div class="slide-detail-grid">
+            <div class="slide-card"><h4>Mục tiêu</h4><p>Không kết thúc bằng danh sách dịch vụ. Kết thúc bằng câu hỏi giúp xác định workload, pain point và mức ưu tiên.</p></div>
+            <div class="slide-card"><h4>Nhấn mạnh</h4><ul><li>Hỏi trước khi đề xuất.</li><li>Ưu tiên workload quan trọng.</li><li>Ghi nhận ràng buộc về dữ liệu, vận hành, bảo mật và ngân sách.</li></ul></div>
+          </div>
+          <div class="talk-track"><span>Câu hỏi chốt</span><blockquote>Workload nào của anh/chị đang cần triển khai nhanh, mở rộng nhanh, tối ưu chi phí, tăng bảo mật hoặc tăng khả năng dự phòng?</blockquote></div>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">❓ Câu hỏi discovery sau phần trình bày</div>
+    <p class="block-subtitle">Dùng các câu hỏi này để chuyển từ pitch 15 phút sang cuộc trao đổi nhu cầu thật.</p>
+    <div class="discovery-grid">
+      <article class="discovery-card">
+        <h3>Workload & triển khai</h3>
+        <ul>
+          <li>Hệ thống nào đang mất nhiều thời gian nhất khi triển khai hoặc mở rộng?</li>
+          <li>Workload nào có tải tăng giảm thất thường theo mùa, chiến dịch hoặc số lượng người dùng?</li>
+          <li>Khách hàng muốn bắt đầu bằng migration workload hiện hữu hay xây hệ thống mới?</li>
+        </ul>
+      </article>
+      <article class="discovery-card">
+        <h3>Vận hành & rủi ro</h3>
+        <ul>
+          <li>Có hệ thống nào đang cần phương án backup hoặc DR tốt hơn không?</li>
+          <li>Đội IT muốn giảm phần vận hành nào: server, database, backup, monitoring hay security?</li>
+          <li>Ai sẽ chịu trách nhiệm vận hành sau khi triển khai Cloud?</li>
+        </ul>
+      </article>
+      <article class="discovery-card">
+        <h3>Người quyết định</h3>
+        <ul>
+          <li>Ai là người quan tâm chính: IT, vận hành, bảo mật, tài chính hay ban lãnh đạo?</li>
+          <li>Deadline hoặc mốc kinh doanh nào đang tạo áp lực cho dự án?</li>
+          <li>Ngân sách đang được nhìn theo CAPEX, OPEX hay cả hai?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">⚠️ Những lỗi Sales cần tránh</div>
+    <p class="block-subtitle">Một bài pitch ngắn rất dễ mất hiệu quả nếu Sales nói quá sâu vào kỹ thuật hoặc chốt giải pháp quá sớm.</p>
+    <div class="mistake-grid">
+      <article class="mistake-card">
+        <h3>Nói sai trọng tâm</h3>
+        <ul>
+          <li>Nói quá nhiều tên dịch vụ khi khách hàng chưa hiểu bài toán.</li>
+          <li>Biến phần trình bày thành đào tạo kỹ thuật chi tiết.</li>
+          <li>Không nối Cloud với mục tiêu kinh doanh/CNTT cụ thể.</li>
+        </ul>
+      </article>
+      <article class="mistake-card">
+        <h3>Hứa quá mức</h3>
+        <ul>
+          <li>Hứa Cloud luôn rẻ hơn On-premises trong mọi trường hợp.</li>
+          <li>Nói Cloud tự động an toàn mà không nhắc đến cấu hình và trách nhiệm của khách hàng.</li>
+          <li>Bỏ qua ràng buộc dữ liệu, compliance, network hoặc vận hành.</li>
+        </ul>
+      </article>
+      <article class="mistake-card">
+        <h3>Chốt quá sớm</h3>
+        <ul>
+          <li>Chốt giải pháp trước khi hỏi workload, dữ liệu, network, bảo mật, ngân sách và vận hành.</li>
+          <li>Không phân biệt “cần Cloud” với “cần giải quyết một vấn đề kinh doanh/CNTT”.</li>
+          <li>Không ghi lại thông tin đủ rõ để chuyển cho Presales.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 9 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ cách trình bày</div>
+      <p class="dark-card-text">Một bài trình bày Cloud 15 phút tốt không nhằm giải thích hết mọi dịch vụ. Nó phải giúp khách hàng hiểu Cloud liên quan gì đến vấn đề của họ, và mở ra một cuộc discovery đúng hướng. Sales nên nói ngắn, hỏi đúng, ghi nhận rõ, rồi kéo Presales vào khi cần đi sâu.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section8.html" class="bnav-btn">← Module 08: Câu hỏi khai thác nhu cầu</a>
+    <span class="bnav-center">Module 09 / 11</span>
+    <a href="section10.html" class="bnav-btn next">Module 10: Hiểu nhầm phổ biến →</a>
+  </nav>
+
+</main>
+
+<script>
+const slideChoices = [...document.querySelectorAll("[data-slide-target]")];
+const slidePanels = [...document.querySelectorAll("[data-slide-panel]")];
+
+function activateSlide(key) {
+  slidePanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.slidePanel === key);
+  });
+  slideChoices.forEach((choice) => {
+    const isActive = choice.dataset.slideTarget === key;
+    choice.classList.toggle("active", isActive);
+    choice.setAttribute("aria-selected", String(isActive));
+  });
+}
+
+slideChoices.forEach((choice) => {
+  choice.addEventListener("click", () => activateSlide(choice.dataset.slideTarget));
+});
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping dịch vụ Cloud | Module 06</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-6-page { max-width:1180px; }
+.map-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:34px; }
+.map-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:22px; border-top:4px solid var(--primary); transition:var(--transition); }
+.map-card:nth-child(2n) { border-top-color:var(--accent); }
+.map-card:nth-child(3n) { border-top-color:var(--success); }
+.map-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.map-card span { display:inline-flex; margin-bottom:10px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.map-card h3 { margin-bottom:8px; color:var(--text); font-size:16px; font-weight:900; }
+.map-card p { color:var(--text-light); font-size:14px; line-height:1.6; }
+.mapping-workbench { display:grid; grid-template-columns:minmax(250px,.34fr) minmax(0,1fr); gap:18px; align-items:start; }
+.mapping-selector { position:sticky; top:76px; display:grid; grid-template-columns:1fr; gap:10px; margin:0; max-height:calc(100vh - 96px); overflow:auto; padding:2px 4px 6px 2px; scrollbar-width:thin; }
+.mapping-choice { position:relative; overflow:hidden; min-height:88px; border:2px solid transparent; border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); color:var(--text); cursor:pointer; font:inherit; padding:16px 16px 16px 18px; text-align:left; transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease; }
+.mapping-choice::before { position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,var(--primary),var(--secondary)); content:""; transform:scaleY(0); transform-origin:bottom; transition:transform .25s ease; }
+.mapping-choice::after { position:absolute; inset:-40% -20% auto auto; width:140px; height:140px; border-radius:50%; background:radial-gradient(circle,rgba(0,188,242,.16),transparent 68%); content:""; opacity:0; transform:scale(.8); transition:opacity .25s ease,transform .25s ease; }
+.mapping-choice:hover,.mapping-choice:focus-visible { border-color:rgba(0,120,212,.22); box-shadow:var(--shadow-md); outline:none; transform:translateX(5px); }
+.mapping-choice:hover::before,.mapping-choice.active::before { transform:scaleY(1); }
+.mapping-choice:hover::after,.mapping-choice.active::after { opacity:1; transform:scale(1); }
+.mapping-choice.active { border-color:var(--primary); background:linear-gradient(135deg,#fff,#f3fbff); box-shadow:var(--shadow-md),var(--shadow-glow); }
+.mapping-choice span,.mapping-choice strong,.mapping-choice small { position:relative; z-index:1; display:block; }
+.mapping-choice span { width:max-content; margin-bottom:10px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; transition:var(--transition-fast); }
+.mapping-choice.active span,.mapping-choice:hover span { background:var(--primary); color:white; }
+.mapping-choice strong { margin-bottom:6px; color:var(--text); font-size:15px; font-weight:900; line-height:1.25; }
+.mapping-choice small { color:var(--text-light); font-size:12.5px; line-height:1.45; }
+.mapping-chapters { min-width:0; display:grid; gap:22px; }
+.mapping-chapter { display:none; overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.mapping-chapter.active { display:block; animation:panelIn .3s ease both; }
+.mapping-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:24px 26px 18px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.mapping-num { display:grid; width:42px; height:42px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.mapping-head h3 { margin-bottom:6px; color:var(--text); font-size:20px; font-weight:900; }
+.mapping-intro { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.mapping-body { padding:0 26px 24px; }
+.mapping-body .table-wrap { overflow:visible; }
+.mapping-body table { width:100%; min-width:0; table-layout:fixed; }
+.mapping-body th,.mapping-body td { overflow-wrap:anywhere; word-break:normal; }
+.mapping-body th { font-size:12.5px; }
+.mapping-body td { font-size:13px; }
+.mapping-body th:first-child,.mapping-body td:first-child { width:23%; min-width:0; }
+.mapping-body th:nth-child(2),.mapping-body td:nth-child(2) { width:19%; }
+.mapping-body th:nth-child(3),.mapping-body td:nth-child(3) { width:20%; }
+.mapping-body th:nth-child(4),.mapping-body td:nth-child(4) { width:18%; }
+.mapping-body th:nth-child(5),.mapping-body td:nth-child(5) { width:20%; }
+.sales-note { margin-top:16px; border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:14px 16px; }
+.sales-note span { display:block; margin-bottom:5px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.sales-note p { color:var(--text); font-size:14px; line-height:1.6; margin:0; }
+.flow-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; }
+.flow-step { position:relative; min-height:150px; border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); padding:18px; border-top:4px solid var(--primary); }
+.flow-step:nth-child(2) { border-top-color:var(--accent); }
+.flow-step:nth-child(3) { border-top-color:var(--success); }
+.flow-step:nth-child(4) { border-top-color:var(--secondary); }
+.flow-step:nth-child(5) { border-top-color:#8764b8; }
+.flow-step span { display:grid; width:30px; height:30px; place-items:center; margin-bottom:12px; border-radius:8px; background:var(--gray-2); color:var(--primary-dark); font-size:12px; font-weight:900; }
+.flow-step h3 { margin-bottom:8px; color:var(--text); font-size:14px; font-weight:900; }
+.flow-step p { color:var(--text-light); font-size:13.5px; line-height:1.5; }
+.question-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.question-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; }
+.question-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.question-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+.notice-card { border-radius:var(--radius); background:linear-gradient(135deg,var(--dark-2),var(--dark)); color:white; box-shadow:var(--shadow-sm); padding:28px 32px; }
+.notice-card h3 { margin-bottom:12px; color:white; font-size:18px; font-weight:900; }
+.notice-card p { color:rgba(255,255,255,.76); font-size:15px; line-height:1.75; }
+.notice-card strong { color:var(--secondary); }
+@keyframes panelIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1000px) {
+  .map-grid,.flow-grid,.question-grid { grid-template-columns:1fr; }
+  .mapping-workbench { grid-template-columns:1fr; }
+  .mapping-selector { position:static; grid-template-columns:repeat(2,minmax(0,1fr)); max-height:none; overflow:visible; padding:0; }
+  .mapping-choice:hover,.mapping-choice:focus-visible { transform:translateY(-4px); }
+}
+@media(max-width:760px) {
+  .mapping-selector { grid-template-columns:1fr; }
+  .mapping-choice { min-height:auto; }
+  .mapping-body table,
+  .mapping-body thead,
+  .mapping-body tbody,
+  .mapping-body tr,
+  .mapping-body th,
+  .mapping-body td {
+    display:block;
+    width:100%;
+  }
+  .mapping-body thead { display:none; }
+  .mapping-body tr {
+    margin-bottom:14px;
+    border:1px solid var(--gray-3);
+    border-radius:var(--radius-sm);
+    background:var(--white);
+    overflow:hidden;
+  }
+  .mapping-body td {
+    display:grid;
+    grid-template-columns:minmax(104px,.42fr) minmax(0,1fr);
+    gap:12px;
+    border-bottom:1px solid var(--gray-2);
+    padding:12px 14px;
+  }
+  .mapping-body td:last-child { border-bottom:0; }
+  .mapping-body td::before {
+    color:var(--text);
+    font-size:12px;
+    font-weight:900;
+    line-height:1.4;
+  }
+  .mapping-body td:nth-child(1)::before { content:"Nhu cầu"; }
+  .mapping-body td:nth-child(2)::before { content:"NetCloudX"; }
+  .mapping-body td:nth-child(3)::before { content:"Azure"; }
+  .mapping-body td:nth-child(4)::before { content:"AWS"; }
+  .mapping-body td:nth-child(5)::before { content:"GCP"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 06 · Mapping dịch vụ Cloud</span>
+  </div>
+  <div class="nav-right">
+    <a href="section5.html" class="nav-btn">← Module 05</a>
+    <a href="section7.html" class="nav-btn primary-btn">Module 07 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 06 / 11</div>
+    <h1>🧭 Mapping dịch vụ Cloud</h1>
+    <p class="subtitle">Chuyển nhu cầu quen thuộc của khách hàng on-premises sang các nhóm dịch vụ tương ứng trên NetCloudX, Azure, AWS và Google Cloud Platform.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~35 phút đọc</div>
+      <div class="meta-chip">🧱 9 nhóm mapping</div>
+      <div class="meta-chip">☁️ NetCloudX · Azure · AWS · GCP</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-6-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Bảng mapping giúp Sales bắt đầu từ nhu cầu quen thuộc của khách hàng như server, SAN/NAS, database, VPN, firewall, backup hoặc CI/CD, rồi tìm nhóm dịch vụ Cloud tương ứng để trao đổi với đội kỹ thuật và khách hàng.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="notice-card">
+      <h3>Lưu ý quan trọng trước khi dùng mapping</h3>
+      <p>Mapping trong module này là mapping theo <strong>chức năng tương đương</strong>, không phải lúc nào cũng tương đương 100% về kiến trúc, tính năng, SLA, license hoặc mô hình giá. Khi làm proposal hoặc BOM chính thức, cần kiểm tra lại theo yêu cầu kỹ thuật cụ thể của khách hàng.</p>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🗺️ Bản đồ 9 nhóm mapping</div>
+    <p class="block-subtitle">Sales không cần nhớ mọi tên dịch vụ, nhưng cần biết nhu cầu khách hàng thuộc nhóm nào để hỏi đúng câu hỏi và kéo đúng nguồn lực kỹ thuật vào cuộc.</p>
+    <div class="map-grid">
+      <article class="map-card"><span>6.1</span><h3>Compute</h3><p>Server, VM, autoscale, container, Kubernetes, app platform, serverless, batch và VDI.</p></article>
+      <article class="map-card"><span>6.2</span><h3>Storage</h3><p>Block disk, file share, object storage, archive, backup repository và data lake.</p></article>
+      <article class="map-card"><span>6.3</span><h3>Database</h3><p>Database tự cài, managed relational database, NoSQL, cache, data warehouse và migration.</p></article>
+      <article class="map-card"><span>6.4</span><h3>Networking</h3><p>VPC/VNet, VPN, private connection, load balancer, DNS, CDN, NAT và firewall.</p></article>
+      <article class="map-card"><span>6.5</span><h3>Security</h3><p>Firewall, WAF, DDoS, key management, posture management, SIEM và vulnerability recommendation.</p></article>
+      <article class="map-card"><span>6.6</span><h3>Identity & Governance</h3><p>IAM, MFA, RBAC, policy, resource grouping và cost governance.</p></article>
+      <article class="map-card"><span>6.7</span><h3>Monitoring, Backup & DR</h3><p>Monitoring, log, IaC, backup, disaster recovery, automation và service health.</p></article>
+      <article class="map-card"><span>6.8</span><h3>DevOps & Integration</h3><p>Repository, CI/CD, registry, API gateway, message queue, event streaming và workflow.</p></article>
+      <article class="map-card"><span>6.9</span><h3>AI, Data Analytics, IoT</h3><p>Machine learning, AI API, analytics, IoT ingestion, stream analytics và BI dashboard.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧱 Bảng mapping chi tiết</div>
+    <p class="block-subtitle">Mỗi bảng bắt đầu từ nhu cầu on-premises rồi đối chiếu sang NetCloudX, Azure, AWS và GCP.</p>
+
+    <div class="mapping-workbench">
+      <div class="mapping-selector" role="tablist" aria-label="Chọn nhóm mapping">
+        <button class="mapping-choice active" type="button" data-map-target="compute" aria-selected="true"><span>6.1</span><strong>Compute</strong><small>Server, VM, container, Kubernetes, app platform.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="storage" aria-selected="false"><span>6.2</span><strong>Storage</strong><small>Block, file, object, archive, backup, data lake.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="database" aria-selected="false"><span>6.3</span><strong>Database</strong><small>Managed DB, NoSQL, cache, warehouse, migration.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="networking" aria-selected="false"><span>6.4</span><strong>Networking</strong><small>VPC, VPN, private line, LB, DNS, CDN, firewall.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="security" aria-selected="false"><span>6.5</span><strong>Security</strong><small>Firewall, WAF, DDoS, key, posture, SIEM.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="identity" aria-selected="false"><span>6.6</span><strong>Identity & Governance</strong><small>IAM, MFA, RBAC, policy, resource, cost.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="operations" aria-selected="false"><span>6.7</span><strong>Monitoring, Backup & DR</strong><small>Monitoring, log, IaC, backup, DR, automation.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="devops" aria-selected="false"><span>6.8</span><strong>DevOps & Integration</strong><small>Repo, CI/CD, registry, API, queue, event.</small></button>
+        <button class="mapping-choice" type="button" data-map-target="ai-data" aria-selected="false"><span>6.9</span><strong>AI, Data Analytics, IoT</strong><small>ML, AI API, analytics, IoT, streaming, BI.</small></button>
+      </div>
+
+      <div class="mapping-chapters">
+      <article class="mapping-chapter active" data-map-panel="compute">
+        <div class="mapping-head"><div class="mapping-num">6.1</div><div><h3>Compute - Lớp tính toán</h3><p class="mapping-intro">Dùng khi khách hàng nói về server, VM, container, Kubernetes, web app, serverless hoặc batch workload.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Server vật lý/VMware VM/Hyper-V VM</td><td><strong>UHost</strong> / <strong>UPHost</strong> (Bare Metal)</td><td>Azure Virtual Machines</td><td>Amazon EC2</td><td>Compute Engine</td></tr>
+            <tr><td>Cụm VM tự scale</td><td><strong>UAS</strong> (Cloud Auto Scaling)</td><td>Virtual Machine Scale Sets</td><td>EC2 Auto Scaling</td><td>Managed Instance Groups</td></tr>
+            <tr><td>Chạy container đơn giản</td><td><strong>Cube</strong> (Serverless Container Instance)</td><td>Azure Container Instances</td><td>Amazon ECS / AWS Fargate</td><td>Cloud Run / GKE Autopilot</td></tr>
+            <tr><td>Kubernetes cluster</td><td><strong>UK8S</strong></td><td>Azure Kubernetes Service (AKS)</td><td>Amazon Elastic Kubernetes Service (EKS)</td><td>Google Kubernetes Engine (GKE)</td></tr>
+            <tr><td>Web application platform</td><td><strong>ULightHost</strong></td><td>Azure App Service</td><td>AWS Elastic Beanstalk / App Runner</td><td>App Engine / Cloud Run</td></tr>
+            <tr><td>Serverless function</td><td>Unknown</td><td>Azure Functions</td><td>AWS Lambda</td><td>Cloud Functions</td></tr>
+            <tr><td>Batch processing</td><td><strong>UGC</strong> / <strong>UDDP</strong></td><td>Azure Batch</td><td>AWS Batch</td><td>Batch</td></tr>
+            <tr><td>Desktop ảo/VDI</td><td>Unknown</td><td>Azure Virtual Desktop</td><td>Amazon WorkSpaces</td><td>Google Cloud VMware Engine + partner VDI</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Bắt đầu từ workload khách hàng đang chạy và mức kiểm soát họ cần, không bắt đầu bằng tên dịch vụ.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="storage">
+        <div class="mapping-head"><div class="mapping-num">6.2</div><div><h3>Storage - Lớp lưu trữ</h3><p class="mapping-intro">Dùng khi khách hàng nói về disk, SAN, NAS, object, archive, backup repository hoặc data lake.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>SAN/LUN/block disk cho server</td><td><strong>UDisk</strong></td><td>Azure Managed Disks</td><td>Amazon Elastic Block Store (EBS)</td><td>Persistent Disk / Hyperdisk</td></tr>
+            <tr><td>NAS/file share SMB/NFS</td><td><strong>UFS</strong> / <strong>UPFS</strong></td><td>Azure Files</td><td>Amazon EFS / FSx</td><td>Filestore</td></tr>
+            <tr><td>Object storage/S3-compatible</td><td><strong>US3 (UFile)</strong></td><td>Azure Blob Storage</td><td>Amazon S3</td><td>Cloud Storage</td></tr>
+            <tr><td>Archive storage dài hạn</td><td><strong>US3 Archive Storage</strong></td><td>Azure Archive Storage</td><td>Amazon S3 Glacier</td><td>Cloud Storage Archive</td></tr>
+            <tr><td>Backup repository</td><td><strong>USnap</strong> / <strong>UDataArk</strong></td><td>Azure Backup / Blob Storage</td><td>AWS Backup / Amazon S3</td><td>Backup and DR Service / Cloud Storage</td></tr>
+            <tr><td>Data lake storage</td><td>Unknown</td><td>Azure Data Lake Storage</td><td>Amazon S3 + Lake Formation</td><td>Cloud Storage + BigLake</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Hỏi loại dữ liệu, tần suất truy cập, thời gian lưu trữ, yêu cầu backup và chi phí lưu trữ dài hạn.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="database">
+        <div class="mapping-head"><div class="mapping-num">6.3</div><div><h3>Database - Lớp cơ sở dữ liệu</h3><p class="mapping-intro">Dùng khi khách hàng nói về SQL, MySQL, PostgreSQL, NoSQL, Redis, data warehouse hoặc database migration.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>SQL Server/MySQL/PostgreSQL tự cài trên server</td><td>Database trên <strong>UHost</strong></td><td>Database on Azure VM</td><td>Database on EC2</td><td>Database on Compute Engine</td></tr>
+            <tr><td>Managed relational database</td><td><strong>UDB</strong> (MySQL, PostgreSQL, SQL Server)</td><td>Azure SQL Database / Database for MySQL / PostgreSQL</td><td>Amazon RDS</td><td>Cloud SQL</td></tr>
+            <tr><td>Enterprise PostgreSQL nâng cao</td><td><strong>UDB PostgreSQL (NVMe)</strong></td><td>Azure Database for PostgreSQL</td><td>Amazon Aurora PostgreSQL</td><td>AlloyDB for PostgreSQL</td></tr>
+            <tr><td>NoSQL document/key-value</td><td><strong>UDB MongoDB</strong> / <strong>UDDB</strong></td><td>Azure Cosmos DB</td><td>Amazon DynamoDB / DocumentDB</td><td>Firestore / Bigtable</td></tr>
+            <tr><td>In-memory cache/Redis</td><td><strong>UMem</strong> (Redis / Memcache)</td><td>Azure Cache for Redis</td><td>Amazon ElastiCache</td><td>Memorystore</td></tr>
+            <tr><td>Data warehouse</td><td><strong>UDW</strong> / <strong>UClickHouse</strong> / <strong>MAXIR</strong></td><td>Azure Synapse Analytics</td><td>Amazon Redshift</td><td>BigQuery</td></tr>
+            <tr><td>Database migration</td><td><strong>UDTS</strong> (Data Transmission Service)</td><td>Azure Database Migration Service</td><td>AWS Database Migration Service</td><td>Database Migration Service</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Xác định khách hàng muốn tự quản lý database đến đâu và có phù hợp chuyển sang managed service hay không.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="networking">
+        <div class="mapping-head"><div class="mapping-num">6.4</div><div><h3>Networking & Connectivity - Lớp mạng & kết nối</h3><p class="mapping-intro">Dùng khi khách hàng nói về subnet, VPN, private connection, load balancer, DNS, CDN, NAT hoặc firewall mạng.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>VLAN/VRF/Subnet nội bộ</td><td><strong>UVPC</strong></td><td>Azure Virtual Network</td><td>Amazon VPC</td><td>Virtual Private Cloud (VPC)</td></tr>
+            <tr><td>Site-to-Site VPN</td><td><strong>IPSec VPN</strong> / <strong>UWAN</strong></td><td>Azure VPN Gateway</td><td>AWS Site-to-Site VPN</td><td>Cloud VPN</td></tr>
+            <tr><td>Kết nối leased line/private</td><td><strong>UDPN</strong> / <strong>UGN</strong></td><td>Azure ExpressRoute</td><td>AWS Direct Connect</td><td>Cloud Interconnect</td></tr>
+            <tr><td>Load balancer layer 4</td><td><strong>ULB4</strong></td><td>Azure Load Balancer</td><td>Elastic Load Balancing - Network Load Balancer</td><td>Cloud Load Balancing</td></tr>
+            <tr><td>Load balancer layer 7</td><td><strong>ULB7</strong></td><td>Azure Application Gateway</td><td>Elastic Load Balancing - Application Load Balancer</td><td>Cloud Load Balancing</td></tr>
+            <tr><td>DNS public/private</td><td><strong>UDNS</strong> / <strong>UDNR</strong></td><td>Azure DNS / Private DNS</td><td>Amazon Route 53</td><td>Cloud DNS</td></tr>
+            <tr><td>CDN</td><td><strong>UCDN</strong> / <strong>UEDN</strong></td><td>Azure Front Door / Azure CDN</td><td>Amazon CloudFront</td><td>Cloud CDN</td></tr>
+            <tr><td>NAT gateway</td><td><strong>NAT Gateway</strong></td><td>Azure NAT Gateway</td><td>AWS NAT Gateway</td><td>Cloud NAT</td></tr>
+            <tr><td>Network firewall</td><td><strong>UNet Firewall</strong> / Security Group</td><td>Azure Firewall</td><td>AWS Network Firewall</td><td>Cloud Next Generation Firewall / Firewall policies</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Mạng là phần rất quan trọng trong hybrid cloud, migration và kết nối hệ thống cũ. Cần hỏi kỹ luồng traffic, kết nối riêng và yêu cầu bảo mật.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="security">
+        <div class="mapping-head"><div class="mapping-num">6.5</div><div><h3>Security - Lớp bảo mật</h3><p class="mapping-intro">Dùng khi khách hàng nói về firewall, WAF, DDoS, key, HSM, SIEM hoặc rà soát rủi ro.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Firewall biên/segmentation</td><td><strong>UNet Firewall</strong></td><td>Azure Firewall</td><td>AWS Network Firewall</td><td>Cloud NGFW / VPC firewall rules</td></tr>
+            <tr><td>Web Application Firewall</td><td><strong>UWAF</strong></td><td>Azure Web Application Firewall</td><td>AWS WAF</td><td>Google Cloud Armor</td></tr>
+            <tr><td>DDoS protection</td><td><strong>UDDoS</strong> (UAntiDDoS/UClean)</td><td>Azure DDoS Protection</td><td>AWS Shield</td><td>Google Cloud Armor</td></tr>
+            <tr><td>Key management/HSM</td><td><strong>UKMS</strong></td><td>Azure Key Vault / Managed HSM</td><td>AWS Key Management Service / CloudHSM</td><td>Cloud Key Management Service / Cloud HSM</td></tr>
+            <tr><td>Security posture management</td><td><strong>USC</strong> (Cloud Security Center)</td><td>Microsoft Defender for Cloud</td><td>AWS Security Hub</td><td>Security Command Center</td></tr>
+            <tr><td>SIEM/SOAR</td><td>Unknown</td><td>Microsoft Sentinel</td><td>Amazon Security Lake + partner SIEM / integrations</td><td>Chronicle Security Operations</td></tr>
+            <tr><td>Vulnerability/security recommendation</td><td><strong>UHIDS</strong> / <strong>UAuditHost</strong></td><td>Defender for Cloud</td><td>Amazon Inspector</td><td>Security Command Center / VM Manager</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Bảo mật Cloud không chỉ là firewall. Hãy hỏi thêm về posture, key, DDoS, WAF, SIEM, audit và khuyến nghị rủi ro.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="identity">
+        <div class="mapping-head"><div class="mapping-num">6.6</div><div><h3>Identity & Governance - Định danh & quản trị</h3><p class="mapping-intro">Dùng khi khách hàng nói về AD, IAM, MFA, RBAC, policy, resource grouping hoặc quản trị chi phí.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Active Directory/LDAP/IAM</td><td><strong>URM (IAM)</strong></td><td>Microsoft Entra ID</td><td>AWS IAM / IAM Identity Center</td><td>Cloud IAM / Cloud Identity</td></tr>
+            <tr><td>MFA/Conditional Access</td><td>Unknown</td><td>Microsoft Entra MFA / Conditional Access</td><td>IAM Identity Center + MFA policies</td><td>Cloud Identity / BeyondCorp Enterprise</td></tr>
+            <tr><td>RBAC</td><td><strong>URM (IAM)</strong> / Role Management</td><td>Azure RBAC</td><td>AWS IAM policies/roles</td><td>IAM roles/policies</td></tr>
+            <tr><td>Policy governance</td><td>Unknown</td><td>Azure Policy</td><td>AWS Organizations / Service Control Policies / Config</td><td>Organization Policy Service</td></tr>
+            <tr><td>Resource grouping</td><td><strong>UProject</strong> / <strong>Label</strong></td><td>Resource Groups / Management Groups</td><td>AWS Organizations / Accounts / Tags</td><td>Folders / Projects / Labels</td></tr>
+            <tr><td>Cost governance</td><td><strong>UBill</strong> / <strong>UMon</strong></td><td>Microsoft Cost Management</td><td>AWS Cost Explorer / Budgets</td><td>Cloud Billing / Budgets</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Đây là lớp quản trị ai được làm gì, trên tài nguyên nào, và chi phí được kiểm soát ra sao.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="operations">
+        <div class="mapping-head"><div class="mapping-num">6.7</div><div><h3>Monitoring, Management, Backup & DR</h3><p class="mapping-intro">Dùng khi khách hàng nói về vận hành, log, IaC, backup, DR, automation hoặc service health.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Monitoring hệ thống</td><td><strong>CloudWatch</strong> / <strong>UMon</strong></td><td>Azure Monitor</td><td>Amazon CloudWatch</td><td>Cloud Monitoring</td></tr>
+            <tr><td>Log management</td><td><strong>ULog</strong></td><td>Log Analytics</td><td>Amazon CloudWatch Logs</td><td>Cloud Logging</td></tr>
+            <tr><td>Infrastructure as Code</td><td><strong>Terraform</strong> / <strong>CloudShell</strong></td><td>Azure Resource Manager / Bicep</td><td>AWS CloudFormation / CDK</td><td>Cloud Deployment Manager / Terraform on GCP</td></tr>
+            <tr><td>Backup VM/database</td><td><strong>USnap</strong> / <strong>UDataArk</strong></td><td>Azure Backup</td><td>AWS Backup</td><td>Backup and DR Service</td></tr>
+            <tr><td>Disaster Recovery</td><td><strong>UDataArk</strong> / <strong>USMC</strong></td><td>Azure Site Recovery</td><td>AWS Elastic Disaster Recovery</td><td>Backup and DR Service / partner DR</td></tr>
+            <tr><td>Automation</td><td>Unknown</td><td>Azure Automation</td><td>AWS Systems Manager</td><td>Cloud Run jobs / Workflows / Cloud Scheduler</td></tr>
+            <tr><td>Service health</td><td><strong>UNDT</strong> (Network Probe Testing)</td><td>Azure Service Health</td><td>AWS Health Dashboard</td><td>Personalized Service Health</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Nhóm này giúp khách hàng vận hành Cloud bền vững sau khi triển khai, không chỉ dựng tài nguyên rồi để đó.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="devops">
+        <div class="mapping-head"><div class="mapping-num">6.8</div><div><h3>DevOps, Integration, Messaging</h3><p class="mapping-intro">Dùng khi khách hàng có đội phát triển ứng dụng, microservices, tích hợp hệ thống, API, queue hoặc event streaming.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Source code repository</td><td>Unknown</td><td>Azure Repos / GitHub</td><td>AWS CodeCommit / GitHub</td><td>Cloud Source Repositories / GitHub</td></tr>
+            <tr><td>CI/CD pipeline</td><td>Unknown</td><td>Azure Pipelines / GitHub Actions</td><td>AWS CodePipeline / CodeBuild</td><td>Cloud Build</td></tr>
+            <tr><td>Container registry</td><td><strong>UHub</strong></td><td>Azure Container Registry</td><td>Amazon Elastic Container Registry</td><td>Artifact Registry</td></tr>
+            <tr><td>API Gateway/API Management</td><td><strong>UAPIGateway</strong></td><td>Azure API Management</td><td>Amazon API Gateway</td><td>Apigee / API Gateway</td></tr>
+            <tr><td>Message queue</td><td><strong>URocketMQ</strong> / <strong>UKafka</strong></td><td>Azure Queue Storage / Service Bus</td><td>Amazon SQS</td><td>Pub/Sub</td></tr>
+            <tr><td>Event streaming</td><td><strong>UKafka</strong></td><td>Azure Event Hubs</td><td>Amazon Kinesis</td><td>Pub/Sub / Dataflow</td></tr>
+            <tr><td>Workflow integration</td><td><strong>StepFlow</strong> (Microservice Orchestration)</td><td>Azure Logic Apps</td><td>AWS Step Functions</td><td>Workflows</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Phù hợp khi khách hàng muốn tăng tốc phát triển ứng dụng, chuẩn hóa pipeline hoặc tích hợp nhiều hệ thống với nhau.</p></div>
+        </div>
+      </article>
+
+      <article class="mapping-chapter" data-map-panel="ai-data">
+        <div class="mapping-head"><div class="mapping-num">6.9</div><div><h3>AI, Data Analytics, IoT</h3><p class="mapping-intro">Dùng khi khách hàng muốn khai thác dữ liệu, AI, IoT, streaming hoặc BI dashboard.</p></div></div>
+        <div class="mapping-body">
+          <div class="table-wrap"><table><thead><tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Microsoft Azure</th><th>AWS</th><th>Google Cloud Platform</th></tr></thead><tbody>
+            <tr><td>Machine learning platform</td><td><strong>UModelVerse</strong> / <strong>UAI-Train</strong> / <strong>UAI-Inference</strong></td><td>Azure Machine Learning</td><td>Amazon SageMaker</td><td>Vertex AI</td></tr>
+            <tr><td>AI API nhận diện/ngôn ngữ</td><td><strong>UDI</strong> / <strong>UContent Review</strong></td><td>Azure AI Services</td><td>AWS AI Services</td><td>Vertex AI / Cloud AI APIs</td></tr>
+            <tr><td>Data analytics</td><td><strong>UHadoop</strong> / <strong>USDP</strong> / <strong>UDDP</strong></td><td>Azure Synapse Analytics / Microsoft Fabric</td><td>Amazon Redshift / Athena / EMR</td><td>BigQuery / Dataproc</td></tr>
+            <tr><td>IoT device ingestion</td><td><strong>UIoT Core</strong> / <strong>UIoT Edge</strong></td><td>Azure IoT Hub</td><td>AWS IoT Core</td><td>Cloud IoT partner ecosystem / Pub/Sub-based architecture</td></tr>
+            <tr><td>Stream analytics</td><td><strong>UFlink</strong></td><td>Azure Stream Analytics</td><td>Amazon Kinesis Data Analytics</td><td>Dataflow</td></tr>
+            <tr><td>BI/dashboard</td><td>Unknown</td><td>Power BI</td><td>Amazon QuickSight</td><td>Looker / Looker Studio</td></tr>
+          </tbody></table></div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Đây là nhóm giúp mở rộng câu chuyện từ hạ tầng sang dữ liệu, AI và đổi mới sản phẩm.</p></div>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧩 Cách dùng mapping trong sales conversation</div>
+    <p class="block-subtitle">Dùng mapping như công cụ định hướng trao đổi ban đầu, sau đó phối hợp đội kỹ thuật để xác nhận thiết kế.</p>
+    <div class="flow-grid">
+      <article class="flow-step"><span>1</span><h3>Hỏi nhu cầu hiện tại</h3><p>Khách hàng đang dùng server, SAN, database, VPN, firewall, backup hay CI/CD nào?</p></article>
+      <article class="flow-step"><span>2</span><h3>Xác định nhóm Cloud</h3><p>Nhu cầu đó thuộc compute, storage, database, networking, security hay nhóm khác?</p></article>
+      <article class="flow-step"><span>3</span><h3>Chọn provider/dịch vụ</h3><p>Đối chiếu với NetCloudX, Azure, AWS, GCP theo định hướng kỹ thuật và kinh doanh.</p></article>
+      <article class="flow-step"><span>4</span><h3>Kiểm tra ràng buộc</h3><p>Xác nhận SLA, license, kiến trúc, tính năng, bảo mật, compliance và giá.</p></article>
+      <article class="flow-step"><span>5</span><h3>Chuyển sang proposal</h3><p>Phối hợp đội kỹ thuật để làm proposal hoặc BOM chính thức.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Câu hỏi discovery</div>
+    <p class="block-subtitle">Các câu hỏi này giúp Sales xác định mapping đúng và tránh nhầm giữa tên dịch vụ với nhu cầu thật.</p>
+    <div class="question-grid">
+      <article class="question-card">
+        <h3>Hiện trạng & mục tiêu</h3>
+        <ul>
+          <li>Hiện khách hàng đang dùng công nghệ on-premises nào?</li>
+          <li>Workload đó cần migration nguyên trạng hay hiện đại hóa?</li>
+          <li>Đội kỹ thuật muốn tự vận hành hay dùng managed service?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Ràng buộc kỹ thuật</h3>
+        <ul>
+          <li>Có yêu cầu về SLA, HA, DR, compliance hoặc license không?</li>
+          <li>Dữ liệu có yêu cầu vị trí lưu trữ hoặc kết nối riêng không?</li>
+          <li>Ứng dụng có phụ thuộc phiên bản OS, database hoặc middleware cụ thể không?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Provider & thương mại</h3>
+        <ul>
+          <li>Khách hàng ưu tiên NetCloudX, Azure, AWS, GCP hay cần so sánh nhiều provider?</li>
+          <li>Có ràng buộc ngân sách, license hiện hữu hoặc cam kết mua sắm nào không?</li>
+          <li>Ai sẽ phê duyệt phương án: IT, security, finance hay business owner?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 6 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ cách dùng bảng mapping</div>
+      <p class="dark-card-text">Sales không cần nhớ mọi tên dịch vụ, nhưng cần biết cách map nhu cầu on-premises sang nhóm dịch vụ Cloud. Mapping là công cụ định hướng trao đổi và discovery, không thay thế bước thiết kế kỹ thuật chính thức.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section5.html" class="bnav-btn">← Module 05: Vì sao chuyển lên Cloud?</a>
+    <span class="bnav-center">Module 06 / 11</span>
+    <a href="section7.html" class="bnav-btn next">Module 07: Định vị Cloud theo tình huống →</a>
+  </nav>
+
+</main>
+
+<script>
+document.querySelectorAll(".mapping-selector").forEach((selector) => {
+  const choices = [...selector.querySelectorAll("[data-map-target]")];
+  const panels = [...document.querySelectorAll("[data-map-panel]")];
+
+  function activateMapping(key) {
+    choices.forEach((choice) => {
+      const isActive = choice.dataset.mapTarget === key;
+      choice.classList.toggle("active", isActive);
+      choice.setAttribute("aria-selected", String(isActive));
+    });
+
+    panels.forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.mapPanel === key);
+    });
+  }
+
+  choices.forEach((choice) => {
+    choice.addEventListener("click", () => activateMapping(choice.dataset.mapTarget));
+    choice.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        activateMapping(choice.dataset.mapTarget);
+      }
+    });
+  });
+});
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cách Sales định vị Cloud theo tình huống khách hàng | Module 07</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-7-page { max-width:1120px; }
+.scenario-picker { position:relative; margin-bottom:18px; border:1px solid rgba(0,120,212,.16); border-radius:var(--radius); background:linear-gradient(135deg,#fff,#f3fbff); box-shadow:var(--shadow-sm); padding:22px; }
+.scenario-picker label { display:block; margin-bottom:9px; color:var(--primary-dark); font-size:12px; font-weight:900; letter-spacing:.4px; text-transform:uppercase; }
+.scenario-select-wrap { position:relative; }
+.scenario-select-wrap::after { position:absolute; top:50%; right:18px; color:var(--primary); content:"⌄"; font-size:22px; font-weight:900; pointer-events:none; transform:translateY(-56%); }
+.scenario-select { width:100%; min-height:54px; appearance:none; border:2px solid rgba(0,120,212,.18); border-radius:var(--radius-sm); background:var(--white); color:var(--text); cursor:pointer; font:inherit; font-size:15px; font-weight:850; line-height:1.35; padding:13px 52px 13px 16px; transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease; }
+.scenario-select:hover { border-color:rgba(0,120,212,.42); box-shadow:var(--shadow-sm); transform:translateY(-1px); }
+.scenario-select:focus { border-color:var(--primary); box-shadow:var(--shadow-glow); outline:none; }
+.scenario-hint { margin-top:10px; color:var(--text-muted); font-size:13px; line-height:1.55; }
+.scenario-panel { display:none; overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.scenario-panel.active { display:block; animation:panelIn .3s ease both; }
+.scenario-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:26px 28px 20px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.scenario-num { display:grid; width:46px; height:46px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.scenario-head h3 { margin-bottom:6px; color:var(--text); font-size:21px; font-weight:900; }
+.scenario-head p { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.scenario-body { padding:26px 28px 28px; }
+.scenario-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:18px; }
+.scenario-card { border-radius:var(--radius-sm); background:var(--gray-1); padding:18px; }
+.scenario-card h4 { margin-bottom:10px; color:var(--text); font-size:13px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.scenario-card p { color:var(--text-light); font-size:14px; line-height:1.6; margin:0; }
+.talk-track { border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:18px 20px; }
+.talk-track span { display:block; margin-bottom:8px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.talk-track blockquote { color:var(--text); font-size:15px; font-style:italic; font-weight:650; line-height:1.7; margin:0; }
+.position-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.position-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.position-card:nth-child(2) { border-top-color:var(--accent); }
+.position-card:nth-child(3) { border-top-color:var(--success); }
+.position-card h3 { margin-bottom:10px; color:var(--text); font-size:16px; font-weight:900; }
+.position-card ul { display:grid; gap:8px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+.question-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.question-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; }
+.question-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.question-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+@keyframes panelIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1000px) {
+  .scenario-cards,.position-grid,.question-grid { grid-template-columns:1fr; }
+}
+@media(max-width:640px) {
+  .scenario-picker { padding:18px; }
+  .scenario-head { grid-template-columns:1fr; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 07 · Định vị Cloud theo tình huống</span>
+  </div>
+  <div class="nav-right">
+    <a href="section6.html" class="nav-btn">← Module 06</a>
+    <a href="section8.html" class="nav-btn primary-btn">Module 08 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 07 / 11</div>
+    <h1>🎯 Định vị Cloud theo tình huống khách hàng</h1>
+    <p class="subtitle">Biến pain point của khách hàng thành câu chuyện Cloud phù hợp: mở rộng hạ tầng, triển khai nhanh, DR linh hoạt, tối ưu chi phí hoặc tăng cường bảo mật.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~20 phút đọc</div>
+      <div class="meta-chip">🧭 5 tình huống Sales</div>
+      <div class="meta-chip">💬 Talk track gợi ý</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-7-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Sales không nên định vị Cloud bằng một thông điệp chung cho mọi khách hàng. Cách tốt hơn là bắt đầu từ tình huống cụ thể: thiếu tài nguyên, cần go-live nhanh, cần DR, muốn tối ưu chi phí hoặc lo ngại bảo mật và tuân thủ.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 Chọn tình huống khách hàng</div>
+    <p class="block-subtitle">Bấm vào từng tình huống để xem pain point, cloud angle và câu nói gợi ý cho Sales.</p>
+
+    <div class="scenario-picker">
+      <label for="scenarioSelect">Chọn tình huống khách hàng</label>
+      <div class="scenario-select-wrap">
+        <select class="scenario-select" id="scenarioSelect" aria-label="Chọn tình huống khách hàng">
+          <option value="capacity">7.1. Thiếu tài nguyên hạ tầng</option>
+          <option value="new-app">7.2. Ứng dụng mới cần triển khai nhanh</option>
+          <option value="dr">7.3. Cần DR nhưng không muốn đầu tư site vật lý</option>
+          <option value="cost">7.4. Muốn tối ưu chi phí CNTT</option>
+          <option value="security">7.5. Quan tâm bảo mật và tuân thủ</option>
+        </select>
+      </div>
+      <p class="scenario-hint">Nội dung chi tiết của tình huống được chọn sẽ hiển thị ngay bên dưới.</p>
+    </div>
+
+    <div class="scenario-panels">
+      <article class="scenario-panel active" data-scenario-panel="capacity">
+        <div class="scenario-head"><div class="scenario-num">7.1</div><div><h3>Khách hàng đang thiếu tài nguyên hạ tầng</h3><p>Phù hợp khi khách hàng đang bị giới hạn bởi server, storage hoặc thời gian mua sắm thiết bị mới.</p></div></div>
+        <div class="scenario-body">
+          <div class="scenario-cards">
+            <div class="scenario-card"><h4>Pain point</h4><p>Server đầy CPU/RAM, storage sắp hết, mua thiết bị mới lâu.</p></div>
+            <div class="scenario-card"><h4>Cloud angle</h4><p>Dùng VM, storage, backup hoặc DR trên Cloud để mở rộng nhanh.</p></div>
+            <div class="scenario-card"><h4>Dịch vụ nên gợi ý</h4><p>VM, block/object storage, backup repository, DR, dev/test environment, autoscaling.</p></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Thay vì đầu tư thêm phần cứng ngay từ đầu, mình có thể đánh giá workload nào phù hợp để mở rộng lên Cloud trước, đặc biệt là môi trường test/dev, backup, DR hoặc các ứng dụng cần scale theo mùa vụ.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="scenario-panel" data-scenario-panel="new-app">
+        <div class="scenario-head"><div class="scenario-num">7.2</div><div><h3>Khách hàng có ứng dụng mới cần triển khai nhanh</h3><p>Phù hợp khi business cần ra mắt dịch vụ số nhanh hơn khả năng chuẩn bị hạ tầng truyền thống.</p></div></div>
+        <div class="scenario-body">
+          <div class="scenario-cards">
+            <div class="scenario-card"><h4>Pain point</h4><p>Dự án digital cần go-live nhanh, nhưng hạ tầng nội bộ chưa sẵn sàng.</p></div>
+            <div class="scenario-card"><h4>Cloud angle</h4><p>Dùng PaaS, database managed service, container hoặc serverless.</p></div>
+            <div class="scenario-card"><h4>Dịch vụ nên gợi ý</h4><p>App platform, managed database, container, Kubernetes, serverless, monitoring.</p></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Với Cloud, đội phát triển có thể tập trung vào ứng dụng, còn phần nền tảng như server, runtime, scaling, backup và monitoring có thể sử dụng dịch vụ managed để rút ngắn thời gian triển khai.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="scenario-panel" data-scenario-panel="dr">
+        <div class="scenario-head"><div class="scenario-num">7.3</div><div><h3>Khách hàng cần DR nhưng không muốn đầu tư site vật lý</h3><p>Phù hợp khi khách hàng có yêu cầu khôi phục nhưng không muốn duy trì một data center dự phòng tốn kém.</p></div></div>
+        <div class="scenario-body">
+          <div class="scenario-cards">
+            <div class="scenario-card"><h4>Pain point</h4><p>DR site tốn chi phí, khó vận hành, ít khi sử dụng.</p></div>
+            <div class="scenario-card"><h4>Cloud angle</h4><p>Dùng Cloud làm DR site, replicate workload hoặc backup dữ liệu lên Cloud.</p></div>
+            <div class="scenario-card"><h4>Dịch vụ nên gợi ý</h4><p>Backup, replication, object/archive storage, DR plan, VPN/private connection, monitoring.</p></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Cloud có thể đóng vai trò như một DR site linh hoạt, giúp doanh nghiệp không phải đầu tư toàn bộ data center dự phòng ngay từ đầu nhưng vẫn có phương án khôi phục khi xảy ra sự cố.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="scenario-panel" data-scenario-panel="cost">
+        <div class="scenario-head"><div class="scenario-num">7.4</div><div><h3>Khách hàng muốn tối ưu chi phí CNTT</h3><p>Phù hợp khi khách hàng đã đầu tư nhiều hạ tầng nhưng khó nhìn rõ usage hoặc tài nguyên bị mua dư.</p></div></div>
+        <div class="scenario-body">
+          <div class="scenario-cards">
+            <div class="scenario-card"><h4>Pain point</h4><p>Chi phí hạ tầng lớn, tài nguyên mua dư, khó kiểm soát usage.</p></div>
+            <div class="scenario-card"><h4>Cloud angle</h4><p>Cost Management, tagging, reserved capacity, autoscaling, right-sizing.</p></div>
+            <div class="scenario-card"><h4>Dịch vụ nên gợi ý</h4><p>Cost dashboard, tagging, budget alert, autoscale, reserved capacity, right-sizing review.</p></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Điểm mạnh của Cloud không chỉ là giảm chi phí, mà là giúp khách hàng nhìn rõ chi phí theo từng dịch vụ, phòng ban, dự án, từ đó tối ưu theo usage thực tế.</blockquote></div>
+        </div>
+      </article>
+
+      <article class="scenario-panel" data-scenario-panel="security">
+        <div class="scenario-head"><div class="scenario-num">7.5</div><div><h3>Khách hàng quan tâm bảo mật và tuân thủ</h3><p>Phù hợp khi khách hàng lo ngại phân quyền, dữ liệu, audit, compliance hoặc rủi ro cấu hình sai.</p></div></div>
+        <div class="scenario-body">
+          <div class="scenario-cards">
+            <div class="scenario-card"><h4>Pain point</h4><p>Lo ngại dữ liệu, phân quyền, audit, compliance.</p></div>
+            <div class="scenario-card"><h4>Cloud angle</h4><p>IAM, encryption, key management, logging, policy, SIEM, security posture management.</p></div>
+            <div class="scenario-card"><h4>Dịch vụ nên gợi ý</h4><p>IAM/RBAC, MFA, encryption, KMS/HSM, logging, policy, SIEM, WAF, posture management.</p></div>
+          </div>
+          <div class="talk-track"><span>Câu nói gợi ý</span><blockquote>Cloud provider cung cấp rất nhiều công cụ bảo mật nền tảng, nhưng hiệu quả phụ thuộc vào cách thiết kế và cấu hình. Vì vậy dự án Cloud nên đi kèm thiết kế security baseline, IAM, logging, backup và governance ngay từ đầu.</blockquote></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧩 Cách chọn thông điệp theo người nghe</div>
+    <p class="block-subtitle">Cùng một tình huống có thể cần cách nói khác nhau tùy người đang ngồi trong cuộc họp.</p>
+    <div class="position-grid">
+      <article class="position-card">
+        <h3>CFO / Finance</h3>
+        <ul>
+          <li>Tập trung vào CAPEX/OPEX, chi phí theo usage, budget và phân bổ chi phí.</li>
+          <li>Tránh hứa “Cloud luôn rẻ hơn”; hãy nói về tính linh hoạt và khả năng kiểm soát.</li>
+        </ul>
+      </article>
+      <article class="position-card">
+        <h3>CIO / CTO / IT Manager</h3>
+        <ul>
+          <li>Tập trung vào triển khai nhanh, giảm vận hành nền tảng, HA/DR, monitoring và governance.</li>
+          <li>Làm rõ phần nào khách hàng vẫn phải quản lý trong mô hình trách nhiệm chia sẻ.</li>
+        </ul>
+      </article>
+      <article class="position-card">
+        <h3>Business Owner</h3>
+        <ul>
+          <li>Tập trung vào go-live nhanh, phục vụ người dùng tốt hơn, mở rộng khi có chiến dịch.</li>
+          <li>Nối Cloud với mục tiêu kinh doanh thay vì chỉ nói tài nguyên kỹ thuật.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Câu hỏi discovery</div>
+    <p class="block-subtitle">Dùng các câu hỏi này để xác định khách hàng đang thuộc tình huống nào trước khi định vị giải pháp.</p>
+    <div class="question-grid">
+      <article class="question-card">
+        <h3>Hạ tầng & triển khai</h3>
+        <ul>
+          <li>Hiện hệ thống nào đang thiếu CPU/RAM/storage?</li>
+          <li>Dự án mới thường mất bao lâu để có hạ tầng?</li>
+          <li>Workload nào có nhu cầu tăng giảm theo mùa vụ?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>DR & chi phí</h3>
+        <ul>
+          <li>Khách hàng đã có DR site chưa, và lần gần nhất test restore là khi nào?</li>
+          <li>Chi phí hạ tầng hiện được phân bổ theo phòng ban/dự án chưa?</li>
+          <li>Có tài nguyên nào mua dư nhưng ít sử dụng không?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Bảo mật & quản trị</h3>
+        <ul>
+          <li>Ai đang quản lý quyền truy cập và audit log?</li>
+          <li>Có yêu cầu compliance hoặc mã hóa dữ liệu cụ thể không?</li>
+          <li>Khách hàng đã có security baseline cho Cloud chưa?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 7 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ cách định vị</div>
+      <p class="dark-card-text">Đừng bắt đầu bằng “anh/chị nên lên Cloud”. Hãy bắt đầu bằng pain point cụ thể của khách hàng, sau đó chọn Cloud angle phù hợp: mở rộng nhanh, triển khai nhanh, DR linh hoạt, tối ưu chi phí hoặc tăng cường bảo mật và governance.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section6.html" class="bnav-btn">← Module 06: Mapping dịch vụ Cloud</a>
+    <span class="bnav-center">Module 07 / 11</span>
+    <a href="section8.html" class="bnav-btn next">Module 08: Câu hỏi khai thác nhu cầu →</a>
+  </nav>
+
+</main>
+
+<script>
+const scenarioSelect = document.getElementById("scenarioSelect");
+const scenarioPanels = [...document.querySelectorAll("[data-scenario-panel]")];
+
+function activateScenario(key) {
+  scenarioPanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.scenarioPanel === key);
+  });
+}
+
+if (scenarioSelect) {
+  scenarioSelect.addEventListener("change", () => activateScenario(scenarioSelect.value));
+}
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

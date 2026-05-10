@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cách hiểu các services chạy trên Cloud | Module 04</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-4-page { max-width: 1120px; }
+.lens-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:34px; }
+.lens-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.lens-card:nth-child(2) { border-top-color:var(--accent); }
+.lens-card:nth-child(3) { border-top-color:var(--success); }
+.lens-card h3 { margin-bottom:8px; color:var(--text); font-size:16px; font-weight:900; }
+.lens-card p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.connectivity-visual { margin:22px 0 0; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:18px; }
+.connectivity-visual-image { overflow:hidden; border-radius:var(--radius-sm); background:var(--gray-2); box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); }
+.connectivity-visual-image img { display:block; width:100%; height:auto; object-fit:contain; transition:transform .35s ease; }
+.connectivity-visual:hover .connectivity-visual-image img { transform:scale(1.018); }
+.connectivity-visual figcaption { margin-top:12px; color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.connectivity-visual figcaption strong { color:var(--primary-dark); }
+.service-chapters { display:grid; gap:20px; }
+.service-chapter { overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.service-chapter-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:24px 26px 18px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.service-num { display:grid; width:42px; height:42px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.service-chapter h3 { margin-bottom:6px; color:var(--text); font-size:20px; font-weight:900; }
+.service-chapter .chapter-intro { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.service-chapter-body { padding:0 26px 24px; }
+.service-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:14px; }
+.service-list li { list-style:none; border-radius:8px; background:var(--gray-1); color:var(--text-light); font-size:13.5px; line-height:1.45; padding:10px 12px; }
+.service-list strong { color:var(--text); }
+.sales-note { margin-top:16px; border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:14px 16px; }
+.sales-note span { display:block; margin-bottom:5px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.sales-note p { color:var(--text); font-size:14px; line-height:1.6; margin:0; }
+.comparison-table table { min-width:900px; }
+.question-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.question-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; }
+.question-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.question-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+@media(max-width:900px) {
+  .lens-grid,.question-grid,.service-list { grid-template-columns:1fr; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 04 · Services chạy trên Cloud</span>
+  </div>
+  <div class="nav-right">
+    <a href="section3.html" class="nav-btn">← Module 03</a>
+    <a href="section5.html" class="nav-btn primary-btn">Module 05 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 04 / 11</div>
+    <h1>🧩 Cách hiểu các services chạy trên Cloud</h1>
+    <p class="subtitle">Bóc tách một hệ thống Cloud thành 9 nhóm dịch vụ để Sales hiểu khách hàng đang cần năng lực gì, phần nào là hạ tầng, phần nào là dữ liệu, bảo mật, vận hành hoặc đổi mới.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~25 phút đọc</div>
+      <div class="meta-chip">🧱 9 nhóm dịch vụ</div>
+      <div class="meta-chip">💬 Discovery questions</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-4-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Một hệ thống Cloud thường gồm nhiều lớp dịch vụ. Khi Sales nhìn vào một hệ thống CNTT, không nên chỉ hỏi “cần bao nhiêu CPU/RAM”, mà nên bóc tách theo các lớp: nơi chạy workload, nơi lưu dữ liệu, database, kết nối, định danh, bảo mật, giám sát, backup/DR và các dịch vụ đổi mới như AI, Data, IoT, DevOps.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 Ba lăng kính để nhìn một hệ thống Cloud</div>
+    <p class="block-subtitle">Cùng một nhu cầu kỹ thuật có thể được diễn giải thành lợi ích kinh doanh nếu Sales nhìn đúng lớp.</p>
+    <div class="lens-grid">
+      <article class="lens-card">
+        <h3>1. Workload đang chạy ở đâu?</h3>
+        <p>Compute, container, Kubernetes, serverless hoặc app platform quyết định cách ứng dụng được triển khai, scale và vận hành.</p>
+      </article>
+      <article class="lens-card">
+        <h3>2. Dữ liệu nằm ở đâu và di chuyển thế nào?</h3>
+        <p>Storage, database, networking và backup/DR quyết định độ bền dữ liệu, tốc độ truy cập, khả năng khôi phục và chi phí dài hạn.</p>
+      </article>
+      <article class="lens-card">
+        <h3>3. Ai kiểm soát, bảo vệ và theo dõi?</h3>
+        <p>IAM, security, monitoring và policy giúp làm rõ trách nhiệm giữa khách hàng và nhà cung cấp Cloud.</p>
+      </article>
+    </div>
+    <figure class="connectivity-visual">
+      <div class="connectivity-visual-image">
+        <img src="assets/images/important-roles-connectivity-cloud-computing.png" alt="Hình minh họa vai trò quan trọng của kết nối trong Cloud Computing" loading="lazy">
+      </div>
+      <figcaption><strong>Thông điệp cần nhớ:</strong> Cloud mạnh đến đâu cũng cần một đường kết nối tốt từ phía khách hàng. LAN, Wi-Fi, Internet, VPN hoặc private line tại site phải được thiết kế và vận hành ổn định thì workload trên Cloud mới hoạt động mượt, an toàn và đáng tin cậy.</figcaption>
+    </figure>
+  </section>
+
+  <section class="learning-lab reveal" data-service-map>
+    <div class="lab-header">
+      <span class="lab-kicker">Interactive map</span>
+      <h2>Bản đồ 9 nhóm dịch vụ Cloud</h2>
+      <p>Nhấp vào từng nhóm để xem cách hiểu, ví dụ dịch vụ và câu hỏi Sales nên dùng khi khai thác nhu cầu.</p>
+    </div>
+    <div class="service-map">
+      <div class="service-orbit" role="tablist" aria-label="Nhóm dịch vụ Cloud">
+        <button class="service-node active" type="button" data-service="compute" aria-selected="true">Compute</button>
+        <button class="service-node" type="button" data-service="storage" aria-selected="false">Storage</button>
+        <button class="service-node" type="button" data-service="database" aria-selected="false">Database</button>
+        <button class="service-node" type="button" data-service="networking" aria-selected="false">Networking</button>
+        <button class="service-node" type="button" data-service="iam" aria-selected="false">Identity & Access</button>
+        <button class="service-node" type="button" data-service="security" aria-selected="false">Security</button>
+        <button class="service-node" type="button" data-service="monitoring" aria-selected="false">Monitoring</button>
+        <button class="service-node" type="button" data-service="backup" aria-selected="false">Backup / DR</button>
+        <button class="service-node" type="button" data-service="innovation" aria-selected="false">AI / Data / DevOps</button>
+      </div>
+      <article class="service-detail">
+        <span class="panel-label" data-service-label>Compute</span>
+        <h3 data-service-title>Nơi chạy workload</h3>
+        <p data-service-text>Ứng dụng, website, API, batch job hoặc backend service cần một lớp xử lý để chạy.</p>
+        <div class="service-examples" data-service-examples>
+          <span>Virtual Machine</span><span>Container</span><span>Kubernetes</span><span>Serverless Function</span>
+        </div>
+        <div class="sales-spark compact">
+          <span>Câu hỏi khai thác</span>
+          <strong data-service-question>Workload hiện tại đang chạy trên VM, physical server hay container?</strong>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧱 Bóc tách chi tiết 9 nhóm dịch vụ</div>
+    <p class="block-subtitle">Mỗi nhóm dịch vụ đại diện cho một lớp nhu cầu, một nhóm rủi ro và một cơ hội tư vấn khác nhau trong hệ thống Cloud.</p>
+
+    <div class="service-chapters">
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.1</div>
+          <div>
+            <h3>Compute - nơi chạy workload</h3>
+            <p class="chapter-intro">Compute là năng lực xử lý. Đây là nơi ứng dụng, website, API, batch job hoặc backend service được chạy.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Loại compute</th><th>Cách hiểu</th><th>Ví dụ use case</th></tr></thead>
+              <tbody>
+                <tr><td>Virtual Machine</td><td>Máy chủ ảo giống server truyền thống.</td><td>Chạy app cũ, ERP, middleware, Windows/Linux server.</td></tr>
+                <tr><td>Container</td><td>Đóng gói ứng dụng thành container để chạy linh hoạt.</td><td>Microservices, CI/CD, ứng dụng cloud-native.</td></tr>
+                <tr><td>Kubernetes</td><td>Nền tảng điều phối container quy mô lớn.</td><td>App nhiều service, cần scaling, rolling update.</td></tr>
+                <tr><td>Serverless Function</td><td>Chạy code theo sự kiện, không quản lý server.</td><td>Xử lý ảnh, API nhỏ, automation, event processing.</td></tr>
+                <tr><td>App Platform</td><td>Chạy web app/API mà không quản lý VM.</td><td>Web portal, API backend, app nội bộ.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Nếu khách hàng nói “cần server”, hãy hỏi workload có bắt buộc kiểm soát OS không. Nếu không, có thể tư vấn container, app platform hoặc serverless để giảm vận hành.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.2</div>
+          <div>
+            <h3>Storage - nơi lưu dữ liệu file/object/disk</h3>
+            <p class="chapter-intro">Storage trên Cloud không chỉ là “ổ cứng”. Cloud chia storage thành nhiều loại theo cách ứng dụng truy cập và vòng đời dữ liệu.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Loại storage</th><th>Cách hiểu</th><th>Ví dụ use case</th></tr></thead>
+              <tbody>
+                <tr><td>Block Storage</td><td>Disk gắn vào VM.</td><td>OS disk, database disk, application disk.</td></tr>
+                <tr><td>Object Storage</td><td>Lưu object qua API, gần giống kho dữ liệu lớn.</td><td>Backup, archive, log, ảnh, video, data lake.</td></tr>
+                <tr><td>File Storage</td><td>File share dùng giao thức SMB/NFS.</td><td>Shared folder, app cần file share.</td></tr>
+                <tr><td>Archive Storage</td><td>Lưu dữ liệu lâu dài, ít truy cập, chi phí thấp.</td><td>Hồ sơ lâu năm, log compliance, backup dài hạn.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Đừng gom mọi dữ liệu vào một loại storage. Hãy phân loại dữ liệu nóng, dữ liệu chia sẻ, dữ liệu backup và dữ liệu lưu trữ lâu dài để tối ưu chi phí.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.3</div>
+          <div>
+            <h3>Database - nơi quản lý dữ liệu có cấu trúc hoặc phi cấu trúc</h3>
+            <p class="chapter-intro">Database Cloud có thể tự cài trên VM hoặc dùng dịch vụ managed để giảm phần vận hành nền tảng.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li><strong>Cài database trên VM:</strong> linh hoạt nhưng khách hàng tự quản lý nhiều.</li>
+            <li><strong>Managed Database:</strong> Cloud provider quản lý phần nền tảng như patching, backup, HA.</li>
+            <li><strong>NoSQL Database:</strong> phù hợp dữ liệu phi quan hệ, dữ liệu lớn, ứng dụng cần scale cao.</li>
+            <li><strong>Data Warehouse:</strong> dùng cho báo cáo, phân tích dữ liệu, BI.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Database thường là điểm đau vận hành: backup, HA, patching, hiệu năng và license. Managed database nên được bán bằng câu chuyện giảm rủi ro vận hành, không chỉ bằng cấu hình.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.4</div>
+          <div>
+            <h3>Networking - kết nối và phân luồng traffic</h3>
+            <p class="chapter-intro">Networking là lớp giúp các workload kết nối với nhau, kết nối về on-premises và kết nối Internet.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li>Virtual Network/VPC.</li><li>Subnet.</li><li>Route table.</li><li>VPN.</li>
+            <li>Dedicated private connection.</li><li>Load Balancer.</li><li>DNS.</li><li>CDN.</li><li>Firewall/WAF.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Networking quyết định trải nghiệm người dùng và khả năng tích hợp với hệ thống cũ. Cần hỏi rõ kết nối Internet, kết nối riêng, site-to-site VPN, domain, DNS và traffic vào/ra.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.5</div>
+          <div>
+            <h3>Identity & Access Management - định danh và phân quyền</h3>
+            <p class="chapter-intro">IAM quyết định ai được truy cập vào tài nguyên nào, với quyền gì.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li>User, group, role.</li><li>Multi-Factor Authentication.</li><li>Single Sign-On.</li><li>RBAC.</li><li>Privileged access.</li><li>Conditional access.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Cloud security bắt đầu từ identity. Nếu khách hàng chưa có MFA, SSO hoặc phân quyền theo role, đây thường là cơ hội tư vấn kèm security baseline.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.6</div>
+          <div>
+            <h3>Security - bảo mật workload Cloud</h3>
+            <p class="chapter-intro">Security trên Cloud là trách nhiệm chia sẻ giữa nhà cung cấp Cloud và khách hàng.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Nhà cung cấp bảo mật “of the cloud”</th><th>Khách hàng bảo mật “in the cloud”</th></tr></thead>
+              <tbody>
+                <tr><td>Data center, physical security, hardware, cloud platform.</td><td>Cấu hình tài khoản, phân quyền, dữ liệu, ứng dụng, network security policy, logging và monitoring.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Không nên nói “lên Cloud là tự động an toàn”. Nên nói Cloud cung cấp nền tảng và công cụ bảo mật tốt hơn, nhưng khách hàng vẫn phải cấu hình đúng và vận hành đúng.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.7</div>
+          <div>
+            <h3>Monitoring & Management - giám sát và vận hành</h3>
+            <p class="chapter-intro">Cloud có các công cụ theo dõi để đội IT biết hệ thống đang chạy ra sao và chi phí đang phát sinh ở đâu.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li>Performance metric.</li><li>Log.</li><li>Alert.</li><li>Cost.</li><li>Health status.</li><li>Automation.</li><li>Policy compliance.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Monitoring là cầu nối giữa kỹ thuật và quản trị. Ngoài CPU/RAM, hãy hỏi khách hàng có dashboard, cảnh báo, log tập trung và báo cáo chi phí theo phòng ban chưa.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.8</div>
+          <div>
+            <h3>Backup & Disaster Recovery</h3>
+            <p class="chapter-intro">Backup/DR trên Cloud giúp khách hàng khôi phục dữ liệu và duy trì hoạt động khi có sự cố.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li>Khôi phục dữ liệu khi bị xóa nhầm hoặc lỗi hệ thống.</li>
+            <li>Dự phòng workload sang region/site khác.</li>
+            <li>Giảm chi phí xây dựng DR site vật lý.</li>
+            <li>Tùy chỉnh RPO/RTO theo nhu cầu kinh doanh.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Câu hỏi quan trọng không chỉ là “có backup chưa”, mà là “restore được trong bao lâu” và “mất tối đa bao nhiêu dữ liệu thì business chấp nhận được”.</p></div>
+        </div>
+      </article>
+
+      <article class="service-chapter">
+        <div class="service-chapter-head">
+          <div class="service-num">4.9</div>
+          <div>
+            <h3>AI, Data, IoT và DevOps</h3>
+            <p class="chapter-intro">Đây là nhóm dịch vụ giúp Cloud khác biệt so với hạ tầng truyền thống.</p>
+          </div>
+        </div>
+        <div class="service-chapter-body">
+          <ul class="service-list">
+            <li><strong>AI/ML:</strong> nhận diện hình ảnh, xử lý ngôn ngữ, chatbot, model training.</li>
+            <li><strong>Data Analytics:</strong> data lake, data warehouse, BI, stream analytics.</li>
+            <li><strong>IoT:</strong> thu thập và xử lý dữ liệu từ thiết bị.</li>
+            <li><strong>DevOps:</strong> CI/CD, repository, container registry, infrastructure as code.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Đây là phần giúp câu chuyện Cloud vượt khỏi “thuê server”. Khi khách hàng đã ổn định hạ tầng, Sales có thể mở rộng sang dữ liệu, tự động hóa và đổi mới sản phẩm.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal comparison-table">
+    <div class="block-title">⚖️ So sánh góc nhìn on-premises và Cloud service</div>
+    <p class="block-subtitle">Bảng này giúp Sales chuyển từ ngôn ngữ “mua thiết bị” sang ngôn ngữ “tiêu thụ năng lực CNTT như dịch vụ”.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nhóm dịch vụ</th><th>On-premises thường nhìn như</th><th>Cloud nên nhìn như</th><th>Thông điệp tư vấn</th></tr></thead>
+        <tbody>
+          <tr><td>Compute</td><td>Mua server, cài OS, tự vận hành phần cứng.</td><td>Chọn VM, container, Kubernetes, serverless hoặc app platform theo workload.</td><td>Không phải workload nào cũng cần VM; chọn càng đúng lớp thì vận hành càng nhẹ.</td></tr>
+          <tr><td>Storage</td><td>Mua SAN/NAS, dự báo dung lượng dài hạn.</td><td>Chọn block, file, object, archive theo loại dữ liệu và tần suất truy cập.</td><td>Phân tầng dữ liệu giúp giảm chi phí và tăng khả năng mở rộng.</td></tr>
+          <tr><td>Database</td><td>Tự cài database, tự lo backup, HA, patching.</td><td>Dùng database trên VM hoặc managed database theo mức độ kiểm soát cần thiết.</td><td>Managed database giảm tải vận hành nhưng cần kiểm tra compatibility.</td></tr>
+          <tr><td>Networking</td><td>Kéo dây, cấu hình switch/router/firewall vật lý.</td><td>Thiết kế VPC/VNet, subnet, route, VPN, private connection, LB, DNS, CDN, WAF.</td><td>Kết nối đúng quyết định hiệu năng, bảo mật và khả năng tích hợp hybrid.</td></tr>
+          <tr><td>Security/IAM</td><td>Mỗi công cụ bảo mật thường là một sản phẩm riêng.</td><td>Kết hợp IAM, MFA, RBAC, policy, firewall, WAF, logging, monitoring.</td><td>Bảo mật Cloud là trách nhiệm chia sẻ, cần thiết kế ngay từ đầu.</td></tr>
+          <tr><td>Monitoring/DR</td><td>Giám sát rời rạc, DR site vật lý tốn chi phí.</td><td>Theo dõi metric/log/cost, tự động hóa cảnh báo, backup và replication linh hoạt.</td><td>Hãy bán bằng RPO/RTO, visibility và khả năng khôi phục, không chỉ bằng dung lượng backup.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Câu hỏi discovery theo từng hướng tư vấn</div>
+    <p class="block-subtitle">Khi chưa biết bắt đầu từ đâu, Sales có thể dùng bộ câu hỏi này để xác định lớp dịch vụ phù hợp.</p>
+    <div class="question-grid">
+      <article class="question-card">
+        <h3>Workload & ứng dụng</h3>
+        <ul>
+          <li>Ứng dụng hiện chạy trên physical server, VM hay container?</li>
+          <li>Có bắt buộc kiểm soát hệ điều hành hoặc cài agent đặc thù không?</li>
+          <li>Traffic có tăng giảm theo mùa vụ, chiến dịch hoặc giờ cao điểm không?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Dữ liệu & khôi phục</h3>
+        <ul>
+          <li>Dữ liệu nào cần truy cập nhanh, dữ liệu nào chỉ lưu lâu dài?</li>
+          <li>Database có yêu cầu HA, backup, replication, báo cáo BI không?</li>
+          <li>RPO/RTO mong muốn cho từng hệ thống quan trọng là bao nhiêu?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Bảo mật & vận hành</h3>
+        <ul>
+          <li>Khách hàng đã có MFA, SSO, RBAC hoặc phân quyền tập trung chưa?</li>
+          <li>Ai chịu trách nhiệm cấu hình firewall, WAF, log và cảnh báo?</li>
+          <li>Có cần dashboard theo dõi hiệu năng, chi phí và compliance không?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 4 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ một câu</div>
+      <p class="dark-card-text">Khi khách hàng nói về một “hệ thống Cloud”, Sales hãy bóc tách thành 9 lớp: <strong>Compute</strong>, <strong>Storage</strong>, <strong>Database</strong>, <strong>Networking</strong>, <strong>Identity</strong>, <strong>Security</strong>, <strong>Monitoring</strong>, <strong>Backup/DR</strong> và <strong>AI/Data/IoT/DevOps</strong>. Mỗi lớp là một nhóm nhu cầu, một nhóm rủi ro và một cơ hội tư vấn khác nhau.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section3.html" class="bnav-btn">← Module 03: Mô hình dịch vụ Cloud</a>
+    <span class="bnav-center">Module 04 / 11</span>
+    <a href="section5.html" class="bnav-btn next">Module 05: Vì sao khách hàng chuyển lên Cloud? →</a>
+  </nav>
+
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

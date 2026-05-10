@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Các mô hình dịch vụ Cloud | Module 03</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --primary:#0078D4; --primary-dark:#005A9E; --secondary:#00BCF2; --accent:#FFB900;
+  --success:#107C10; --danger:#D83B01; --purple:#8764B8;
+  --dark:#050F1E; --dark-2:#0D1F3C; --white:#fff;
+  --gray-1:#F5F8FC; --gray-2:#EEF2F7; --gray-3:#D1DCE8;
+  --text:#1A202C; --text-light:#4A5568; --text-muted:#718096;
+  --shadow-sm:0 2px 12px rgba(0,120,212,.07);
+  --shadow-md:0 8px 32px rgba(0,120,212,.13);
+  --radius:16px; --radius-sm:10px;
+  --tr:all .3s cubic-bezier(.4,0,.2,1);
+}
+html { scroll-behavior:smooth; }
+body { font-family:Inter,"Segoe UI",Arial,sans-serif; background:var(--gray-1); color:var(--text); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+a { color:inherit; text-decoration:none; }
+strong { color:var(--primary-dark); }
+.top-nav { position:fixed; top:0; left:0; right:0; z-index:100; height:60px; padding:0 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:rgba(5,15,30,.9); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,.07); }
+.nav-left,.nav-right { display:flex; align-items:center; gap:10px; }
+.nav-back,.nav-btn { display:flex; align-items:center; gap:8px; color:rgba(255,255,255,.62); font-size:14px; font-weight:600; padding:7px 12px; border-radius:8px; transition:var(--tr); }
+.nav-btn { border:1px solid rgba(255,255,255,.1); font-size:13px; }
+.nav-back:hover,.nav-btn:hover { color:white; background:rgba(255,255,255,.08); }
+.nav-btn.prim { color:white; background:var(--primary); border-color:var(--primary); }
+.nav-btn.prim:hover { background:var(--primary-dark); }
+.nav-sep { color:rgba(255,255,255,.22); }
+.nav-module-title { color:rgba(255,255,255,.75); font-size:14px; font-weight:700; }
+.section-hero { position:relative; padding:100px 24px 72px; overflow:hidden; text-align:center; background:linear-gradient(140deg,#050F1E 0%,#0D1F3C 50%,#0A3070 100%); }
+.section-hero::before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(0,120,212,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,120,212,.05) 1px,transparent 1px); background-size:50px 50px; }
+.section-hero::after { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 600px 400px at 60% 40%,rgba(0,120,212,.2),transparent 70%),radial-gradient(ellipse 400px 300px at 20% 60%,rgba(0,188,242,.12),transparent 60%); pointer-events:none; }
+.hero-inner { position:relative; z-index:2; max-width:820px; margin:0 auto; }
+.module-badge { display:inline-flex; align-items:center; gap:8px; margin-bottom:28px; padding:7px 18px; border:1px solid rgba(0,188,242,.4); border-radius:50px; background:rgba(0,120,212,.2); color:#7DD3FC; font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; animation:fadeUp .6s ease both; }
+.section-hero h1 { margin-bottom:20px; background:linear-gradient(90deg,#fff 0%,#A8D4F5 60%,#00BCF2 100%); -webkit-background-clip:text; background-clip:text; color:transparent; font-size:clamp(32px,5.5vw,58px); font-weight:900; letter-spacing:0; line-height:1.1; animation:fadeUp .6s ease .1s both; }
+.subtitle { margin-bottom:40px; color:rgba(255,255,255,.66); font-size:17px; line-height:1.65; animation:fadeUp .6s ease .2s both; }
+.hero-meta { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; animation:fadeUp .6s ease .3s both; }
+.meta-chip { display:flex; align-items:center; gap:7px; padding:8px 18px; border:1px solid rgba(255,255,255,.12); border-radius:50px; background:rgba(255,255,255,.07); color:rgba(255,255,255,.74); font-size:13px; font-weight:600; }
+.page { max-width:1080px; margin:0 auto; padding:56px 24px 80px; }
+.block { margin-bottom:48px; }
+.block-title { display:flex; align-items:center; gap:10px; margin-bottom:8px; color:var(--text); font-size:22px; font-weight:900; letter-spacing:0; }
+.block-sub { margin-bottom:24px; color:var(--text-muted); font-size:14px; line-height:1.6; }
+.concept-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.concept-card,.model-card,.deploy-card,.key-msg,.sales-quote,.decision-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+.concept-card { padding:28px; border-top:4px solid var(--primary); transition:var(--tr); }
+.concept-card:nth-child(2) { border-top-color:var(--accent); }
+.concept-card:hover,.model-card:hover,.deploy-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.concept-card .label,.model-card .label,.deploy-card .label { display:inline-flex; margin-bottom:12px; padding:5px 10px; border-radius:50px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.5px; text-transform:uppercase; }
+.concept-card h3,.model-card h3,.deploy-card h3 { margin-bottom:10px; color:var(--text); font-size:19px; font-weight:900; }
+.concept-card p,.model-card p,.deploy-card p,.decision-card p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.quote-block { margin-top:18px; padding:18px 22px; border-left:3px solid var(--secondary); border-radius:var(--radius-sm); background:white; box-shadow:var(--shadow-sm); color:var(--text); font-size:15px; line-height:1.75; font-style:italic; }
+.model-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:16px; }
+.model-card { border:2px solid transparent; padding:24px; cursor:pointer; text-align:left; transition:var(--tr); }
+.model-card.active { border-color:var(--primary); background:linear-gradient(180deg,#fff,#F3FBFF); box-shadow:var(--shadow-md); }
+.model-card .big { display:block; margin-bottom:8px; color:var(--primary-dark); font-size:28px; font-weight:900; }
+.service-visual { margin:0 0 22px; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); padding:18px; }
+.service-visual-image { overflow:hidden; border-radius:var(--radius-sm); background:var(--gray-2); box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); }
+.service-visual-image img { display:block; width:100%; height:auto; object-fit:contain; transition:transform .35s ease; }
+.service-visual:hover .service-visual-image img { transform:scale(1.018); }
+.service-visual figcaption { margin-top:12px; color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.service-visual figcaption strong { color:var(--primary-dark); }
+.model-detail { display:none; padding:28px; border-left:5px solid var(--primary); border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); animation:fadeUp .3s ease; }
+.model-detail.active { display:block; }
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+.mini-box { padding:18px; border-radius:var(--radius-sm); background:var(--gray-1); }
+.mini-box h4 { margin-bottom:10px; color:var(--text); font-size:14px; font-weight:900; }
+.mini-box ul,.deploy-card ul,.decision-card ul,.sales-quote ul { display:flex; flex-direction:column; gap:8px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.45; }
+.sales-position { margin-top:18px; padding:18px 20px; border:1px solid rgba(255,185,0,.3); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); color:var(--text); font-size:14px; line-height:1.65; }
+.sales-position strong { display:block; margin-bottom:6px; color:#8A6000; font-size:12px; letter-spacing:.5px; text-transform:uppercase; }
+.table-wrap { overflow-x:auto; border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); }
+table { width:100%; min-width:820px; border-collapse:collapse; background:white; }
+th { padding:14px 16px; background:var(--dark-2); color:white; text-align:left; font-size:13px; font-weight:900; }
+th:first-child { color:var(--secondary); }
+td { padding:14px 16px; border-bottom:1px solid var(--gray-2); color:var(--text-light); font-size:13.5px; line-height:1.55; vertical-align:top; }
+td:first-child { color:var(--text); font-weight:900; }
+tr:last-child td { border-bottom:0; }
+.decision-strip { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:16px; }
+.decision-card { padding:18px; border-left:4px solid var(--primary); }
+.decision-card:nth-child(2) { border-left-color:var(--accent); }
+.decision-card:nth-child(3) { border-left-color:var(--success); }
+.decision-card h3 { margin-bottom:8px; font-size:15px; font-weight:900; }
+.deploy-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.deploy-card { padding:26px; border-top:4px solid var(--primary); transition:var(--tr); }
+.deploy-card.private { border-top-color:var(--purple); }
+.deploy-card.hybrid { border-top-color:var(--accent); }
+.deploy-card blockquote { margin:14px 0; padding:14px 16px; border-left:3px solid var(--primary); border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:var(--gray-1); color:var(--text); font-size:13.5px; line-height:1.55; font-style:italic; }
+.deploy-visual { display:grid; grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr); gap:22px; align-items:center; margin-top:22px; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); padding:22px; }
+.deploy-visual-image { overflow:hidden; border-radius:var(--radius-sm); background:var(--gray-2); box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); }
+.deploy-visual-image img { display:block; width:100%; height:auto; object-fit:cover; transition:transform .35s ease; }
+.deploy-visual:hover .deploy-visual-image img { transform:scale(1.025); }
+.deploy-visual-copy h3 { margin-bottom:10px; color:var(--text); font-size:19px; font-weight:900; }
+.deploy-visual-copy p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.deploy-visual-copy ul { display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.45; }
+.deploy-visual-note { margin-top:16px; padding:14px 16px; border-left:3px solid var(--accent); border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:rgba(255,185,0,.11); color:var(--text); font-size:13.5px; line-height:1.55; }
+.key-msg { padding:34px; border:1px solid rgba(0,188,242,.2); background:linear-gradient(135deg,var(--dark-2),var(--dark)); }
+.key-msg h3 { display:flex; align-items:center; gap:10px; margin-bottom:16px; color:white; font-size:18px; font-weight:900; }
+.key-msg p { color:rgba(255,255,255,.76); font-size:15px; line-height:1.75; }
+.key-msg .highlight { color:var(--secondary); font-weight:800; }
+.pills { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.pill-item { padding:8px 16px; border:1px solid rgba(0,188,242,.25); border-radius:8px; background:rgba(0,188,242,.12); color:rgba(255,255,255,.82); font-size:13px; font-weight:700; }
+.quote-stack { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.sales-quote { position:relative; overflow:hidden; padding:26px; border:2px solid rgba(255,185,0,.3); }
+.sales-quote::before { content:"💬"; position:absolute; top:-12px; right:18px; font-size:56px; opacity:.07; }
+.sq-label { margin-bottom:12px; color:#9A6B00; font-size:11px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+.sales-quote blockquote { margin-top:14px; color:var(--text); font-size:14.5px; font-style:italic; font-weight:600; line-height:1.65; }
+.bottom-nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:48px; padding-top:24px; border-top:1px solid var(--gray-3); }
+.bnav-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:12px 22px; border:2px solid var(--gray-3); border-radius:10px; background:white; color:var(--text-light); font-size:14px; font-weight:800; transition:var(--tr); }
+.bnav-btn:hover { border-color:var(--primary); color:var(--primary); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+.bnav-btn.next { border-color:var(--primary); background:var(--primary); color:white; }
+.bnav-btn.next:hover { border-color:var(--primary-dark); background:var(--primary-dark); box-shadow:0 6px 20px rgba(0,120,212,.4); }
+.bnav-center { color:var(--text-muted); font-size:13px; font-weight:800; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .5s ease,transform .5s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+@media(max-width:900px) {
+  .concept-grid,.detail-grid,.deploy-grid,.deploy-visual,.decision-strip,.quote-stack { grid-template-columns:1fr; }
+  .model-tabs { grid-template-columns:1fr; }
+}
+@media(max-width:768px) {
+  .top-nav { padding:0 16px; }
+  .nav-module-title,.nav-sep { display:none; }
+  .nav-right { gap:6px; }
+  .nav-btn { padding-inline:10px; }
+  .section-hero { padding:90px 16px 56px; }
+  .page { padding:36px 16px 60px; }
+  .key-msg,.sales-quote,.model-detail { padding:24px 20px; }
+  .bottom-nav { flex-direction:column; }
+  .bnav-btn { width:100%; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 03 · Mô hình dịch vụ & triển khai Cloud</span>
+  </div>
+  <div class="nav-right">
+    <a href="section2.html" class="nav-btn">← Module 02</a>
+    <a href="section4.html" class="nav-btn prim">Module 04 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 03 / 11</div>
+    <h1>🏗️ Các mô hình dịch vụ Cloud</h1>
+    <p class="subtitle">Phân biệt IaaS, PaaS, SaaS và Public, Private, Hybrid Cloud để Sales tư vấn đúng lớp nhu cầu, đúng mức vận hành và đúng góc nhìn kinh doanh.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~25 phút đọc</div>
+      <div class="meta-chip">🧱 IaaS · PaaS · SaaS</div>
+      <div class="meta-chip">🌐 Public · Private · Hybrid</div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="block reveal">
+    <div class="block-title">📌 Trước khi tư vấn: tách 2 khái niệm</div>
+    <p class="block-sub">Khách hàng thường nhầm giữa mô hình dịch vụ và mô hình triển khai. Sales cần tách rõ hai lớp này trước khi đề xuất giải pháp.</p>
+    <div class="concept-grid">
+      <article class="concept-card">
+        <span class="label">Deployment model</span>
+        <h3>Mô hình triển khai Cloud</h3>
+        <p><strong>Câu hỏi cần trả lời:</strong> Hạ tầng vật lý nằm ở đâu? Ai sở hữu? Có dùng chung phần cứng với khách hàng khác không?</p>
+        <p><strong>Ý nghĩa:</strong> Liên quan đến mức độ cô lập hạ tầng, kiểm soát vật lý, compliance, CAPEX/OPEX và chiến lược triển khai tổng thể.</p>
+      </article>
+      <article class="concept-card">
+        <span class="label">Service model</span>
+        <h3>Mô hình dịch vụ Cloud</h3>
+        <p><strong>Câu hỏi cần trả lời:</strong> Khách hàng thuê cái gì? Nhà cung cấp quản lý đến lớp nào? Khách hàng còn phải tự vận hành phần nào?</p>
+        <p><strong>Ý nghĩa:</strong> Liên quan đến trách nhiệm vận hành của đội IT, tốc độ triển khai, tự động hóa, chi phí nhân sự và khả năng tập trung vào ứng dụng/nghiệp vụ.</p>
+      </article>
+    </div>
+    <div class="quote-block">
+      Mô hình triển khai trả lời câu hỏi “hạ tầng đặt ở đâu và dùng riêng hay dùng chung?”. Mô hình dịch vụ trả lời câu hỏi “khách hàng thuê đến lớp nào và còn phải tự quản lý phần nào?”.
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧱 Mô hình dịch vụ Cloud: IaaS, PaaS, SaaS</div>
+    <p class="block-sub">Nhấp vào từng mô hình để xem trách nhiệm vận hành, ví dụ dịch vụ, positioning và câu hỏi discovery.</p>
+    <figure class="service-visual">
+      <div class="service-visual-image">
+        <img src="assets/images/from-onpremises-to-saas.png" alt="Sơ đồ chuyển dịch trách nhiệm vận hành từ on-premises sang IaaS, PaaS và SaaS" loading="lazy">
+      </div>
+      <figcaption><strong>Cách đọc hình:</strong> càng đi từ On-premises sang SaaS, phần khách hàng phải tự vận hành càng giảm; nhà cung cấp quản lý nhiều lớp hơn, từ hạ tầng vật lý đến nền tảng và phần mềm hoàn chỉnh.</figcaption>
+    </figure>
+    <div class="model-tabs">
+      <button class="model-card active" type="button" data-model="iaas">
+        <span class="big">IaaS</span>
+        <span class="label">Infrastructure as a Service</span>
+        <h3>Thuê hạ tầng</h3>
+        <p>Gần giống hạ tầng truyền thống nhất, phù hợp lift-and-shift và workload cần kiểm soát OS.</p>
+      </button>
+      <button class="model-card" type="button" data-model="paas">
+        <span class="big">PaaS</span>
+        <span class="label">Platform as a Service</span>
+        <h3>Thuê nền tảng</h3>
+        <p>Giảm vận hành server/OS, tập trung vào ứng dụng, dữ liệu và logic nghiệp vụ.</p>
+      </button>
+      <button class="model-card" type="button" data-model="saas">
+        <span class="big">SaaS</span>
+        <span class="label">Software as a Service</span>
+        <h3>Thuê phần mềm</h3>
+        <p>Dùng phần mềm hoàn chỉnh, gần như không quan tâm server, OS, database phía sau.</p>
+      </button>
+    </div>
+
+    <div class="model-detail active" id="modelDetail">
+      <h3>IaaS - Infrastructure as a Service</h3>
+      <p>IaaS là mô hình Cloud gần giống hạ tầng truyền thống nhất. Khách hàng thuê máy ảo, network, storage, firewall, load balancer và vẫn vận hành nhiều lớp phía trên.</p>
+      <div class="detail-grid">
+        <div class="mini-box">
+          <h4>Khách hàng thường quản lý</h4>
+          <ul><li>Hệ điều hành</li><li>Middleware, runtime</li><li>Ứng dụng và dữ liệu</li><li>Cấu hình bảo mật bên trong workload</li></ul>
+        </div>
+        <div class="mini-box">
+          <h4>Nhà cung cấp thường quản lý</h4>
+          <ul><li>Data center</li><li>Phần cứng server, storage vật lý</li><li>Network nền tảng</li><li>Lớp ảo hóa</li></ul>
+        </div>
+      </div>
+      <div class="sales-position">
+        <strong>Sales positioning</strong>
+        Phù hợp khi khách hàng muốn migrate nhanh workload hiện hữu theo hướng lift-and-shift, cần kiểm soát hệ điều hành hoặc có ứng dụng legacy khó chuyển ngay sang PaaS. Ví dụ: Azure Virtual Machines, Amazon EC2, Google Compute Engine, UHost.
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">📊 Bảng so sánh nhanh IaaS, PaaS, SaaS cho Sales</div>
+    <p class="block-sub">Giữ lại các tiêu chí quan trọng nhất để Sales chọn đúng hướng tư vấn theo mức độ khách hàng muốn tự vận hành.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tiêu chí</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cách hiểu đơn giản</td><td>Thuê hạ tầng</td><td>Thuê nền tảng chạy ứng dụng</td><td>Thuê phần mềm dùng ngay</td></tr>
+          <tr><td>Gần giống on-premises nhất</td><td>Cao nhất</td><td>Trung bình</td><td>Thấp nhất</td></tr>
+          <tr><td>Mức độ khách hàng tự quản lý</td><td>Cao</td><td>Trung bình</td><td>Thấp</td></tr>
+          <tr><td>Mức độ nhà cung cấp quản lý</td><td>Thấp hơn PaaS/SaaS</td><td>Cao hơn IaaS</td><td>Cao nhất</td></tr>
+          <tr><td>Kiểm soát hệ điều hành</td><td>Có</td><td>Không hoặc rất hạn chế</td><td>Không</td></tr>
+          <tr><td>Tốc độ triển khai</td><td>Nhanh hơn mua server vật lý</td><td>Nhanh hơn IaaS cho app/database phù hợp</td><td>Nhanh nhất</td></tr>
+          <tr><td>Phù hợp với</td><td>Legacy app, lift-and-shift, workload cần custom OS</td><td>Web app, API, managed database, app hiện đại</td><td>Email, CRM, collaboration, ticketing, ERP/HRM dạng thuê bao</td></tr>
+          <tr><td>Rủi ro Sales cần lưu ý</td><td>Khách hàng vẫn phải vận hành OS, backup, security</td><td>Cần kiểm tra compatibility ứng dụng</td><td>Cần kiểm tra tính năng, tích hợp, dữ liệu, compliance</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="decision-strip">
+      <article class="decision-card"><h3>Muốn kiểm soát nhiều</h3><p>Chấp nhận vận hành nhiều: ưu tiên <strong>IaaS</strong>.</p></article>
+      <article class="decision-card"><h3>Muốn giảm vận hành nền tảng</h3><p>Tập trung vào app/data: ưu tiên <strong>PaaS</strong>.</p></article>
+      <article class="decision-card"><h3>Muốn dùng chức năng ngay</h3><p>Ít tự vận hành nhất: ưu tiên <strong>SaaS</strong>.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🌐 Mô hình triển khai Cloud: Public, Private, Hybrid</div>
+    <p class="block-sub">Phần này trả lời câu hỏi hạ tầng nằm ở đâu, dùng riêng hay dùng chung, và phù hợp với chiến lược triển khai nào.</p>
+    <div class="deploy-grid">
+      <article class="deploy-card public">
+        <span class="label">Public Cloud</span>
+        <h3>Đám mây công cộng</h3>
+        <p>Nhà cung cấp sở hữu và vận hành data center, server, storage, network nền tảng. Nhiều khách hàng cùng sử dụng hạ tầng vật lý theo mô hình multi-tenant, nhưng dữ liệu và môi trường được cách ly bằng phần mềm.</p>
+        <blockquote>Giống thuê VPS/VM trên một cụm server lớn của nhà cung cấp: không sở hữu server vật lý, không quản lý data center, không thay ổ cứng, không vận hành điện/làm mát.</blockquote>
+        <ul><li>Dùng bao nhiêu trả bấy nhiêu.</li><li>Mở rộng nhanh, nhiều managed service.</li><li>Phù hợp startup, SME, e-commerce, web app, traffic biến động, dự án cần triển khai nhanh.</li></ul>
+      </article>
+      <article class="deploy-card private">
+        <span class="label">Private Cloud</span>
+        <h3>Đám mây dùng riêng</h3>
+        <p>Hạ tầng được dành riêng cho một tổ chức, có thể đặt tại data center của khách hàng, data center thuê chỗ đặt, hoặc môi trường dedicated do nhà cung cấp vận hành.</p>
+        <blockquote>Giống thuê nguyên tủ rack, server dedicated hoặc đặt server riêng, sau đó triển khai ảo hóa như VMware, OpenStack hoặc nền tảng private cloud.</blockquote>
+        <ul><li>Cô lập phần cứng cao, kiểm soát vật lý tốt hơn.</li><li>Phù hợp compliance nghiêm ngặt.</li><li>Thường dùng cho ngân hàng, tài chính, chính phủ, core system có tải ổn định.</li></ul>
+      </article>
+      <article class="deploy-card hybrid">
+        <span class="label">Hybrid Cloud</span>
+        <h3>Đám mây lai</h3>
+        <p>Kết hợp on-premises/private cloud với public cloud. Hai môi trường kết nối qua VPN, leased line, direct connect hoặc private interconnect.</p>
+        <blockquote>Giống giữ một phần server/tủ rack hiện tại, đồng thời dùng thêm Public Cloud; hai bên kết nối để ứng dụng và dữ liệu trao đổi.</blockquote>
+        <ul><li>Phù hợp migration từng phần.</li><li>Core database ở on-premises, web/app/API ở Cloud.</li><li>Dùng cho DR lên Cloud hoặc mở rộng tạm thời khi có peak traffic.</li></ul>
+      </article>
+    </div>
+    <figure class="deploy-visual">
+      <div class="deploy-visual-image">
+        <img src="assets/images/3d-data-center-floor-diagram.png" alt="Sơ đồ 3D mặt bằng data center minh họa hạ tầng vật lý phía sau các mô hình Cloud" loading="lazy">
+      </div>
+      <figcaption class="deploy-visual-copy">
+        <h3>Nhìn hình để hiểu phần “hạ tầng nằm ở đâu”</h3>
+        <p>Sơ đồ data center giúp Sales hình dung lớp vật lý phía sau Cloud: rack server, storage, network, điện, làm mát và khu vực vận hành. Điểm khác nhau giữa Public, Private và Hybrid nằm ở việc phần hạ tầng này do ai sở hữu, dành riêng hay dùng chung, và kết nối với hệ thống hiện hữu như thế nào.</p>
+        <ul>
+          <li><strong>Public Cloud:</strong> khách hàng dùng năng lực từ data center của provider.</li>
+          <li><strong>Private Cloud:</strong> hạ tầng được dành riêng cho một tổ chức.</li>
+          <li><strong>Hybrid Cloud:</strong> kết nối hạ tầng hiện hữu/private với public cloud.</li>
+        </ul>
+        <div class="deploy-visual-note">Khi gặp khách hàng, hãy dùng hình này để chuyển câu chuyện từ “Cloud là gì?” sang “khách hàng muốn hạ tầng nằm ở đâu, mức cô lập ra sao, và kết nối với hệ thống hiện tại thế nào?”.</div>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 Phân biệt deployment model và service model</div>
+    <p class="block-sub">Bảng này giúp tránh nhầm “public/private/hybrid” với “IaaS/PaaS/SaaS”.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tiêu chí</th><th>Deployment model: Public / Private / Hybrid</th><th>Service model: IaaS / PaaS / SaaS</th></tr></thead>
+        <tbody>
+          <tr><td>Bản chất</td><td>Cách sắp xếp vị trí, quyền sở hữu và mức độ chia sẻ hạ tầng vật lý.</td><td>Cách đóng gói năng lực CNTT thành dịch vụ để khách hàng sử dụng.</td></tr>
+          <tr><td>Câu hỏi chính</td><td>Hạ tầng này của ai, đặt ở đâu, dùng riêng hay dùng chung?</td><td>Khách hàng thuê cái gì, nhà cung cấp quản lý đến lớp nào?</td></tr>
+          <tr><td>Quyết định chính</td><td>Cô lập phần cứng, compliance, kết nối, data residency, CAPEX/OPEX.</td><td>Trách nhiệm vận hành, tốc độ triển khai, tự động hóa, yêu cầu kỹ năng IT.</td></tr>
+          <tr><td>Ví dụ theo ISP</td><td>Thuê VPS public, server dedicated/private, hoặc kết nối server riêng với cloud.</td><td>Thuê server trống, database/app platform managed, hoặc phần mềm dùng ngay.</td></tr>
+          <tr><td>Lưu ý quan trọng</td><td>Public Cloud vẫn có network riêng, subnet riêng, IAM riêng; “public” không có nghĩa dữ liệu bị public.</td><td>Một Public Cloud có thể cung cấp đủ IaaS, PaaS, SaaS; Private Cloud cũng có thể cung cấp IaaS/PaaS nội bộ.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🏢 Góc nhìn quản trị doanh nghiệp</div>
+    <p class="block-sub">Với CIO, CTO, CFO, Cloud là quyết định về tài chính, vận hành, bảo mật, tốc độ triển khai và năng lực cạnh tranh.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tiêu chí quản trị</th><th>Nhìn theo Public / Private / Hybrid</th><th>Nhìn theo IaaS / PaaS / SaaS</th></tr></thead>
+        <tbody>
+          <tr><td>Mục tiêu quản trị cốt lõi</td><td>Quản lý ranh giới vật lý và tài sản: server nằm ở đâu, ai sở hữu, có chia sẻ phần cứng không.</td><td>Quản lý lớp phần mềm và dữ liệu: đội IT còn tự cấu hình đến lớp nào, phần nào giao cho nhà cung cấp.</td></tr>
+          <tr><td>Mô hình tài chính</td><td>Private/on-premises thường gắn với CAPEX lớn; Public Cloud giúp chuyển sang OPEX.</td><td>IaaS linh hoạt nhưng vẫn có chi phí vận hành OS/license; PaaS/SaaS giảm nhiều chi phí vận hành nền tảng.</td></tr>
+          <tr><td>Trách nhiệm IT nội bộ</td><td>On-premises/private khiến IT vẫn quan tâm data center, điện, làm mát, phần cứng, network vật lý.</td><td>IaaS quản lý từ OS trở lên; PaaS tập trung app/data; SaaS chủ yếu quản lý user, quyền và dữ liệu.</td></tr>
+          <tr><td>Bảo mật & compliance</td><td>Private/Hybrid giải quyết cô lập dữ liệu, kiểm soát vị trí dữ liệu và yêu cầu pháp lý đặc thù.</td><td>Service model làm rõ shared responsibility: provider bảo vệ nền tảng, khách hàng bảo vệ cấu hình, dữ liệu, truy cập, ứng dụng.</td></tr>
+          <tr><td>Time-to-market</td><td>Public Cloud giảm thời gian mua sắm, lắp đặt, nghiệm thu phần cứng.</td><td>PaaS/SaaS giảm thời gian cài OS, middleware, database, giúp đưa dịch vụ ra thị trường nhanh hơn.</td></tr>
+          <tr><td>Năng lực đổi mới</td><td>Public Cloud giúp tiếp cận nhanh AI, Analytics, IoT, DevOps, Security service.</td><td>PaaS/SaaS giúp đội kỹ thuật tập trung vào giá trị nghiệp vụ thay vì vận hành nền tảng.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Tips cho Sales theo từng nhóm khách hàng</div>
+    <div class="quote-stack">
+      <article class="sales-quote">
+        <div class="sq-label">CFO / Finance</div>
+        <ul><li>Chuyển CAPEX sang OPEX.</li><li>Giảm đầu tư ban đầu cho server, storage, data center, license.</li><li>Dùng đến đâu trả đến đó, tránh over-provisioning 3-5 năm.</li><li>Theo dõi và phân bổ chi phí theo phòng ban/dự án.</li></ul>
+        <blockquote>“Với Cloud, doanh nghiệp không cần đầu tư trước một lượng lớn phần cứng. Chi phí chuyển thành chi phí vận hành theo mức sử dụng thực tế, linh hoạt hơn với hệ thống có nhu cầu tăng giảm theo mùa vụ hoặc dự án.”</blockquote>
+      </article>
+      <article class="sales-quote">
+        <div class="sq-label">CIO / CTO / IT Manager</div>
+        <ul><li>Giảm tải vận hành phần cứng và nền tảng.</li><li>Chuẩn hóa môi trường triển khai.</li><li>Tăng tốc provisioning server/database/app platform.</li><li>Tăng khả năng mở rộng, backup, DR, monitoring.</li></ul>
+        <blockquote>“IaaS phù hợp migration nhanh và vẫn kiểm soát OS. Khi tiến lên PaaS hoặc SaaS, đội IT giảm đáng kể việc vá lỗi, cài nền tảng, duy trì runtime để tập trung hơn vào ứng dụng và trải nghiệm người dùng.”</blockquote>
+      </article>
+      <article class="sales-quote">
+        <div class="sq-label">Business Owner</div>
+        <ul><li>Ra mắt sản phẩm nhanh hơn.</li><li>Dễ mở rộng khi có chiến dịch bán hàng hoặc sự kiện lớn.</li><li>Thử nghiệm nhanh, thất bại nhanh, tối ưu nhanh.</li><li>Tiếp cận nhanh AI, data analytics, automation.</li></ul>
+        <blockquote>“Cloud giúp doanh nghiệp thử nghiệm dịch vụ mới nhanh hơn. Thay vì chờ mua server trong nhiều tuần, đội kỹ thuật có thể tạo môi trường trong vài phút hoặc vài giờ để business phản ứng nhanh hơn với thị trường.”</blockquote>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 3 cho Sales</div>
+    <div class="key-msg">
+      <h3>Nhớ 3 lớp thông điệp</h3>
+      <p><span class="highlight">Deployment model</span> trả lời: hạ tầng đặt ở đâu, dùng riêng hay dùng chung? <span class="highlight">Service model</span> trả lời: khách hàng thuê đến lớp nào, nhà cung cấp quản lý phần nào? <span class="highlight">Business value</span> trả lời: khách hàng tiết kiệm gì, nhanh hơn ở đâu, giảm rủi ro nào, và đội IT được giải phóng khỏi việc vận hành nào?</p>
+      <div class="pills"><div class="pill-item">Deployment model</div><div class="pill-item">Service model</div><div class="pill-item">Business value</div></div>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section2.html" class="bnav-btn">← Module 02: Cloud là gì?</a>
+    <span class="bnav-center">Module 03 / 11</span>
+    <a href="section4.html" class="bnav-btn next">Module 04: Services trên Cloud →</a>
+  </nav>
+
+</main>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add("visible"), index * 90);
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold:.08 });
+document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+const modelContent = {
+  iaas: {
+    title: "IaaS - Infrastructure as a Service",
+    intro: "IaaS là mô hình Cloud gần giống hạ tầng truyền thống nhất. Khách hàng thuê máy ảo, network, storage, firewall, load balancer và vẫn vận hành nhiều lớp phía trên.",
+    customer: ["Hệ điều hành", "Middleware, runtime", "Ứng dụng và dữ liệu", "Cấu hình bảo mật bên trong workload"],
+    provider: ["Data center", "Phần cứng server, storage vật lý", "Network nền tảng", "Lớp ảo hóa"],
+    position: "Phù hợp khi khách hàng muốn migrate nhanh workload hiện hữu theo hướng lift-and-shift, cần kiểm soát hệ điều hành hoặc có ứng dụng legacy khó chuyển ngay sang PaaS. Ví dụ: Azure Virtual Machines, Amazon EC2, Google Compute Engine, UHost."
+  },
+  paas: {
+    title: "PaaS - Platform as a Service",
+    intro: "PaaS là mô hình Cloud cao hơn IaaS. Khách hàng không cần quản lý server hoặc hệ điều hành nền tảng, mà tập trung vào ứng dụng, dữ liệu, logic nghiệp vụ và cấu hình dịch vụ.",
+    customer: ["Source code hoặc application package", "Dữ liệu", "Cấu hình ứng dụng", "Tài khoản, phân quyền, chính sách truy cập", "Một phần scaling, backup, network integration tùy dịch vụ"],
+    provider: ["OS patching", "Runtime và middleware nền tảng", "Availability ở mức dịch vụ", "Scaling nền tảng", "Một phần backup, monitoring, HA tùy dịch vụ"],
+    position: "Phù hợp khi khách hàng muốn giảm tải vận hành, tăng tốc phát triển ứng dụng, giảm phụ thuộc vào đội system admin truyền thống và chuẩn hóa môi trường triển khai. Ví dụ: Azure App Service, Azure SQL Database, AWS Elastic Beanstalk, Amazon RDS, Google App Engine, Cloud SQL."
+  },
+  saas: {
+    title: "SaaS - Software as a Service",
+    intro: "SaaS là phần mềm hoàn chỉnh chạy trên Cloud. Khách hàng chỉ sử dụng ứng dụng, gần như không cần quan tâm server, OS, storage, database hoặc runtime phía sau.",
+    customer: ["Người dùng", "Phân quyền", "Dữ liệu nhập vào hệ thống", "Cấu hình nghiệp vụ", "MFA, SSO, conditional access nếu dịch vụ hỗ trợ"],
+    provider: ["Toàn bộ hạ tầng Cloud", "Ứng dụng", "Database nền tảng", "Runtime", "Bản vá, nâng cấp phiên bản", "Availability của dịch vụ"],
+    position: "Phù hợp khi khách hàng cần triển khai nhanh chức năng nghiệp vụ hoàn chỉnh như email, CRM, ticketing, collaboration, HRM, ERP mà không muốn tự xây dựng và vận hành phần mềm. Ví dụ: Microsoft 365, Salesforce, Google Workspace, ServiceNow."
+  }
+};
+
+const cards = document.querySelectorAll(".model-card");
+const detail = document.getElementById("modelDetail");
+function renderModel(key) {
+  const data = modelContent[key];
+  detail.innerHTML = `
+    <h3>${data.title}</h3>
+    <p>${data.intro}</p>
+    <div class="detail-grid">
+      <div class="mini-box"><h4>Khách hàng thường quản lý</h4><ul>${data.customer.map((item) => `<li>${item}</li>`).join("")}</ul></div>
+      <div class="mini-box"><h4>Nhà cung cấp thường quản lý</h4><ul>${data.provider.map((item) => `<li>${item}</li>`).join("")}</ul></div>
+    </div>
+    <div class="sales-position"><strong>Sales positioning</strong>${data.position}</div>
+  `;
+  detail.classList.add("active");
+}
+cards.forEach((card) => {
+  card.addEventListener("click", () => {
+    cards.forEach((item) => item.classList.remove("active"));
+    card.classList.add("active");
+    detail.classList.remove("active");
+    renderModel(card.dataset.model);
+    detail.style.animation = "none";
+    detail.offsetHeight;
+    detail.style.animation = "fadeUp .3s ease";
+  });
+});
+</script>
+</body>
+</html>

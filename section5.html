@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vì sao khách hàng chuyển lên Cloud? | Module 05</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-5-page { max-width:1120px; }
+.value-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:34px; }
+.value-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); transition:var(--transition); }
+.value-card:nth-child(2) { border-top-color:var(--accent); }
+.value-card:nth-child(3) { border-top-color:var(--success); }
+.value-card:nth-child(4) { border-top-color:var(--secondary); }
+.value-card:nth-child(5) { border-top-color:var(--primary-light); }
+.value-card:nth-child(6) { border-top-color:#8764b8; }
+.value-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.value-kicker { display:inline-flex; margin-bottom:10px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.value-card h3 { margin-bottom:8px; color:var(--text); font-size:16px; font-weight:900; }
+.value-card p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.reason-chapters { display:grid; gap:20px; }
+.reason-chapter { overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.reason-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:24px 26px 18px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.reason-num { display:grid; width:42px; height:42px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.reason-chapter h3 { margin-bottom:6px; color:var(--text); font-size:20px; font-weight:900; }
+.reason-intro { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.reason-body { padding:0 26px 24px; }
+.split-view { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px; }
+.compare-box { border-radius:var(--radius-sm); background:var(--gray-1); padding:18px; }
+.compare-box.cloud { background:linear-gradient(180deg,#fff,#f3fbff); border:1px solid rgba(0,188,242,.18); }
+.compare-box h4 { margin-bottom:12px; color:var(--text); font-size:14px; font-weight:900; }
+.compare-box ul,.reason-list { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.48; }
+.reason-list { margin-top:14px; grid-template-columns:repeat(2,minmax(0,1fr)); list-style-position:inside; padding-left:0; }
+.reason-list li { list-style:none; border-radius:8px; background:var(--gray-1); padding:10px 12px; }
+.sales-note { margin-top:16px; border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:14px 16px; }
+.sales-note span { display:block; margin-bottom:5px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.sales-note p { color:var(--text); font-size:14px; line-height:1.6; margin:0; }
+.comparison-table table { min-width:980px; }
+.question-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.question-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; }
+.question-card h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.question-card ul { display:grid; gap:9px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+@media(max-width:900px) {
+  .value-grid,.split-view,.question-grid { grid-template-columns:1fr; }
+  .reason-list { grid-template-columns:1fr; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 05 · Vì sao khách hàng chuyển lên Cloud?</span>
+  </div>
+  <div class="nav-right">
+    <a href="section4.html" class="nav-btn">← Module 04</a>
+    <a href="section6.html" class="nav-btn primary-btn">Module 06 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 05 / 11</div>
+    <h1>🚀 Vì sao khách hàng chuyển lên Cloud?</h1>
+    <p class="subtitle">Cloud không chỉ là thay server. Đây là cách doanh nghiệp thay đổi mô hình chi phí, tốc độ triển khai, khả năng mở rộng, phục hồi và tiếp cận công nghệ mới.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~25 phút đọc</div>
+      <div class="meta-chip">💰 CAPEX → OPEX</div>
+      <div class="meta-chip">💬 Talk track cho Sales</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-5-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Khách hàng chuyển lên Cloud vì nhiều nhóm giá trị cùng lúc: tài chính linh hoạt hơn, triển khai nhanh hơn, mở rộng dễ hơn, hệ thống có thể phục hồi tốt hơn, tiếp cận công nghệ mới nhanh hơn và hỗ trợ chiến lược chuyển đổi số.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧭 Bản đồ 6 lý do khách hàng chuyển lên Cloud</div>
+    <p class="block-subtitle">Mỗi lý do là một góc nhìn kinh doanh khác nhau. Sales nên chọn thông điệp theo vai trò người nghe: CFO, CIO/CTO, IT Manager hoặc Business Owner.</p>
+    <div class="value-grid">
+      <article class="value-card">
+        <span class="value-kicker">Tài chính</span>
+        <h3>1. Từ CAPEX sang OPEX</h3>
+        <p>Giảm áp lực đầu tư ban đầu, trả theo mức sử dụng và gắn chi phí CNTT với nhu cầu thực tế.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-kicker">Tốc độ</span>
+        <h3>2. Tăng tốc triển khai</h3>
+        <p>Rút ngắn thời gian từ ý tưởng đến hạ tầng sẵn sàng, giúp dự án ra thị trường nhanh hơn.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-kicker">Linh hoạt</span>
+        <h3>3. Mở rộng linh hoạt</h3>
+        <p>Tăng hoặc giảm tài nguyên theo mùa vụ, chiến dịch, traffic hoặc vòng đời dự án.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-kicker">Resilience</span>
+        <h3>4. Sẵn sàng & phục hồi</h3>
+        <p>Dùng region, zone, backup, replication và DR để thiết kế hệ thống chịu lỗi tốt hơn.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-kicker">Đổi mới</span>
+        <h3>5. Công nghệ mới</h3>
+        <p>Tiếp cận nhanh AI/ML, Data Analytics, IoT, Serverless, Kubernetes, Security và DevOps.</p>
+      </article>
+      <article class="value-card">
+        <span class="value-kicker">Chiến lược</span>
+        <h3>6. Chuyển đổi số</h3>
+        <p>Ra mắt dịch vụ số nhanh hơn, kết nối dữ liệu tốt hơn và tự động hóa vận hành CNTT.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧱 Diễn giải chi tiết 6 lý do</div>
+    <p class="block-subtitle">Sáu nhóm lý do này giúp Sales chuyển từ câu chuyện hạ tầng sang câu chuyện tài chính, tốc độ, vận hành và năng lực đổi mới của doanh nghiệp.</p>
+
+    <div class="reason-chapters">
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.1</div>
+          <div>
+            <h3>Từ CAPEX sang OPEX</h3>
+            <p class="reason-intro">On-premises thường yêu cầu đầu tư lớn ban đầu, trong khi Cloud cho phép khách hàng chuyển sang mô hình chi phí vận hành linh hoạt hơn.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <div class="split-view">
+            <div class="compare-box">
+              <h4>On-premises thường cần đầu tư trước</h4>
+              <ul>
+                <li>Server.</li><li>Storage.</li><li>Network.</li><li>Security appliance.</li><li>License.</li><li>Data center space.</li><li>Điện, làm mát, bảo trì.</li>
+              </ul>
+            </div>
+            <div class="compare-box cloud">
+              <h4>Cloud chuyển thành chi phí vận hành</h4>
+              <ul>
+                <li>Dùng trước, trả theo mức sử dụng.</li><li>Không cần đầu tư toàn bộ công suất từ đầu.</li><li>Có thể tăng/giảm tài nguyên theo nhu cầu.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sales-note"><span>Thông điệp Sales</span><p>Cloud không phải lúc nào cũng rẻ hơn tuyệt đối, nhưng giúp chi phí linh hoạt hơn và gắn với nhu cầu kinh doanh thực tế hơn.</p></div>
+        </div>
+      </article>
+
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.2</div>
+          <div>
+            <h3>Tăng tốc triển khai</h3>
+            <p class="reason-intro">Với on-premises, triển khai hạ tầng có thể mất nhiều tuần hoặc nhiều tháng. Với Cloud, nhiều tài nguyên có thể tạo trong vài phút hoặc vài giờ.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <div class="split-view">
+            <div class="compare-box">
+              <h4>Quy trình on-premises thường gồm</h4>
+              <ul>
+                <li>Lập BOM.</li><li>Mua thiết bị.</li><li>Chờ hàng.</li><li>Lắp đặt.</li><li>Cấu hình.</li><li>Nghiệm thu.</li>
+              </ul>
+            </div>
+            <div class="compare-box cloud">
+              <h4>Cloud rút ngắn vòng chờ</h4>
+              <ul>
+                <li>Tạo VM, storage, network trong thời gian ngắn.</li><li>Dựng môi trường dev/test nhanh hơn.</li><li>Thử nghiệm ý tưởng trước khi đầu tư lớn.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sales-note"><span>Thông điệp Sales</span><p>Cloud giúp rút ngắn time-to-market. Đây là thông điệp rất phù hợp với dự án sản phẩm mới, chiến dịch ngắn hạn hoặc hệ thống cần ra mắt nhanh.</p></div>
+        </div>
+      </article>
+
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.3</div>
+          <div>
+            <h3>Mở rộng linh hoạt</h3>
+            <p class="reason-intro">Khi nhu cầu tăng, khách hàng có thể mở rộng tài nguyên. Khi nhu cầu giảm, khách hàng có thể thu hẹp để tối ưu chi phí.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <ul class="reason-list">
+            <li>Thêm VM.</li>
+            <li>Tăng CPU/RAM.</li>
+            <li>Tăng storage.</li>
+            <li>Scale web app.</li>
+            <li>Scale database.</li>
+            <li>Mở rộng sang region khác.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Lý do này đặc biệt thuyết phục với e-commerce, hệ thống có traffic mùa vụ, campaign marketing, dự án cần tăng nhanh tài nguyên nhưng không muốn mua dư cho 3-5 năm.</p></div>
+        </div>
+      </article>
+
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.4</div>
+          <div>
+            <h3>Tăng độ sẵn sàng và khả năng phục hồi</h3>
+            <p class="reason-intro">Cloud cung cấp nhiều vùng triển khai và công cụ phục hồi để khách hàng thiết kế hệ thống có khả năng chịu lỗi tốt hơn.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <ul class="reason-list">
+            <li>Region.</li>
+            <li>Availability Zone.</li>
+            <li>Multi-region.</li>
+            <li>Backup.</li>
+            <li>Replication.</li>
+            <li>DR.</li>
+          </ul>
+          <div class="sales-note"><span>Thông điệp Sales</span><p>Cloud giúp khách hàng thiết kế hệ thống có khả năng chịu lỗi tốt hơn, nếu kiến trúc được thiết kế đúng. Không nên nói chỉ cần đưa lên Cloud là tự động có HA/DR.</p></div>
+        </div>
+      </article>
+
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.5</div>
+          <div>
+            <h3>Tiếp cận nhanh công nghệ mới</h3>
+            <p class="reason-intro">Thay vì tự xây toàn bộ nền tảng, khách hàng có thể dùng các dịch vụ mới đã được Cloud provider cung cấp.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <ul class="reason-list">
+            <li>AI/ML.</li>
+            <li>Data Analytics.</li>
+            <li>IoT.</li>
+            <li>Serverless.</li>
+            <li>Kubernetes.</li>
+            <li>Security analytics.</li>
+            <li>DevOps automation.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Đây là cách mở rộng câu chuyện Cloud từ “hạ tầng” sang “năng lực đổi mới”. Khách hàng có thể thử nghiệm AI, data, automation hoặc DevOps mà không phải xây nền tảng từ đầu.</p></div>
+        </div>
+      </article>
+
+      <article class="reason-chapter">
+        <div class="reason-head">
+          <div class="reason-num">5.6</div>
+          <div>
+            <h3>Phù hợp chiến lược chuyển đổi số</h3>
+            <p class="reason-intro">Cloud hỗ trợ các mục tiêu chuyển đổi số, từ ra mắt dịch vụ số đến kết nối dữ liệu và tối ưu vận hành CNTT.</p>
+          </div>
+        </div>
+        <div class="reason-body">
+          <ul class="reason-list">
+            <li>Ra mắt dịch vụ số nhanh hơn.</li>
+            <li>Kết nối dữ liệu từ nhiều nguồn.</li>
+            <li>Phục vụ người dùng ở nhiều địa điểm.</li>
+            <li>Tăng khả năng tự động hóa.</li>
+            <li>Tối ưu vận hành CNTT.</li>
+          </ul>
+          <div class="sales-note"><span>Góc nhìn Sales</span><p>Với lãnh đạo kinh doanh, hãy nối Cloud với mục tiêu chuyển đổi số cụ thể: ra mắt sản phẩm, cải thiện trải nghiệm khách hàng, vận hành dữ liệu hoặc tự động hóa quy trình.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal comparison-table">
+    <div class="block-title">⚖️ Bảng tổng hợp cho Sales</div>
+    <p class="block-subtitle">Dùng bảng này để chuyển “lý do kỹ thuật” thành “thông điệp kinh doanh” trong cuộc gặp khách hàng.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lý do khách hàng quan tâm</th><th>Nỗi đau on-premises</th><th>Cloud giúp gì</th><th>Câu nói Sales có thể dùng</th></tr></thead>
+        <tbody>
+          <tr><td>CAPEX sang OPEX</td><td>Đầu tư lớn ban đầu, mua dư công suất, khó phân bổ chi phí.</td><td>Trả theo mức sử dụng, tăng giảm theo nhu cầu, giảm áp lực đầu tư trước.</td><td>Cloud giúp chi phí CNTT linh hoạt hơn, sát nhu cầu kinh doanh hơn.</td></tr>
+          <tr><td>Tăng tốc triển khai</td><td>Chờ BOM, mua thiết bị, giao hàng, lắp đặt và nghiệm thu.</td><td>Tạo tài nguyên trong vài phút hoặc vài giờ.</td><td>Cloud giúp rút ngắn time-to-market cho dự án mới.</td></tr>
+          <tr><td>Mở rộng linh hoạt</td><td>Phải dự báo và mua dư cho giai đoạn cao điểm.</td><td>Scale VM, app, storage, database hoặc region theo nhu cầu.</td><td>Khách hàng không cần mua dư cho 3-5 năm chỉ để phục vụ một giai đoạn cao điểm.</td></tr>
+          <tr><td>Sẵn sàng & phục hồi</td><td>DR site vật lý tốn chi phí, backup/restore khó kiểm chứng.</td><td>Region, zone, backup, replication và DR linh hoạt hơn.</td><td>Cloud giúp thiết kế khả năng chịu lỗi tốt hơn nếu kiến trúc được làm đúng.</td></tr>
+          <tr><td>Công nghệ mới</td><td>Tự xây AI, data, IoT, DevOps mất nhiều thời gian và kỹ năng.</td><td>Dùng nhanh các dịch vụ đã có sẵn từ provider.</td><td>Cloud giúp thử nghiệm công nghệ mới nhanh hơn mà không phải xây nền tảng từ đầu.</td></tr>
+          <tr><td>Chuyển đổi số</td><td>Hạ tầng chậm làm chậm sản phẩm số và tự động hóa.</td><td>Kết nối dữ liệu, phục vụ nhiều địa điểm, tự động hóa vận hành.</td><td>Cloud là nền tảng giúp chuyển đổi số diễn ra nhanh và linh hoạt hơn.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Câu hỏi discovery</div>
+    <p class="block-subtitle">Bộ câu hỏi này giúp Sales xác định lý do chuyển Cloud nào đang quan trọng nhất với khách hàng.</p>
+    <div class="question-grid">
+      <article class="question-card">
+        <h3>Tài chính & tốc độ</h3>
+        <ul>
+          <li>Khách hàng đang đau về chi phí đầu tư ban đầu không?</li>
+          <li>Dự án mới thường mất bao lâu để có hạ tầng?</li>
+          <li>Có dự án nào bị chậm vì phải chờ mua thiết bị không?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Mở rộng & phục hồi</h3>
+        <ul>
+          <li>Nhu cầu tài nguyên có tăng giảm theo mùa vụ không?</li>
+          <li>RPO/RTO hiện tại của các hệ thống quan trọng là bao nhiêu?</li>
+          <li>Khách hàng đã có kịch bản DR được kiểm thử định kỳ chưa?</li>
+        </ul>
+      </article>
+      <article class="question-card">
+        <h3>Đổi mới & chuyển đổi số</h3>
+        <ul>
+          <li>Có nhu cầu AI, Data, Automation hoặc DevOps chưa?</li>
+          <li>Cloud gắn với mục tiêu chuyển đổi số nào của doanh nghiệp?</li>
+          <li>Business cần ra mắt dịch vụ số mới nhanh hơn ở điểm nào?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 5 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ 6 nhóm giá trị</div>
+      <p class="dark-card-text">Khách hàng chuyển lên Cloud vì <strong>tài chính linh hoạt hơn</strong>, <strong>triển khai nhanh hơn</strong>, <strong>mở rộng linh hoạt hơn</strong>, <strong>phục hồi tốt hơn</strong>, <strong>tiếp cận công nghệ mới nhanh hơn</strong> và <strong>hỗ trợ chuyển đổi số</strong>. Sales nên chọn thông điệp theo vấn đề thật của khách hàng, không bán Cloud như một câu trả lời chung cho mọi tình huống.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section4.html" class="bnav-btn">← Module 04: Services trên Cloud</a>
+    <span class="bnav-center">Module 05 / 11</span>
+    <a href="section6.html" class="bnav-btn next">Module 06: Mapping dịch vụ Cloud →</a>
+  </nav>
+
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

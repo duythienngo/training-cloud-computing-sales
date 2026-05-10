@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ câu hỏi khai thác nhu cầu Cloud cho Sales | Module 08</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-8-page { max-width:1120px; }
+.question-map { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:30px; }
+.q-map-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:20px; border-top:4px solid var(--primary); transition:var(--transition); }
+.q-map-card:nth-child(2) { border-top-color:var(--accent); }
+.q-map-card:nth-child(3) { border-top-color:var(--success); }
+.q-map-card:nth-child(4) { border-top-color:var(--secondary); }
+.q-map-card:nth-child(5) { border-top-color:#8764b8; }
+.q-map-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.q-map-card span { display:inline-flex; margin-bottom:10px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.q-map-card h3 { margin-bottom:8px; color:var(--text); font-size:15px; font-weight:900; line-height:1.3; }
+.q-map-card p { color:var(--text-light); font-size:13px; line-height:1.5; }
+.question-picker { margin-bottom:18px; border:1px solid rgba(0,120,212,.16); border-radius:var(--radius); background:linear-gradient(135deg,#fff,#f3fbff); box-shadow:var(--shadow-sm); padding:22px; }
+.question-picker label { display:block; margin-bottom:9px; color:var(--primary-dark); font-size:12px; font-weight:900; letter-spacing:.4px; text-transform:uppercase; }
+.question-select-wrap { position:relative; }
+.question-select-wrap::after { position:absolute; top:50%; right:18px; color:var(--primary); content:"⌄"; font-size:22px; font-weight:900; pointer-events:none; transform:translateY(-56%); }
+.question-select { width:100%; min-height:54px; appearance:none; border:2px solid rgba(0,120,212,.18); border-radius:var(--radius-sm); background:var(--white); color:var(--text); cursor:pointer; font:inherit; font-size:15px; font-weight:850; line-height:1.35; padding:13px 52px 13px 16px; transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease; }
+.question-select:hover { border-color:rgba(0,120,212,.42); box-shadow:var(--shadow-sm); transform:translateY(-1px); }
+.question-select:focus { border-color:var(--primary); box-shadow:var(--shadow-glow); outline:none; }
+.question-hint { margin-top:10px; color:var(--text-muted); font-size:13px; line-height:1.55; }
+.question-panel { display:none; overflow:hidden; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); }
+.question-panel.active { display:block; animation:panelIn .3s ease both; }
+.question-head { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; padding:26px 28px 20px; background:linear-gradient(90deg,rgba(0,120,212,.08),rgba(0,188,242,.04)); }
+.question-num { display:grid; width:46px; height:46px; place-items:center; border-radius:10px; background:var(--primary); color:white; font-size:13px; font-weight:900; }
+.question-head h3 { margin-bottom:6px; color:var(--text); font-size:21px; font-weight:900; }
+.question-head p { color:var(--text-light); font-size:14.5px; line-height:1.65; }
+.question-body { padding:26px 28px 28px; }
+.discovery-list { display:grid; gap:12px; list-style:none; }
+.discovery-list li { position:relative; border:1px solid var(--gray-3); border-radius:var(--radius-sm); background:var(--gray-1); color:var(--text); font-size:14.5px; line-height:1.55; padding:15px 16px 15px 48px; }
+.discovery-list li::before { position:absolute; top:14px; left:16px; display:grid; width:22px; height:22px; place-items:center; border-radius:50%; background:var(--primary); color:white; content:"?"; font-size:12px; font-weight:900; }
+.usage-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.usage-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.usage-card:nth-child(2) { border-top-color:var(--accent); }
+.usage-card:nth-child(3) { border-top-color:var(--success); }
+.usage-card h3 { margin-bottom:10px; color:var(--text); font-size:16px; font-weight:900; }
+.usage-card ul { display:grid; gap:8px; padding-left:18px; color:var(--text-light); font-size:13.5px; line-height:1.5; }
+.capture-table table { min-width:0; table-layout:fixed; }
+.capture-table th,.capture-table td { overflow-wrap:anywhere; }
+@keyframes panelIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1000px) {
+  .question-map { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .usage-grid { grid-template-columns:1fr; }
+}
+@media(max-width:640px) {
+  .question-map { grid-template-columns:1fr; }
+  .question-picker { padding:18px; }
+  .question-head { grid-template-columns:1fr; }
+  .question-body { padding:22px 18px; }
+  .capture-table table,.capture-table thead,.capture-table tbody,.capture-table tr,.capture-table th,.capture-table td { display:block; width:100%; }
+  .capture-table thead { display:none; }
+  .capture-table tr { margin-bottom:12px; border:1px solid var(--gray-3); border-radius:var(--radius-sm); overflow:hidden; }
+  .capture-table td { display:grid; grid-template-columns:110px 1fr; gap:12px; border-bottom:1px solid var(--gray-2); padding:12px 14px; }
+  .capture-table td:last-child { border-bottom:0; }
+  .capture-table td::before { color:var(--text); font-size:12px; font-weight:900; }
+  .capture-table td:nth-child(1)::before { content:"Nhóm"; }
+  .capture-table td:nth-child(2)::before { content:"Cần ghi lại"; }
+  .capture-table td:nth-child(3)::before { content:"Dùng để"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 08 · Câu hỏi khai thác nhu cầu</span>
+  </div>
+  <div class="nav-right">
+    <a href="section7.html" class="nav-btn">← Module 07</a>
+    <a href="section9.html" class="nav-btn primary-btn">Module 09 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 08 / 11</div>
+    <h1>❓ Bộ câu hỏi khai thác nhu cầu Cloud</h1>
+    <p class="subtitle">Một bộ câu hỏi discovery giúp Sales hiểu hiện trạng, động lực kinh doanh, bảo mật, vận hành và tài chính trước khi định vị giải pháp Cloud.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~20 phút đọc</div>
+      <div class="meta-chip">🧭 5 nhóm câu hỏi</div>
+      <div class="meta-chip">📝 Discovery checklist</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-8-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Discovery tốt giúp Sales tránh bán Cloud theo giả định. Trước khi nói về dịch vụ, cấu hình hoặc giá, cần hiểu khách hàng đang vận hành gì, muốn đạt mục tiêu nào, có ràng buộc bảo mật gì, ai vận hành và ngân sách được kiểm soát ra sao.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🗺️ 5 nhóm câu hỏi cần khai thác</div>
+    <p class="block-subtitle">Mỗi nhóm câu hỏi giúp mở ra một lớp nhu cầu khác nhau trong hành trình tư vấn Cloud.</p>
+    <div class="question-map">
+      <article class="q-map-card"><span>8.1</span><h3>Hiện trạng hạ tầng</h3><p>Khách hàng đang vận hành ở đâu, workload nào đang chạy, đang đau ở điểm nào.</p></article>
+      <article class="q-map-card"><span>8.2</span><h3>Business driver</h3><p>Mục tiêu chuyển Cloud, deadline, mùa vụ, mở rộng người dùng hoặc thị trường.</p></article>
+      <article class="q-map-card"><span>8.3</span><h3>Bảo mật & tuân thủ</h3><p>Loại dữ liệu, vị trí lưu trữ, mã hóa, audit, phân quyền và tiêu chuẩn compliance.</p></article>
+      <article class="q-map-card"><span>8.4</span><h3>Vận hành</h3><p>Năng lực đội IT, mô hình managed service, monitoring, backup và incident response.</p></article>
+      <article class="q-map-card"><span>8.5</span><h3>Tài chính</h3><p>CAPEX/OPEX, ngân sách tháng, dự toán chi phí, showback hoặc chargeback.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Question bank cho Sales</div>
+    <p class="block-subtitle">Chọn nhóm câu hỏi phù hợp với giai đoạn trao đổi. Nội dung sẽ hiện ngay bên dưới để dùng nhanh trong cuộc họp.</p>
+
+    <div class="question-picker">
+      <label for="questionSelect">Chọn nhóm câu hỏi</label>
+      <div class="question-select-wrap">
+        <select class="question-select" id="questionSelect" aria-label="Chọn nhóm câu hỏi">
+          <option value="infra">8.1. Câu hỏi về hiện trạng hạ tầng</option>
+          <option value="business">8.2. Câu hỏi về business driver</option>
+          <option value="security">8.3. Câu hỏi về bảo mật và tuân thủ</option>
+          <option value="operations">8.4. Câu hỏi về vận hành</option>
+          <option value="finance">8.5. Câu hỏi về tài chính</option>
+        </select>
+      </div>
+      <p class="question-hint">Nên bắt đầu bằng hiện trạng, sau đó đi sang mục tiêu kinh doanh, bảo mật, vận hành và tài chính.</p>
+    </div>
+
+    <div class="question-panels">
+      <article class="question-panel active" data-question-panel="infra">
+        <div class="question-head"><div class="question-num">8.1</div><div><h3>Câu hỏi về hiện trạng hạ tầng</h3><p>Mục tiêu là hiểu khách hàng đang vận hành hệ thống ở đâu, workload nào quan trọng và điểm nghẽn hiện tại là gì.</p></div></div>
+        <div class="question-body">
+          <ul class="discovery-list">
+            <li>Hiện tại khách hàng đang vận hành hệ thống tại data center riêng, thuê chỗ đặt máy chủ hay dùng Cloud nào chưa?</li>
+            <li>Các workload chính hiện nay là gì: website, ERP, CRM, database, file server, backup, BI, AI, VDI?</li>
+            <li>Hạ tầng hiện tại có đang gặp vấn đề về capacity, performance hoặc availability không?</li>
+            <li>Thời gian mua sắm và triển khai hạ tầng mới thường mất bao lâu?</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="question-panel" data-question-panel="business">
+        <div class="question-head"><div class="question-num">8.2</div><div><h3>Câu hỏi về business driver</h3><p>Mục tiêu là hiểu vì sao khách hàng quan tâm Cloud và kết quả kinh doanh nào đang được kỳ vọng.</p></div></div>
+        <div class="question-body">
+          <ul class="discovery-list">
+            <li>Khách hàng chuyển lên Cloud vì mục tiêu gì: giảm chi phí, tăng tốc triển khai, DR, chuyển đổi số, AI/Data, mở rộng thị trường?</li>
+            <li>Dự án có deadline go-live cụ thể không?</li>
+            <li>Workload có tăng giảm theo mùa vụ hoặc chiến dịch kinh doanh không?</li>
+            <li>Có yêu cầu mở rộng ra nhiều địa điểm, nhiều quốc gia hoặc nhiều nhóm người dùng không?</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="question-panel" data-question-panel="security">
+        <div class="question-head"><div class="question-num">8.3</div><div><h3>Câu hỏi về bảo mật và tuân thủ</h3><p>Mục tiêu là xác định dữ liệu nào nhạy cảm, ai được truy cập và tiêu chuẩn tuân thủ nào cần đáp ứng.</p></div></div>
+        <div class="question-body">
+          <ul class="discovery-list">
+            <li>Dữ liệu thuộc loại nào: dữ liệu cá nhân, tài chính, y tế, khách hàng, log hệ thống, dữ liệu nội bộ?</li>
+            <li>Có yêu cầu dữ liệu phải nằm tại quốc gia/khu vực cụ thể không?</li>
+            <li>Có yêu cầu mã hóa, audit log, phân quyền chi tiết hoặc MFA không?</li>
+            <li>Khách hàng có tiêu chuẩn tuân thủ nào cần đáp ứng không: ISO 27001, PCI DSS, HIPAA, SOC, Nghị định/Thông tư trong nước?</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="question-panel" data-question-panel="operations">
+        <div class="question-head"><div class="question-num">8.4</div><div><h3>Câu hỏi về vận hành</h3><p>Mục tiêu là hiểu đội IT sẽ vận hành Cloud thế nào và phần nào nên tự quản lý hoặc thuê managed service.</p></div></div>
+        <div class="question-body">
+          <ul class="discovery-list">
+            <li>Đội IT hiện tại có đủ năng lực vận hành Cloud không?</li>
+            <li>Khách hàng muốn tự quản lý, thuê managed service, hay mô hình kết hợp?</li>
+            <li>Ai sẽ chịu trách nhiệm monitoring, backup, incident response và cost optimization?</li>
+            <li>Khách hàng đã có quy trình Change/Incident/Problem Management chưa?</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="question-panel" data-question-panel="finance">
+        <div class="question-head"><div class="question-num">8.5</div><div><h3>Câu hỏi về tài chính</h3><p>Mục tiêu là xác định mô hình chi phí, ngân sách, cách dự toán và cách phân bổ chi phí Cloud.</p></div></div>
+        <div class="question-body">
+          <ul class="discovery-list">
+            <li>Khách hàng ưu tiên CAPEX hay OPEX?</li>
+            <li>Có ngân sách cố định hằng tháng không?</li>
+            <li>Có cần dự toán chi phí trước khi triển khai không?</li>
+            <li>Có yêu cầu showback/chargeback theo phòng ban hoặc dự án không?</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧩 Cách dùng bộ câu hỏi trong cuộc gặp</div>
+    <p class="block-subtitle">Không cần hỏi toàn bộ trong một lần. Hãy chọn nhóm câu hỏi theo vai trò người nghe và giai đoạn cơ hội.</p>
+    <div class="usage-grid">
+      <article class="usage-card">
+        <h3>Mở đầu cuộc gặp</h3>
+        <ul>
+          <li>Hỏi hiện trạng hạ tầng và workload chính.</li>
+          <li>Hỏi pain point đang làm khách hàng muốn thay đổi.</li>
+          <li>Tránh đi thẳng vào cấu hình CPU/RAM quá sớm.</li>
+        </ul>
+      </article>
+      <article class="usage-card">
+        <h3>Khi đã có nhu cầu</h3>
+        <ul>
+          <li>Hỏi business driver, deadline và phạm vi triển khai.</li>
+          <li>Kiểm tra bảo mật, tuân thủ và yêu cầu vị trí dữ liệu.</li>
+          <li>Làm rõ ai vận hành và ai phê duyệt.</li>
+        </ul>
+      </article>
+      <article class="usage-card">
+        <h3>Trước proposal</h3>
+        <ul>
+          <li>Xác nhận mô hình tài chính và ngân sách.</li>
+          <li>Ghi lại yêu cầu monitoring, backup, incident response.</li>
+          <li>Chuyển thông tin cho đội kỹ thuật để thiết kế phương án.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal capture-table">
+    <div class="block-title">📋 Thông tin Sales nên ghi lại</div>
+    <p class="block-subtitle">Sau discovery, cần có đủ thông tin để chuyển sang bước tư vấn giải pháp hoặc làm proposal.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nhóm thông tin</th><th>Cần ghi lại</th><th>Dùng để</th></tr></thead>
+        <tbody>
+          <tr><td>Hiện trạng</td><td>Nơi đặt hệ thống, workload chính, pain point capacity/performance/availability.</td><td>Xác định phạm vi tư vấn ban đầu.</td></tr>
+          <tr><td>Business driver</td><td>Mục tiêu chuyển Cloud, deadline, mùa vụ, phạm vi người dùng/địa điểm.</td><td>Chọn thông điệp giá trị và ưu tiên triển khai.</td></tr>
+          <tr><td>Bảo mật</td><td>Loại dữ liệu, data residency, mã hóa, audit, MFA, compliance.</td><td>Thiết kế security baseline và governance.</td></tr>
+          <tr><td>Vận hành</td><td>Năng lực IT, mô hình managed service, monitoring, backup, incident response.</td><td>Xác định trách nhiệm vận hành sau triển khai.</td></tr>
+          <tr><td>Tài chính</td><td>CAPEX/OPEX, ngân sách tháng, dự toán, showback/chargeback.</td><td>Chuẩn bị mô hình chi phí và phương án thương mại.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 8 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ cách hỏi</div>
+      <p class="dark-card-text">Một cuộc discovery tốt không chỉ hỏi khách hàng cần bao nhiêu tài nguyên. Sales cần hiểu hiện trạng, mục tiêu kinh doanh, ràng buộc bảo mật, mô hình vận hành và ngân sách. Khi hỏi đúng, đề xuất Cloud sẽ sát nhu cầu hơn và dễ được khách hàng tin hơn.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section7.html" class="bnav-btn">← Module 07: Định vị theo tình huống</a>
+    <span class="bnav-center">Module 08 / 11</span>
+    <a href="section9.html" class="bnav-btn next">Module 09: Cấu trúc trình bày 15 phút →</a>
+  </nav>
+
+</main>
+
+<script>
+const questionSelect = document.getElementById("questionSelect");
+const questionPanels = [...document.querySelectorAll("[data-question-panel]")];
+
+function activateQuestionGroup(key) {
+  questionPanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.questionPanel === key);
+  });
+}
+
+if (questionSelect) {
+  questionSelect.addEventListener("change", () => activateQuestionGroup(questionSelect.value));
+}
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

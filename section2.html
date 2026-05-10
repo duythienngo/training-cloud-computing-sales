@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Computing là gì? | Module 02</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary:#0078D4; --primary-dark:#005A9E; --primary-light:#50B0F0;
+  --secondary:#00BCF2; --accent:#FFB900; --success:#107C10;
+  --danger:#D83B01; --dark:#050F1E; --dark-2:#0D1F3C; --white:#fff;
+  --gray-1:#F5F8FC; --gray-2:#EEF2F7; --gray-3:#D1DCE8;
+  --text:#1A202C; --text-light:#4A5568; --text-muted:#718096;
+  --shadow-sm:0 2px 12px rgba(0,120,212,.07);
+  --shadow-md:0 8px 32px rgba(0,120,212,.13);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.15);
+  --radius:16px; --radius-sm:10px;
+  --tr:all .3s cubic-bezier(.4,0,.2,1);
+}
+html { scroll-behavior:smooth; }
+body { font-family:Inter,"Segoe UI",Arial,sans-serif; background:var(--gray-1); color:var(--text); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+a { color:inherit; text-decoration:none; }
+strong { color:var(--primary-dark); }
+.top-nav { position:fixed; top:0; left:0; right:0; z-index:100; height:60px; padding:0 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:rgba(5,15,30,.9); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,.07); }
+.nav-left,.nav-right { display:flex; align-items:center; gap:10px; }
+.nav-back,.nav-btn { display:flex; align-items:center; gap:8px; color:rgba(255,255,255,.62); font-size:14px; font-weight:600; padding:7px 12px; border-radius:8px; transition:var(--tr); }
+.nav-btn { border:1px solid rgba(255,255,255,.1); font-size:13px; }
+.nav-back:hover,.nav-btn:hover { color:white; background:rgba(255,255,255,.08); }
+.nav-btn.prim { color:white; background:var(--primary); border-color:var(--primary); }
+.nav-btn.prim:hover { background:var(--primary-dark); }
+.nav-sep { color:rgba(255,255,255,.22); }
+.nav-module-title { color:rgba(255,255,255,.75); font-size:14px; font-weight:700; }
+.section-hero { position:relative; padding:100px 24px 72px; overflow:hidden; text-align:center; background:linear-gradient(140deg,#050F1E 0%,#0D1F3C 50%,#0A3070 100%); }
+.section-hero::before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(0,120,212,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,120,212,.05) 1px,transparent 1px); background-size:50px 50px; }
+.section-hero::after { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 600px 400px at 60% 40%,rgba(0,120,212,.2),transparent 70%),radial-gradient(ellipse 400px 300px at 20% 60%,rgba(0,188,242,.12),transparent 60%); pointer-events:none; }
+.hero-inner { position:relative; z-index:2; max-width:760px; margin:0 auto; }
+.module-badge { display:inline-flex; align-items:center; gap:8px; margin-bottom:28px; padding:7px 18px; border:1px solid rgba(0,188,242,.4); border-radius:50px; background:rgba(0,120,212,.2); color:#7DD3FC; font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; animation:fadeUp .6s ease both; }
+.section-hero h1 { margin-bottom:20px; background:linear-gradient(90deg,#fff 0%,#A8D4F5 60%,#00BCF2 100%); -webkit-background-clip:text; background-clip:text; color:transparent; font-size:clamp(32px,5.5vw,58px); font-weight:900; letter-spacing:0; line-height:1.1; animation:fadeUp .6s ease .1s both; }
+.subtitle { margin-bottom:40px; color:rgba(255,255,255,.66); font-size:17px; line-height:1.65; animation:fadeUp .6s ease .2s both; }
+.hero-meta { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; animation:fadeUp .6s ease .3s both; }
+.meta-chip { display:flex; align-items:center; gap:7px; padding:8px 18px; border:1px solid rgba(255,255,255,.12); border-radius:50px; background:rgba(255,255,255,.07); color:rgba(255,255,255,.74); font-size:13px; font-weight:600; }
+.page { max-width:960px; margin:0 auto; padding:56px 24px 80px; }
+.block { margin-bottom:48px; }
+.block-title { display:flex; align-items:center; gap:10px; margin-bottom:8px; color:var(--text); font-size:22px; font-weight:900; letter-spacing:0; }
+.block-sub { margin-bottom:24px; color:var(--text-muted); font-size:14px; line-height:1.6; }
+.def-card,.analogy-card,.sales-quote { background:white; border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+.def-card { position:relative; overflow:hidden; padding:36px; border-left:5px solid var(--primary); }
+.def-card::before { content:""; position:absolute; top:0; right:0; width:220px; height:220px; background:radial-gradient(circle,rgba(0,120,212,.06),transparent 70%); pointer-events:none; }
+.def-card p { color:var(--text-light); font-size:16px; line-height:1.75; }
+.quote-block { margin-top:20px; padding:20px 24px; border-left:3px solid var(--secondary); border-radius:var(--radius-sm); background:var(--gray-1); color:var(--text); font-size:15px; line-height:1.7; font-style:italic; }
+.compare-visual { margin:22px 0 0; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); padding:18px; }
+.compare-visual-image { overflow:hidden; border-radius:var(--radius-sm); background:var(--gray-2); box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); }
+.compare-visual-image img { display:block; width:100%; height:auto; object-fit:contain; transition:transform .35s ease; }
+.compare-visual:hover .compare-visual-image img { transform:scale(1.018); }
+.compare-visual figcaption { margin-top:12px; color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.compare-visual figcaption strong { color:var(--primary-dark); }
+.analogy-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; margin-bottom:32px; }
+.analogy-card { padding:28px; transition:var(--tr); }
+.analogy-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.analogy-card.old { border-top:3px solid #E53E3E; }
+.analogy-card.new { border-top:3px solid var(--success); }
+.a-label { margin-bottom:12px; font-size:12px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+.analogy-card.old .a-label { color:#C53030; }
+.analogy-card.new .a-label { color:var(--success); }
+.a-title { margin-bottom:8px; color:var(--text); font-size:22px; font-weight:900; }
+.a-desc { color:var(--text-light); font-size:14px; line-height:1.6; }
+.analogy-card ul { display:flex; flex-direction:column; gap:8px; margin-top:12px; list-style:none; }
+.analogy-card li { display:flex; align-items:flex-start; gap:8px; color:var(--text-light); font-size:13.5px; line-height:1.4; }
+.dot { width:6px; height:6px; flex-shrink:0; margin-top:6px; border-radius:50%; }
+.old .dot { background:#E53E3E; }
+.new .dot { background:var(--success); }
+.arrow-middle { color:var(--gray-3); font-size:32px; font-weight:900; text-align:center; }
+.comp-table-wrap { overflow:hidden; border-radius:var(--radius); background:white; box-shadow:var(--shadow-sm); }
+.comp-table { width:100%; border-collapse:collapse; }
+.comp-table thead th { padding:14px 20px; background:var(--dark-2); color:white; text-align:left; font-size:13px; font-weight:900; letter-spacing:.5px; }
+.comp-table thead th:first-child { width:120px; color:var(--secondary); }
+.comp-table tbody tr { border-bottom:1px solid var(--gray-2); cursor:pointer; transition:var(--tr); }
+.comp-table tbody tr:last-child { border-bottom:0; }
+.comp-table tbody tr:hover { background:rgba(0,120,212,.04); }
+.comp-table tbody tr.active { background:rgba(0,120,212,.08); box-shadow:inset 4px 0 0 var(--primary); }
+.comp-table td { padding:16px 20px; color:var(--text-light); font-size:14px; line-height:1.55; vertical-align:top; }
+.comp-table td:first-child { color:var(--text); font-weight:900; white-space:nowrap; }
+.tag { display:inline-block; margin-bottom:4px; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:900; }
+.tag.red { background:#FFF5F5; color:#C53030; }
+.tag.green { background:#F0FFF4; color:#276749; }
+.click-hint { display:inline-flex; align-items:center; gap:6px; margin-bottom:16px; padding:5px 14px; border:1px solid rgba(0,120,212,.15); border-radius:50px; background:rgba(0,120,212,.07); color:var(--primary); font-size:12px; font-weight:700; animation:subtlePulse 2.5s ease-in-out infinite; }
+.detail-panel { display:none; margin-top:16px; padding:20px 24px; border-left:4px solid var(--primary); border-radius:var(--radius-sm); background:white; box-shadow:var(--shadow-sm); color:var(--text-light); font-size:14px; line-height:1.75; animation:fadeUp .3s ease; }
+.detail-panel strong { color:var(--text); }
+.key-msg { padding:36px; border:1px solid rgba(0,188,242,.2); border-radius:var(--radius); background:linear-gradient(135deg,var(--dark-2),var(--dark)); }
+.key-msg h3 { display:flex; align-items:center; gap:10px; margin-bottom:16px; color:white; font-size:18px; font-weight:900; }
+.key-msg p { color:rgba(255,255,255,.76); font-size:15px; line-height:1.75; }
+.key-msg .highlight { color:var(--secondary); font-weight:800; }
+.pills { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.pill-item { padding:8px 16px; border:1px solid rgba(0,188,242,.25); border-radius:8px; background:rgba(0,188,242,.12); color:rgba(255,255,255,.82); font-size:13px; font-weight:700; }
+.quote-stack { display:flex; flex-direction:column; gap:16px; }
+.sales-quote { position:relative; overflow:hidden; padding:28px 32px; border:2px solid rgba(255,185,0,.3); }
+.sales-quote::before { content:"💬"; position:absolute; top:-12px; right:20px; font-size:60px; opacity:.07; }
+.sq-label { display:flex; align-items:center; gap:6px; margin-bottom:12px; color:#9A6B00; font-size:11px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+.sales-quote blockquote { color:var(--text); font-size:16px; font-style:italic; font-weight:600; line-height:1.7; }
+.bottom-nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:48px; padding-top:24px; border-top:1px solid var(--gray-3); }
+.bnav-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:12px 22px; border:2px solid var(--gray-3); border-radius:10px; background:white; color:var(--text-light); font-size:14px; font-weight:800; transition:var(--tr); }
+.bnav-btn:hover { border-color:var(--primary); color:var(--primary); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+.bnav-btn.next { border-color:var(--primary); background:var(--primary); color:white; }
+.bnav-btn.next:hover { border-color:var(--primary-dark); background:var(--primary-dark); box-shadow:0 6px 20px rgba(0,120,212,.4); }
+.bnav-center { color:var(--text-muted); font-size:13px; font-weight:800; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes subtlePulse { 0%,100%{opacity:.72} 50%{opacity:1} }
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .5s ease,transform .5s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+@media(max-width:768px) {
+  .top-nav { padding:0 16px; }
+  .nav-module-title,.nav-sep { display:none; }
+  .nav-right { gap:6px; }
+  .nav-btn { padding-inline:10px; }
+  .section-hero { padding:90px 16px 56px; }
+  .page { padding:36px 16px 60px; }
+  .def-card,.key-msg,.sales-quote { padding:26px 22px; }
+  .analogy-grid { grid-template-columns:1fr; }
+  .arrow-middle { transform:rotate(90deg); }
+  .comp-table-wrap { overflow-x:auto; }
+  .comp-table { min-width:720px; }
+  .bottom-nav { flex-direction:column; }
+  .bnav-btn { width:100%; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 02 · Cloud Computing là gì?</span>
+  </div>
+  <div class="nav-right">
+    <a href="section1.html" class="nav-btn">← Module 01</a>
+    <a href="section3.html" class="nav-btn prim">Module 03 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 02 / 11</div>
+    <h1>☁️ Cloud Computing là gì?</h1>
+    <p class="subtitle">Hiểu đúng từ gốc để giải thích được cho khách hàng bằng ngôn ngữ kinh doanh, không phải ngôn ngữ kỹ thuật.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">🕐 ~20 phút đọc</div>
+      <div class="meta-chip">📊 Bảng so sánh tương tác</div>
+      <div class="meta-chip">💬 Sales talk track</div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="block reveal">
+    <div class="block-title">📌 Định nghĩa cốt lõi</div>
+    <p class="block-sub">Giải thích ngắn gọn để Sales có thể nói lại cho khách hàng trong 30 giây.</p>
+    <div class="def-card">
+      <p>
+        <strong>Cloud Computing</strong> là mô hình sử dụng tài nguyên CNTT thông qua Internet hoặc kết nối riêng, thay vì doanh nghiệp phải tự mua, lắp đặt và vận hành toàn bộ hạ tầng tại phòng server hoặc data center của mình.
+      </p>
+      <div class="quote-block">
+        Trước đây khách hàng phải <strong>tự mua</strong> server, storage, firewall, database, backup, license, data center space và đội ngũ vận hành.
+        <br><br>
+        Với Cloud, khách hàng <strong>thuê</strong> những năng lực đó dưới dạng dịch vụ, dùng bao nhiêu trả bấy nhiêu, mở rộng hoặc thu hẹp theo nhu cầu thực tế.
+      </div>
+    </div>
+    <figure class="compare-visual">
+      <div class="compare-visual-image">
+        <img src="assets/images/compare-onpremises-and-cloud.png" alt="Hình so sánh mô hình on-premises và cloud" loading="lazy">
+      </div>
+      <figcaption><strong>Cách đọc hình:</strong> on-premises yêu cầu doanh nghiệp tự đầu tư và vận hành nhiều lớp hạ tầng hơn, trong khi Cloud chuyển một phần trách nhiệm đó sang nhà cung cấp để khách hàng dùng tài nguyên linh hoạt hơn.</figcaption>
+    </figure>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">⚖️ Trước và sau khi có Cloud</div>
+    <p class="block-sub">Hình dung đơn giản nhất về sự thay đổi mà Cloud mang lại cho doanh nghiệp.</p>
+    <div class="analogy-grid">
+      <article class="analogy-card old">
+        <div class="a-label">🏢 On-premises truyền thống</div>
+        <div class="a-title">Tự xây, tự vận hành</div>
+        <p class="a-desc">Giống như tự mua đất, xây nhà, lo điện nước, sửa chữa và bảo trì.</p>
+        <ul>
+          <li><span class="dot"></span>Mua server vật lý, lắp rack, kéo điện và mạng.</li>
+          <li><span class="dot"></span>Đầu tư lớn ban đầu theo CAPEX.</li>
+          <li><span class="dot"></span>Phải mua dư tài nguyên cho giai đoạn cao điểm.</li>
+          <li><span class="dot"></span>Đội IT lo từ phần cứng đến ứng dụng.</li>
+          <li><span class="dot"></span>DR site nghĩa là đầu tư thêm một môi trường vật lý.</li>
+        </ul>
+      </article>
+
+      <div class="arrow-middle">→</div>
+
+      <article class="analogy-card new">
+        <div class="a-label">☁️ Cloud Computing</div>
+        <div class="a-title">Thuê, dùng linh hoạt</div>
+        <p class="a-desc">Giống như thuê văn phòng: tập trung vào việc kinh doanh, giảm gánh nặng cơ sở vật chất.</p>
+        <ul>
+          <li><span class="dot"></span>Tạo máy ảo hoặc dịch vụ trong vài phút.</li>
+          <li><span class="dot"></span>Chuyển từ CAPEX sang OPEX.</li>
+          <li><span class="dot"></span>Tăng giảm tài nguyên theo nhu cầu.</li>
+          <li><span class="dot"></span>Đội IT tập trung hơn vào ứng dụng và nghiệp vụ.</li>
+          <li><span class="dot"></span>DR có thể triển khai qua region hoặc site khác của Cloud.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">📋 Bảng so sánh chi tiết: On-premises vs Cloud</div>
+    <p class="block-sub">Nhấp vào từng dòng để xem thêm gợi ý giải thích cho khách hàng.</p>
+    <div class="click-hint">👆 Nhấp vào từng dòng để xem chi tiết</div>
+    <div class="comp-table-wrap">
+      <table class="comp-table" id="compTable">
+        <thead>
+          <tr>
+            <th>Thành phần</th>
+            <th>🏢 On-premises truyền thống</th>
+            <th>☁️ Cloud Computing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-detail="server">
+            <td>🖥️ Server</td>
+            <td><span class="tag red">CAPEX</span><br>Mua máy chủ vật lý, lắp vào rack, cấp điện, cấu hình mạng và cài hệ điều hành.</td>
+            <td><span class="tag green">OPEX</span><br>Tạo máy ảo trong vài phút, chọn cấu hình phù hợp và trả tiền theo mức sử dụng.</td>
+          </tr>
+          <tr data-detail="storage">
+            <td>💾 Storage</td>
+            <td><span class="tag red">Cứng nhắc</span><br>Mua SAN/NAS, gắn disk, mở rộng thủ công và thường phải mua dư cho tương lai.</td>
+            <td><span class="tag green">Linh hoạt</span><br>Dùng block, file, object hoặc archive storage theo nhu cầu thực tế.</td>
+          </tr>
+          <tr data-detail="database">
+            <td>🗄️ Database</td>
+            <td><span class="tag red">Tự quản lý</span><br>Cài SQL Server, MySQL hoặc PostgreSQL trên server và tự lo patching, backup, HA.</td>
+            <td><span class="tag green">Managed</span><br>Dùng managed database, nhà cung cấp Cloud lo nhiều phần nền tảng bên dưới.</td>
+          </tr>
+          <tr data-detail="backup">
+            <td>🔄 Backup</td>
+            <td><span class="tag red">Phức tạp</span><br>Mua thiết bị, phần mềm, storage backup hoặc băng từ và tự vận hành lịch backup.</td>
+            <td><span class="tag green">Tự động hóa</span><br>Dùng backup service, snapshot, replication và policy lưu giữ dữ liệu.</td>
+          </tr>
+          <tr data-detail="dr">
+            <td>🛡️ DR Site</td>
+            <td><span class="tag red">Tốn kém</span><br>Đầu tư site dự phòng riêng với server, storage, network, license và nhân sự vận hành.</td>
+            <td><span class="tag green">Dễ triển khai hơn</span><br>Dùng vùng, region hoặc site khác của Cloud để triển khai kịch bản dự phòng.</td>
+          </tr>
+          <tr data-detail="security">
+            <td>🔒 Security</td>
+            <td><span class="tag red">Tự đảm bảo</span><br>Tự mua firewall, WAF, SIEM, IAM, key management và vận hành từng lớp bảo mật.</td>
+            <td><span class="tag green">Chia sẻ trách nhiệm</span><br>Dùng dịch vụ bảo mật của Cloud kết hợp chính sách bảo mật nội bộ.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="detail-panel" id="detailPanel">
+      <div id="detailText"></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Thông điệp Sales cần nhớ</div>
+    <div class="key-msg">
+      <h3>☁️ Cloud không chỉ là “đưa server lên Internet”</h3>
+      <p>
+        Cloud là cách doanh nghiệp <span class="highlight">tiêu thụ CNTT như một dịch vụ</span>. Giá trị chính nằm ở tốc độ triển khai, giảm đầu tư ban đầu, khả năng mở rộng, tự động hóa vận hành và tiếp cận nhanh các công nghệ mới như AI, Data Analytics, IoT, DevOps và Security.
+      </p>
+      <div class="pills">
+        <div class="pill-item">Tăng tốc triển khai</div>
+        <div class="pill-item">Giảm CAPEX</div>
+        <div class="pill-item">Mở rộng linh hoạt</div>
+        <div class="pill-item">Tiếp cận AI & Data</div>
+        <div class="pill-item">Tăng khả năng DR</div>
+        <div class="pill-item">Chuẩn hóa vận hành</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💬 Khi gặp khách hàng, bạn có thể nói...</div>
+    <div class="quote-stack">
+      <div class="sales-quote">
+        <div class="sq-label">Với CFO / Giám đốc tài chính</div>
+        <blockquote>“Cloud giống như thuê văn phòng thay vì mua cả tòa nhà. Doanh nghiệp không cần đầu tư lớn ngay từ đầu, mà trả theo mức sử dụng thực tế và điều chỉnh khi nhu cầu thay đổi.”</blockquote>
+      </div>
+      <div class="sales-quote">
+        <div class="sq-label">Với CTO / IT Manager</div>
+        <blockquote>“Thay vì mất nhiều tuần để mua server, lắp rack và cài hệ điều hành, đội kỹ thuật có thể tạo môi trường mới trên Cloud trong vài phút hoặc vài giờ.”</blockquote>
+      </div>
+      <div class="sales-quote">
+        <div class="sq-label">Với Business Owner / CEO</div>
+        <blockquote>“Cloud giúp doanh nghiệp thử nghiệm dịch vụ mới nhanh hơn, mở rộng khi thị trường tăng trưởng và giảm rủi ro khi chưa chắc nhu cầu thực tế.”</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section1.html" class="bnav-btn">← Module 01: Mục tiêu</a>
+    <span class="bnav-center">Module 02 / 11</span>
+    <a href="section3.html" class="bnav-btn next">Module 03: Mô hình dịch vụ →</a>
+  </nav>
+
+</main>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add("visible"), index * 90);
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: .08 });
+document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+const details = {
+  server: "🖥️ <strong>Server:</strong> Với on-premises, khách hàng phải đặt hàng, chờ giao phần cứng, lắp đặt, cấp điện, cấu hình mạng và cài hệ điều hành. Với Cloud, họ tạo VM theo nhu cầu, tăng giảm cấu hình nhanh và tránh phải mua dư phần cứng cho nhiều năm.",
+  storage: "💾 <strong>Storage:</strong> On-premises thường phải dự báo dung lượng trước và mua dư. Cloud cho phép chọn đúng loại lưu trữ theo mục đích: block cho VM, file cho shared folder, object cho dữ liệu lớn, archive cho dữ liệu ít truy cập.",
+  database: "🗄️ <strong>Database:</strong> Khi tự vận hành database, đội IT phải lo patching, backup, replication, HA và monitoring. Managed database giúp giảm tải phần nền tảng để khách hàng tập trung hơn vào dữ liệu, schema và ứng dụng.",
+  backup: "🔄 <strong>Backup:</strong> Backup truyền thống cần thiết bị, phần mềm, lịch vận hành và kiểm thử restore. Cloud backup giúp cấu hình policy, snapshot, replication và retention linh hoạt hơn.",
+  dr: "🛡️ <strong>DR Site:</strong> DR truyền thống thường tốn kém vì gần như phải đầu tư thêm một môi trường thứ hai. Cloud giúp dựng phương án dự phòng theo region hoặc site khác, phù hợp nhiều mức RPO/RTO.",
+  security: "🔒 <strong>Security:</strong> Cloud không có nghĩa là tự động an toàn. Đây là mô hình chia sẻ trách nhiệm: nhà cung cấp bảo vệ nền tảng, khách hàng chịu trách nhiệm cấu hình, dữ liệu, tài khoản, ứng dụng và chính sách truy cập."
+};
+
+const rows = document.querySelectorAll("#compTable tbody tr");
+const panel = document.getElementById("detailPanel");
+const detailText = document.getElementById("detailText");
+
+rows.forEach((row) => {
+  row.addEventListener("click", function () {
+    const key = this.dataset.detail;
+    const isActive = this.classList.contains("active");
+    rows.forEach((item) => item.classList.remove("active"));
+    if (isActive) {
+      panel.style.display = "none";
+      return;
+    }
+    this.classList.add("active");
+    detailText.innerHTML = details[key];
+    panel.style.display = "block";
+    panel.style.animation = "none";
+    panel.offsetHeight;
+    panel.style.animation = "fadeUp .3s ease";
+    setTimeout(() => panel.scrollIntoView({ behavior:"smooth", block:"nearest" }), 100);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One-page summary cho Sales | Module 11</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-11-page { max-width:1120px; }
+.summary-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:30px; }
+.summary-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.summary-card:nth-child(2) { border-top-color:var(--accent); }
+.summary-card:nth-child(3) { border-top-color:var(--success); }
+.summary-card:nth-child(4) { border-top-color:var(--secondary); }
+.summary-card:nth-child(5) { border-top-color:#8764b8; }
+.summary-card:nth-child(6) { border-top-color:#d83b01; }
+.summary-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.summary-card span { display:inline-flex; margin-bottom:12px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.summary-card h3 { margin-bottom:10px; color:var(--text); font-size:16px; font-weight:900; line-height:1.35; }
+.summary-card p,.summary-card li { color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.summary-card ul { display:grid; gap:7px; padding-left:18px; }
+.service-lens { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.lens-card { position:relative; overflow:hidden; min-height:164px; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius-sm); background:linear-gradient(135deg,#fff,#f7fbff); box-shadow:var(--shadow-sm); padding:20px; transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease; }
+.lens-card::before { position:absolute; inset:0 0 auto 0; height:4px; background:linear-gradient(90deg,var(--primary),var(--secondary)); content:""; opacity:.85; transform:scaleX(.28); transform-origin:left; transition:transform .22s ease,opacity .22s ease; }
+.lens-card:hover { border-color:rgba(0,120,212,.34); box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.lens-card:hover::before { opacity:1; transform:scaleX(1); }
+.lens-icon { display:grid; width:42px; height:42px; place-items:center; margin-bottom:14px; border-radius:12px; background:rgba(0,120,212,.1); color:var(--primary-dark); font-size:22px; transition:transform .22s ease,background-color .22s ease,color .22s ease; }
+.lens-card:hover .lens-icon { background:var(--primary); color:white; transform:translateY(-2px) scale(1.04); }
+.lens-card h3 { margin-bottom:8px; color:var(--text); font-size:15px; font-weight:900; }
+.lens-card p { color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.mapping-table .table-wrap { overflow-x:visible; }
+.mapping-table table { width:100%; min-width:0; table-layout:fixed; }
+.mapping-table th,.mapping-table td { overflow-wrap:anywhere; vertical-align:top; font-size:13px; line-height:1.45; padding-left:12px; padding-right:12px; }
+.mapping-table th:nth-child(1),.mapping-table td:nth-child(1) { width:18%; }
+.mapping-table th:nth-child(2),.mapping-table td:nth-child(2) { width:23%; }
+.mapping-table th:nth-child(3),.mapping-table td:nth-child(3),
+.mapping-table th:nth-child(4),.mapping-table td:nth-child(4),
+.mapping-table th:nth-child(5),.mapping-table td:nth-child(5) { width:19.66%; }
+.sales-note { margin-top:16px; border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:18px 20px; }
+.sales-note span { display:block; margin-bottom:8px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.sales-note p { margin:0; color:var(--text); font-size:14.5px; font-weight:650; line-height:1.65; }
+.question-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:18px; align-items:stretch; }
+.hero-question { display:flex; flex-direction:column; justify-content:center; border-radius:var(--radius); background:linear-gradient(135deg,var(--primary-dark),var(--primary)); box-shadow:var(--shadow-md); color:white; padding:30px; }
+.hero-question span { margin-bottom:10px; color:rgba(255,255,255,.76); font-size:12px; font-weight:900; letter-spacing:.4px; text-transform:uppercase; }
+.hero-question blockquote { margin:0; font-size:22px; font-weight:850; line-height:1.45; }
+.question-list { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; }
+.question-list h3 { margin-bottom:12px; color:var(--text); font-size:16px; font-weight:900; }
+.question-list ul { display:grid; gap:10px; padding-left:18px; color:var(--text-light); font-size:14px; line-height:1.55; }
+.memory-strip { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.memory-item { border-radius:var(--radius-sm); background:var(--white); box-shadow:var(--shadow-sm); padding:18px; text-align:center; }
+.memory-item strong { display:block; margin-bottom:7px; color:var(--primary-dark); font-size:18px; font-weight:900; }
+.memory-item span { color:var(--text-light); font-size:13px; line-height:1.45; }
+@media(max-width:1000px) {
+  .summary-grid,.service-lens { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .question-grid { grid-template-columns:1fr; }
+  .memory-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:640px) {
+  .summary-grid,.service-lens,.memory-strip { grid-template-columns:1fr; }
+  .hero-question { padding:24px; }
+  .hero-question blockquote { font-size:18px; }
+  .mapping-table table,.mapping-table thead,.mapping-table tbody,.mapping-table tr,.mapping-table th,.mapping-table td { display:block; width:100%; }
+  .mapping-table thead { display:none; }
+  .mapping-table tr { margin-bottom:12px; border:1px solid var(--gray-3); border-radius:var(--radius-sm); overflow:hidden; background:var(--white); }
+  .mapping-table td { display:grid; grid-template-columns:116px 1fr; gap:12px; border-bottom:1px solid var(--gray-2); padding:12px 14px; font-size:13.5px; }
+  .mapping-table td:last-child { border-bottom:0; }
+  .mapping-table td::before { color:var(--text); font-size:12px; font-weight:900; }
+  .mapping-table td:nth-child(1)::before { content:"On-premises"; }
+  .mapping-table td:nth-child(2)::before { content:"NetCloudX"; }
+  .mapping-table td:nth-child(3)::before { content:"Azure"; }
+  .mapping-table td:nth-child(4)::before { content:"AWS"; }
+  .mapping-table td:nth-child(5)::before { content:"GCP"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 11 · One-page summary</span>
+  </div>
+  <div class="nav-right">
+    <a href="section10.html" class="nav-btn">← Module 10</a>
+    <a href="section12.html" class="nav-btn primary-btn">Module 12 →</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 11 / 12</div>
+    <h1>📋 One-page summary cho Sales</h1>
+    <p class="subtitle">Một trang tổng hợp cuối khóa giúp Sales nhớ nhanh Cloud là gì, Cloud giải quyết vấn đề gì, nhìn dịch vụ theo nhóm nào, mapping nhanh sang NetCloudX và các provider lớn, rồi chốt bằng câu hỏi discovery đúng trọng tâm.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">⏱️ ~10 phút đọc</div>
+      <div class="meta-chip">🧭 Tóm tắt toàn khóa</div>
+      <div class="meta-chip">☁️ Có NetCloudX mapping</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-11-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Section 11 là trang nhắc nhanh để Sales dùng trước cuộc gặp khách hàng. Mục tiêu không phải học thêm thuật ngữ mới, mà gom lại những điểm cần nhớ: Cloud là mô hình dùng năng lực CNTT dưới dạng dịch vụ, giúp khách hàng xử lý các bài toán về tốc độ, linh hoạt, chi phí, vận hành, dự phòng và đổi mới.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧩 6 điều Sales cần nhớ sau khóa học</div>
+    <p class="block-subtitle">Nếu chỉ có một trang để ôn lại trước cuộc gặp, hãy dùng 6 ô này.</p>
+    <div class="summary-grid">
+      <article class="summary-card"><span>01</span><h3>Cloud Computing là gì?</h3><p>Mô hình sử dụng tài nguyên CNTT dưới dạng dịch vụ thông qua Cloud provider, giúp khách hàng không cần tự đầu tư và vận hành toàn bộ hạ tầng vật lý.</p></article>
+      <article class="summary-card"><span>02</span><h3>Cloud giải quyết vấn đề gì?</h3><ul><li>Triển khai nhanh hơn.</li><li>Mở rộng linh hoạt hơn.</li><li>Giảm đầu tư ban đầu.</li><li>Có thêm lựa chọn backup/DR.</li></ul></article>
+      <article class="summary-card"><span>03</span><h3>Góc nhìn Sales</h3><p>Đừng nói Cloud như “máy chủ trên Internet”. Hãy nói về năng lực CNTT linh hoạt, tốc độ triển khai, khả năng vận hành và kết quả kinh doanh.</p></article>
+      <article class="summary-card"><span>04</span><h3>Không hứa tuyệt đối</h3><p>Cloud không tự động rẻ hơn, an toàn hơn hay xong sau migration. Giá trị phụ thuộc vào thiết kế, governance và vận hành.</p></article>
+      <article class="summary-card"><span>05</span><h3>Hỏi trước khi chốt</h3><p>Sales nên hỏi workload, pain point, deadline, bảo mật, vận hành, ngân sách và người quyết định trước khi định vị giải pháp.</p></article>
+      <article class="summary-card"><span>06</span><h3>Kéo Presales đúng lúc</h3><p>Khi cần sizing, kiến trúc, network, bảo mật, chi phí hoặc migration plan, hãy chuyển sang bước tư vấn kỹ thuật có kiểm soát.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">☁️ Sales nên nhìn Cloud theo nhóm dịch vụ nào?</div>
+    <p class="block-subtitle">Nhìn theo nhóm nhu cầu giúp Sales không bị lạc trong tên dịch vụ, đồng thời nói chuyện tự nhiên hơn với khách hàng.</p>
+    <div class="service-lens">
+      <article class="lens-card"><div class="lens-icon">⚙️</div><h3>Compute</h3><p>Nơi chạy ứng dụng, máy chủ, container hoặc workload cần tài nguyên xử lý.</p></article>
+      <article class="lens-card"><div class="lens-icon">💾</div><h3>Storage</h3><p>Nơi lưu dữ liệu dạng block, file hoặc object theo nhu cầu truy cập khác nhau.</p></article>
+      <article class="lens-card"><div class="lens-icon">🗄️</div><h3>Database</h3><p>Nơi quản lý dữ liệu có cấu trúc, phục vụ ứng dụng nghiệp vụ và báo cáo.</p></article>
+      <article class="lens-card"><div class="lens-icon">🌐</div><h3>Network</h3><p>Kết nối, phân vùng mạng, VPN, private connectivity và load balancing.</p></article>
+      <article class="lens-card"><div class="lens-icon">🛡️</div><h3>Identity & Security</h3><p>Tài khoản, phân quyền, truy cập, bảo vệ dữ liệu, network và workload.</p></article>
+      <article class="lens-card"><div class="lens-icon">📈</div><h3>Monitoring & Backup/DR</h3><p>Giám sát, log, cảnh báo, sao lưu, khôi phục và dự phòng thảm họa.</p></article>
+      <article class="lens-card"><div class="lens-icon">🧠</div><h3>AI/Data/IoT</h3><p>Các năng lực mở rộng cho khai thác dữ liệu, tự động hóa và đổi mới số.</p></article>
+      <article class="lens-card"><div class="lens-icon">🚀</div><h3>DevOps</h3><p>Công cụ hỗ trợ phát triển, triển khai, vận hành ứng dụng nhanh và ổn định hơn.</p></article>
+      <article class="lens-card"><div class="lens-icon">📋</div><h3>Governance</h3><p>Quản trị chi phí, phân quyền, chính sách, tiêu chuẩn vận hành và kiểm soát rủi ro.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal mapping-table">
+    <div class="block-title">🗺️ Mapping nhanh On-premises sang Cloud</div>
+    <p class="block-subtitle">Bảng này giúp Sales nhận diện nhóm nhu cầu ban đầu. Đây là mapping chức năng để định hướng trao đổi, không phải cam kết tương đương kiến trúc 1-1 giữa các provider.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Nhu cầu on-premises</th><th>NetCloudX</th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Server/VM</td><td>UHost / UPHost / ULightHost</td><td>Azure Virtual Machines</td><td>Amazon EC2</td><td>Compute Engine</td></tr>
+          <tr><td>Object Storage</td><td>US3</td><td>Azure Blob Storage</td><td>Amazon S3</td><td>Cloud Storage</td></tr>
+          <tr><td>Block Storage</td><td>UDisk</td><td>Azure Managed Disks</td><td>Amazon EBS</td><td>Persistent Disk</td></tr>
+          <tr><td>SQL Database</td><td>UDB</td><td>Azure SQL Database</td><td>Amazon RDS</td><td>Cloud SQL</td></tr>
+          <tr><td>Virtual Network</td><td>UVPC</td><td>Azure Virtual Network</td><td>Amazon VPC</td><td>VPC</td></tr>
+          <tr><td>Load Balancer</td><td>ULB4 / ULB7</td><td>Azure Load Balancer / Application Gateway</td><td>Elastic Load Balancing</td><td>Cloud Load Balancing</td></tr>
+          <tr><td>VPN</td><td>VPN / UVPC connectivity</td><td>Azure VPN Gateway</td><td>AWS Site-to-Site VPN</td><td>Cloud VPN</td></tr>
+          <tr><td>Private Link/Leased Line</td><td>Private connectivity / leased line integration</td><td>ExpressRoute</td><td>Direct Connect</td><td>Cloud Interconnect</td></tr>
+          <tr><td>IAM</td><td>Tài khoản / phân quyền nền tảng NetCloudX</td><td>Microsoft Entra ID / Azure RBAC</td><td>AWS IAM</td><td>Cloud IAM</td></tr>
+          <tr><td>Monitoring</td><td>Monitoring / logging trên nền tảng</td><td>Azure Monitor</td><td>CloudWatch</td><td>Cloud Monitoring</td></tr>
+          <tr><td>Backup</td><td>UDataArk / USnap</td><td>Azure Backup</td><td>AWS Backup</td><td>Backup and DR Service</td></tr>
+          <tr><td>Kubernetes</td><td>UK8S</td><td>AKS</td><td>EKS</td><td>GKE</td></tr>
+          <tr><td>Serverless</td><td>Chưa chốt trong mapping cơ bản</td><td>Azure Functions</td><td>Lambda</td><td>Cloud Functions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sales-note">
+      <span>Góc nhìn Sales</span>
+      <p>Với NetCloudX, Sales nên dùng mapping để xác định nhanh khách hàng đang nói về compute, storage, network, database, backup hay container. Khi khách hàng có workload thật, cần kéo Presales vào để xác nhận sizing, kiến trúc, bảo mật, network và chi phí.</p>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">❓ Câu hỏi chốt nhu cầu</div>
+    <p class="block-subtitle">Câu hỏi tốt giúp Sales chuyển từ giới thiệu Cloud sang discovery có định hướng.</p>
+    <div class="question-grid">
+      <div class="hero-question">
+        <span>Câu hỏi trung tâm</span>
+        <blockquote>Khách hàng đang cần giải quyết bài toán gì: triển khai nhanh, mở rộng nhanh, giảm đầu tư ban đầu, tăng dự phòng, bảo mật tốt hơn, hay khai thác dữ liệu/AI?</blockquote>
+      </div>
+      <div class="question-list">
+        <h3>Câu hỏi phụ nên dùng</h3>
+        <ul>
+          <li>Workload nào đang cần ưu tiên?</li>
+          <li>Pain point hiện tại là tốc độ, chi phí, vận hành, bảo mật hay mở rộng?</li>
+          <li>Có deadline kinh doanh hoặc ràng buộc compliance nào không?</li>
+          <li>Khách hàng muốn tự vận hành hay cần managed service?</li>
+          <li>Ai là người quyết định: IT, tài chính, bảo mật, vận hành hay ban lãnh đạo?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧠 Công thức nhớ nhanh trước cuộc gặp</div>
+    <p class="block-subtitle">Một chuỗi 4 bước để Sales không bị cuốn vào danh sách dịch vụ quá sớm.</p>
+    <div class="memory-strip">
+      <div class="memory-item"><strong>Nghe</strong><span>Khách hàng đang đau ở đâu?</span></div>
+      <div class="memory-item"><strong>Nhóm</strong><span>Nhu cầu thuộc compute, storage, network, security hay data?</span></div>
+      <div class="memory-item"><strong>Hỏi</strong><span>Cần làm rõ workload, ràng buộc và người quyết định.</span></div>
+      <div class="memory-item"><strong>Kéo</strong><span>Presales vào khi cần sizing, kiến trúc và chi phí.</span></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 11 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Thông điệp cần nhớ</div>
+      <p class="dark-card-text">Cloud là một cách tiêu thụ năng lực CNTT linh hoạt hơn. Sales không cần nhớ hết tên dịch vụ, nhưng cần biết cách nối nhu cầu khách hàng với nhóm dịch vụ phù hợp, hỏi đúng câu hỏi discovery, và kéo Presales vào đúng lúc. Nói đúng bối cảnh sẽ giúp khách hàng tin hơn và giúp cơ hội đi tiếp bằng nhu cầu thật.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section10.html" class="bnav-btn">← Module 10: Hiểu nhầm phổ biến</a>
+    <span class="bnav-center">Module 11 / 12</span>
+    <a href="section12.html" class="bnav-btn next">Module 12: Thuật ngữ Cloud →</a>
+  </nav>
+
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

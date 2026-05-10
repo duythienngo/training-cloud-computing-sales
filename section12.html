@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Các thuật ngữ cần phân biệt trong Cloud Computing | Module 12</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.section-12-page { max-width:1120px; }
+.term-map { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:30px; }
+.term-map-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:22px; border-top:4px solid var(--primary); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.term-map-card:nth-child(2) { border-top-color:var(--accent); }
+.term-map-card:nth-child(3) { border-top-color:var(--success); }
+.term-map-card:nth-child(4) { border-top-color:var(--secondary); }
+.term-map-card:nth-child(5) { border-top-color:#8764b8; }
+.term-map-card:nth-child(6) { border-top-color:#d83b01; }
+.term-map-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.term-map-card span { display:inline-flex; margin-bottom:10px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.term-map-card h3 { margin-bottom:8px; color:var(--text); font-size:16px; font-weight:900; line-height:1.35; }
+.term-map-card p { color:var(--text-light); font-size:13.5px; line-height:1.55; }
+.term-section { display:grid; grid-template-columns:minmax(320px,.9fr) minmax(0,1.1fr); gap:24px; align-items:stretch; margin-bottom:24px; border:1px solid rgba(0,120,212,.12); border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:22px; }
+.term-section.reverse { grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr); }
+.term-section.reverse .term-figure { order:2; }
+.term-figure { display:flex; flex-direction:column; justify-content:center; margin:0; min-width:0; }
+.term-image { display:flex; align-items:center; justify-content:center; overflow:hidden; min-height:320px; border-radius:var(--radius-sm); background:linear-gradient(135deg,#f8fbff,#eef5fb); box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); padding:12px; }
+.term-image img { display:block; width:100%; max-height:380px; height:auto; object-fit:contain; transition:transform .35s ease; }
+.term-section:hover .term-image img { transform:scale(1.018); }
+.term-figure figcaption { margin-top:10px; color:var(--text-muted); font-size:12.5px; line-height:1.5; }
+.term-copy { display:flex; flex-direction:column; justify-content:center; min-width:0; border-radius:var(--radius-sm); background:linear-gradient(135deg,#fff,#fbfdff); padding:10px 4px; }
+.term-copy .term-label { display:inline-flex; margin-bottom:12px; border-radius:999px; background:var(--gray-2); color:var(--primary-dark); font-size:11px; font-weight:900; letter-spacing:.4px; padding:5px 10px; text-transform:uppercase; }
+.term-copy h3 { margin-bottom:12px; color:var(--text); font-size:22px; font-weight:900; line-height:1.3; }
+.term-copy h4 { margin:16px 0 8px; color:var(--text); font-size:14px; font-weight:900; letter-spacing:.2px; text-transform:uppercase; }
+.term-copy p,.term-copy li { color:var(--text-light); font-size:14px; line-height:1.62; }
+.term-copy ul { display:grid; gap:7px; padding-left:18px; }
+.talk-track { margin-top:16px; border:1px solid rgba(255,185,0,.28); border-radius:var(--radius-sm); background:rgba(255,185,0,.11); padding:16px 18px; }
+.talk-track span { display:block; margin-bottom:8px; color:#8a6000; font-size:11px; font-weight:900; letter-spacing:.3px; text-transform:uppercase; }
+.talk-track blockquote { margin:0; color:var(--text); font-size:14.5px; font-style:italic; font-weight:650; line-height:1.68; }
+.compare-table table { min-width:0; table-layout:fixed; }
+.compare-table th,.compare-table td { overflow-wrap:anywhere; vertical-align:top; }
+.rto-rpo-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.metric-card { border-radius:var(--radius); background:var(--white); box-shadow:var(--shadow-sm); padding:24px; border-top:4px solid var(--primary); }
+.metric-card:nth-child(2) { border-top-color:var(--accent); }
+.metric-card h3 { margin-bottom:10px; color:var(--text); font-size:18px; font-weight:900; }
+.metric-card p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.metric-example { margin-top:14px; border-radius:var(--radius-sm); background:var(--gray-1); padding:14px 16px; color:var(--text); font-size:14px; line-height:1.6; }
+@media(max-width:1000px) {
+  .term-map { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .term-section,.term-section.reverse { grid-template-columns:1fr; }
+  .term-section.reverse .term-figure { order:0; }
+  .term-image { min-height:auto; }
+  .term-image img { max-height:none; }
+}
+@media(max-width:640px) {
+  .term-map,.rto-rpo-grid { grid-template-columns:1fr; }
+  .term-section { padding:16px; }
+  .compare-table table,.compare-table thead,.compare-table tbody,.compare-table tr,.compare-table th,.compare-table td { display:block; width:100%; }
+  .compare-table thead { display:none; }
+  .compare-table tr { margin-bottom:12px; border:1px solid var(--gray-3); border-radius:var(--radius-sm); overflow:hidden; background:var(--white); }
+  .compare-table td { display:grid; grid-template-columns:116px 1fr; gap:12px; border-bottom:1px solid var(--gray-2); padding:12px 14px; font-size:13.5px; }
+  .compare-table td:last-child { border-bottom:0; }
+  .compare-table td::before { color:var(--text); font-size:12px; font-weight:900; }
+  .compare-table td:nth-child(1)::before { content:"Tiêu chí"; }
+  .compare-table td:nth-child(2)::before { content:"Backup"; }
+  .compare-table td:nth-child(3)::before { content:"DR Site"; }
+}
+</style>
+<link rel="stylesheet" href="assets/performance.css">
+<script src="assets/performance.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-module-title">Module 12 · Thuật ngữ Cloud Computing</span>
+  </div>
+  <div class="nav-right">
+    <a href="section11.html" class="nav-btn">← Module 11</a>
+    <a href="index.html" class="nav-btn primary-btn">Danh sách module</a>
+  </div>
+</nav>
+
+<header class="section-hero">
+  <div class="hero-inner">
+    <div class="module-badge">MODULE 12 / 12</div>
+    <h1>🧠 Các thuật ngữ cần phân biệt trong Cloud Computing</h1>
+    <p class="subtitle">Một module mở giúp Sales phân biệt đúng Cloud region, DR site, backup strategy, online/offsite backup, RTO/RPO và các thuật ngữ dễ bị nói lẫn khi tư vấn Cloud.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">⏱️ ~20 phút đọc</div>
+      <div class="meta-chip">🧭 6 thuật ngữ nền tảng</div>
+      <div class="meta-chip">🛟 DR & Backup discovery</div>
+    </div>
+  </div>
+</header>
+
+<main class="page-content wide-content section-12-page">
+
+  <section class="intro-card reveal">
+    <h2>📌 Ý chính của module</h2>
+    <p>Khách hàng thường dùng chung các từ “Cloud”, “DR”, “backup”, “site dự phòng”, “lưu dữ liệu nhiều nơi” như thể chúng giống nhau. Trong tư vấn hạ tầng, mỗi thuật ngữ giải quyết một bài toán khác nhau: nơi chạy workload, nơi dự phòng khi có sự cố, cách lưu bản sao dữ liệu, và khả năng khôi phục dịch vụ.</p>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🧩 Bản đồ thuật ngữ cần phân biệt</div>
+    <p class="block-subtitle">Dùng 6 thẻ này để Sales xác định nhanh đang nói về region, DR hay backup.</p>
+    <div class="term-map">
+      <article class="term-map-card"><span>12.1</span><h3>Cloud Region</h3><p>Nơi provider đặt hạ tầng Cloud, có thể trải rộng nhiều quốc gia.</p></article>
+      <article class="term-map-card"><span>12.2</span><h3>DR trong một quốc gia</h3><p>Site dự phòng đặt ở địa điểm khác nhưng vẫn trong cùng quốc gia.</p></article>
+      <article class="term-map-card"><span>12.3</span><h3>DR đa quốc gia</h3><p>Site dự phòng nằm ở quốc gia khác để tăng khả năng phục hồi cấp khu vực.</p></article>
+      <article class="term-map-card"><span>12.4</span><h3>Backup 3-2-1</h3><p>Nguyên tắc giữ nhiều bản sao dữ liệu ở nhiều môi trường khác nhau.</p></article>
+      <article class="term-map-card"><span>12.5</span><h3>Online & Offsite Backup</h3><p>Bản sao dữ liệu truy cập qua mạng và/hoặc nằm ngoài site chính.</p></article>
+      <article class="term-map-card"><span>12.6</span><h3>DR Site vs Backup</h3><p>Backup khôi phục dữ liệu; DR site khôi phục dịch vụ/workload.</p></article>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🌍 12.1. Cloud Region With Multiple Country</div>
+    <article class="term-section">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/cloud-provider-regional.png" alt="Sơ đồ cloud provider regional với nhiều quốc gia" loading="lazy"></div>
+        <figcaption>Ảnh minh họa cloud provider có nhiều region ở nhiều quốc gia.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">Region</span>
+        <h3>Region không đồng nghĩa hệ thống tự động chạy ở mọi quốc gia</h3>
+        <h4>Khái niệm</h4>
+        <p>Cloud region là khu vực địa lý nơi cloud provider đặt hạ tầng Cloud. Một provider lớn có thể có nhiều region ở nhiều quốc gia khác nhau. Mỗi region thường bao gồm một hoặc nhiều data center/availability zone để phục vụ workload tại khu vực đó.</p>
+        <h4>Sales cần hiểu</h4>
+        <p>Cloud regional với multiple country không có nghĩa là workload của khách hàng tự động chạy ở tất cả quốc gia. Khách hàng cần chọn region triển khai, thiết kế replication, network, backup hoặc DR nếu muốn hệ thống hoạt động xuyên quốc gia.</p>
+        <h4>Khi khách hàng quan tâm</h4>
+        <ul><li>Muốn giảm độ trễ cho người dùng ở nhiều quốc gia.</li><li>Có yêu cầu dữ liệu lưu trong một quốc gia/khu vực cụ thể.</li><li>Muốn triển khai hệ thống gần khách hàng cuối.</li><li>Cần thiết kế multi-region để tăng khả năng sẵn sàng.</li></ul>
+        <div class="talk-track"><span>Câu nói đúng</span><blockquote>Cloud provider có thể có nhiều region tại nhiều quốc gia, nhưng việc hệ thống của khách hàng có chạy hoặc dự phòng ở nhiều quốc gia hay không phụ thuộc vào thiết kế kiến trúc, replication, network và chính sách dữ liệu.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🏢 12.2. DR Site In A Country</div>
+    <article class="term-section reverse">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/understanding-dr-site-in-a-country.png" alt="Sơ đồ DR site trong cùng một quốc gia" loading="lazy"></div>
+        <figcaption>Ảnh minh họa DR site đặt ở địa điểm khác trong cùng quốc gia.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">DR nội địa</span>
+        <h3>DR site không chỉ là nơi lưu backup</h3>
+        <h4>Khái niệm</h4>
+        <p>DR site trong một quốc gia là môi trường dự phòng được đặt ở một địa điểm khác trong cùng quốc gia với site chính. Mục tiêu là khôi phục dịch vụ khi site chính gặp sự cố như mất điện, lỗi hạ tầng, sự cố data center hoặc lỗi vận hành nghiêm trọng.</p>
+        <h4>Sales cần hiểu</h4>
+        <p>DR site thường cần đủ hạ tầng, network, dữ liệu đồng bộ, quy trình chuyển đổi và kế hoạch kiểm thử để workload có thể chạy lại khi site chính gặp sự cố.</p>
+        <h4>Khi khách hàng quan tâm</h4>
+        <ul><li>Có hệ thống quan trọng cần đảm bảo uptime.</li><li>Không muốn dữ liệu ra khỏi quốc gia.</li><li>Cần tuân thủ quy định nội địa.</li><li>Muốn có phương án khôi phục dịch vụ khi site chính lỗi.</li></ul>
+        <div class="talk-track"><span>Câu nói đúng</span><blockquote>DR site trong cùng quốc gia giúp khách hàng có điểm khôi phục dịch vụ khi site chính gặp sự cố, nhưng vẫn giữ dữ liệu và vận hành trong phạm vi quốc gia.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🌐 12.3. DR Site With Multiple Country</div>
+    <article class="term-section">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/understanding-dr-site-multiple-country.png" alt="Sơ đồ DR site ở nhiều quốc gia" loading="lazy"></div>
+        <figcaption>Ảnh minh họa DR site ở quốc gia khác để tăng khả năng phục hồi cấp khu vực.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">DR đa quốc gia</span>
+        <h3>Tăng khả năng phục hồi, nhưng phải kiểm tra dữ liệu và kết nối</h3>
+        <h4>Khái niệm</h4>
+        <p>DR site with multiple country là mô hình dự phòng thảm họa ở quốc gia khác. Site chính có thể nằm ở Việt Nam, còn DR site nằm ở Singapore, Nhật Bản, Hong Kong hoặc quốc gia khác tùy chiến lược và quy định dữ liệu.</p>
+        <h4>Sales cần hiểu</h4>
+        <p>DR đa quốc gia giúp tăng khả năng chống chịu khi sự cố ảnh hưởng diện rộng, nhưng kéo theo yêu cầu cao hơn về network, latency, data sovereignty, compliance, chi phí truyền dữ liệu và quy trình vận hành.</p>
+        <h4>Khi khách hàng quan tâm</h4>
+        <ul><li>Doanh nghiệp hoạt động đa quốc gia.</li><li>Cần phục hồi khi một quốc gia/khu vực gặp sự cố lớn.</li><li>Có người dùng hoặc chi nhánh ở nhiều nước.</li><li>Cần business continuity ở cấp khu vực.</li></ul>
+        <div class="talk-track"><span>Câu nói đúng</span><blockquote>DR site ở nhiều quốc gia giúp tăng khả năng phục hồi ở cấp khu vực, nhưng cần đánh giá kỹ yêu cầu pháp lý, vị trí dữ liệu, độ trễ, chi phí kết nối và quy trình failover.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">💾 12.4. Data Backup Strategy 3-2-1</div>
+    <article class="term-section reverse">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/data-backup-strategy.png" alt="Sơ đồ chiến lược backup 3-2-1" loading="lazy"></div>
+        <figcaption>Ảnh minh họa nguyên tắc backup 3-2-1.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">Backup strategy</span>
+        <h3>3-2-1 là nguyên tắc bảo vệ dữ liệu, không phải DR site</h3>
+        <h4>Khái niệm</h4>
+        <p>Chiến lược backup 3-2-1 nghĩa là có ít nhất 3 bản dữ liệu, lưu trên 2 loại phương tiện hoặc môi trường khác nhau, và có 1 bản nằm offsite hoặc tách biệt khỏi hệ thống chính.</p>
+        <h4>Cách hiểu đơn giản</h4>
+        <ul><li>3 bản dữ liệu: dữ liệu chính + ít nhất 2 bản sao.</li><li>2 loại môi trường lưu trữ: ví dụ storage nội bộ và object storage/cloud backup.</li><li>1 bản offsite: nằm ngoài site chính để tránh mất dữ liệu khi site chính gặp sự cố.</li></ul>
+        <div class="talk-track"><span>Câu nói đúng</span><blockquote>Backup 3-2-1 giúp giảm rủi ro mất dữ liệu bằng cách giữ nhiều bản sao ở nhiều môi trường khác nhau, trong đó có ít nhất một bản tách khỏi site chính.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">☁️ 12.5. Data Backup Online And Offsite</div>
+    <article class="term-section">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/data-backup-online-and-offsite.png" alt="Sơ đồ data backup online và offsite" loading="lazy"></div>
+        <figcaption>Ảnh minh họa backup online và offsite.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">Online / Offsite</span>
+        <h3>Online không tự động an toàn, offsite không tự động khôi phục nhanh</h3>
+        <h4>Khái niệm</h4>
+        <p>Online backup là bản sao dữ liệu có thể truy cập qua mạng và thường được cập nhật định kỳ hoặc gần thời gian thực. Offsite backup là bản sao dữ liệu được lưu ở một địa điểm khác với site chính, có thể là cloud storage, data center khác hoặc dịch vụ backup chuyên dụng.</p>
+        <h4>Sales cần hiểu</h4>
+        <p>Cần hỏi thêm về tần suất backup, thời gian giữ bản sao, mã hóa, khả năng restore, băng thông và quy trình kiểm thử khôi phục.</p>
+        <h4>Khi khách hàng quan tâm</h4>
+        <ul><li>Muốn bảo vệ dữ liệu khỏi lỗi người dùng, ransomware, lỗi hệ thống.</li><li>Cần bản sao ngoài site chính.</li><li>Cần khôi phục file, database, VM hoặc hệ thống sau sự cố.</li><li>Muốn có chính sách retention theo ngày, tuần, tháng.</li></ul>
+        <div class="talk-track"><span>Câu nói đúng</span><blockquote>Online/offsite backup giúp khách hàng có bản sao dữ liệu ở ngoài site chính, nhưng cần thiết kế đúng retention, encryption, restore test và băng thông để đảm bảo khôi phục được khi cần.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">⚖️ 12.6. Compare DR Site And Data Backup</div>
+    <article class="term-section reverse">
+      <figure class="term-figure">
+        <div class="term-image"><img src="assets/images/compare-dr-site-and-data-backup.png" alt="Hình so sánh DR site và data backup" loading="lazy"></div>
+        <figcaption>Ảnh minh họa sự khác nhau giữa DR site và data backup.</figcaption>
+      </figure>
+      <div class="term-copy">
+        <span class="term-label">DR vs Backup</span>
+        <h3>Backup khôi phục dữ liệu, DR site khôi phục dịch vụ</h3>
+        <p>DR site và data backup đều liên quan đến khôi phục sau sự cố, nhưng mục tiêu khác nhau. Backup tập trung vào khôi phục dữ liệu. DR site tập trung vào khôi phục khả năng chạy dịch vụ hoặc workload.</p>
+        <div class="talk-track"><span>Thông điệp cần nhớ</span><blockquote>Backup trả lời câu hỏi “dữ liệu có còn không?”. DR site trả lời câu hỏi “dịch vụ có chạy lại được không?”. Một hệ thống quan trọng thường cần cả backup và DR, nhưng hai khái niệm này không thay thế hoàn toàn cho nhau.</blockquote></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="block reveal compare-table">
+    <div class="block-title">📋 Bảng phân biệt Data Backup và DR Site</div>
+    <p class="block-subtitle">Bảng này giúp Sales tránh nói “có backup là có DR” hoặc “có DR site là không cần backup”.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tiêu chí</th><th>Data Backup</th><th>DR Site</th></tr></thead>
+        <tbody>
+          <tr><td>Mục tiêu chính</td><td>Khôi phục dữ liệu</td><td>Khôi phục dịch vụ/workload</td></tr>
+          <tr><td>Câu hỏi cần trả lời</td><td>Có lấy lại được dữ liệu không?</td><td>Hệ thống có chạy lại được ở đâu và trong bao lâu?</td></tr>
+          <tr><td>Thành phần chính</td><td>Bản sao dữ liệu, retention, encryption, restore</td><td>Hạ tầng dự phòng, dữ liệu đồng bộ, network, failover plan</td></tr>
+          <tr><td>Chỉ số quan trọng</td><td>Backup frequency, retention, restore time</td><td>RTO, RPO, failover time, DR test</td></tr>
+          <tr><td>Chi phí</td><td>Thường thấp hơn DR site</td><td>Thường cao hơn vì cần môi trường chạy dự phòng</td></tr>
+          <tr><td>Rủi ro nếu hiểu nhầm</td><td>Có backup nhưng khôi phục chậm hoặc thiếu dữ liệu</td><td>Có site dự phòng nhưng dữ liệu không đồng bộ hoặc failover không chạy</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">⏱️ Ghi chú nhanh về RTO và RPO</div>
+    <p class="block-subtitle">Hai chỉ số này giúp Sales chuyển câu hỏi “anh/chị muốn an toàn đến mức nào?” thành yêu cầu có thể thiết kế được.</p>
+    <div class="rto-rpo-grid">
+      <article class="metric-card">
+        <h3>RTO - Recovery Time Objective</h3>
+        <p>RTO là thời gian tối đa khách hàng chấp nhận hệ thống bị gián đoạn trước khi dịch vụ phải chạy lại.</p>
+        <div class="metric-example"><strong>Ví dụ:</strong> nếu khách hàng yêu cầu RTO = 2 tiếng, nghĩa là sau sự cố, hệ thống cần được khôi phục và chạy lại trong vòng tối đa 2 tiếng.</div>
+      </article>
+      <article class="metric-card">
+        <h3>RPO - Recovery Point Objective</h3>
+        <p>RPO là lượng dữ liệu tối đa khách hàng chấp nhận mất tính theo thời gian.</p>
+        <div class="metric-example"><strong>Ví dụ:</strong> nếu khách hàng yêu cầu RPO = 30 phút, nghĩa là khi có sự cố, khách hàng chấp nhận mất tối đa dữ liệu phát sinh trong 30 phút gần nhất.</div>
+      </article>
+    </div>
+    <div class="talk-track"><span>Cách nói dễ hiểu cho Sales</span><blockquote>RTO là khách hàng chịu downtime tối đa bao lâu. RPO là khách hàng chịu mất dữ liệu tối đa bao lâu. RTO càng ngắn và RPO càng nhỏ thì giải pháp DR/backup càng cần thiết kế kỹ hơn và chi phí thường cao hơn.</blockquote></div>
+  </section>
+
+  <section class="block reveal">
+    <div class="block-title">🚀 Kết luận mục 12 cho Sales</div>
+    <div class="prereq-card">
+      <div class="prereq-card-title">Nhớ ba lớp khác nhau</div>
+      <p class="dark-card-text">Sales cần phân biệt rõ Cloud region, DR site và backup trước khi tư vấn giải pháp. Cloud region là nơi triển khai hạ tầng Cloud. DR site là nơi giúp dịch vụ chạy lại khi site chính gặp sự cố. Backup là chiến lược giữ bản sao dữ liệu để khôi phục khi cần. Nói đúng ba lớp này giúp Sales tránh tư vấn sai kỳ vọng và mở discovery chính xác hơn.</p>
+    </div>
+  </section>
+
+  <nav class="bottom-nav reveal" aria-label="Điều hướng module">
+    <a href="section11.html" class="bnav-btn">← Module 11: One-page summary</a>
+    <span class="bnav-center">Module 12 / 12</span>
+    <a href="index.html" class="bnav-btn next">Về danh sách module →</a>
+  </nav>
+
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
